@@ -1,0 +1,276 @@
+/* 전체 페이지의 기본 설정 */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d6d6d6; 
+}
+
+.container {
+    width: 100%;
+    max-width: 390px; 
+    height: 844px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    margin: 0 auto;
+    overflow-y: auto;
+}
+
+.content {
+    text-align: center; 
+    padding: 20px;
+    flex-grow: 1;
+    padding: 0;
+}
+
+/* header */
+.header {
+    width: 100%;
+    height: 56px;
+    border-bottom: 0.5px solid #898989 ;
+    position: relative; 
+    margin-top: 50px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 0;
+    margin-left: 18px;
+    margin-top: 16px;
+    z-index: 10;
+}
+
+.back-img {
+    width: 24px;
+    height: 24px;
+}
+
+/* 하단의 nav bar */
+.nav {
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 8px 12px;
+    background-color: white;
+    border-top: 1px solid #ccc;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    float: left;
+    margin: 7px 46px;
+}
+
+.nav-item img {
+    width: 24px;
+    height: 24px;
+}
+
+/* 상단의 버튼 그룹 */
+.button-container {
+    display: flex;
+    justify-content: center;
+    padding: 19px 0 0 0;
+    gap: 10px;
+}
+
+.button-req, .button-prov {
+    background: #ffffff;
+    color: #898989;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 9px 22px;
+    border-radius: 14px;
+    border: 0.5px solid #898989;
+}
+
+.button-prov {
+    background: #6997e5;
+    color: white;
+}
+
+/* Form Container */
+.form-container {
+    padding: 13px 30px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    margin-bottom: 11px;
+}
+
+.input-group label {
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {   
+    width: 100%;
+    border: 0.5px solid #ddd;
+    color: black;
+    border-radius: 14px;
+    padding: 15px 19px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.input-group.price-item-group {
+    display: flex;
+    flex-direction: row; 
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.select-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.roomie-img {
+    position: absolute;
+    left: 8px; 
+    width: 24px;
+    height: 24px;
+    z-index: 1;
+}
+
+#price {
+    padding-left: 40px;
+    font-size: 16px;
+}
+
+.price-item,
+.item-name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.item-name input {
+    width: 157px; 
+    border-radius: 14px;
+    height: 54px;
+}
+
+.price-item-group label {
+    margin-bottom: 5px; 
+    font-size: 13px;
+}
+
+.input-group.location-group {
+    display: flex;
+    flex-direction: row; 
+    align-items: flex-start; 
+    justify-content: space-between;
+    width: 100%;
+}
+
+.rental-place,
+.return-place {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+}
+
+.rental-place input,
+.return-place input {
+    width: 157px;
+    border-radius: 14px;
+    height: 54px;
+}
+
+.location-group label {
+    margin-bottom: 5px; 
+    font-size: 13px;
+}
+
+.input-group.date-group {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.rental-date,
+.return-date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.date-group input[type="date"] {
+    width: 145px;
+    border-radius: 14px;
+    height: 54px;
+}
+
+.date-group .date-separator {
+    font-size: 15px;
+    color: #000;
+    position: absolute;
+    top: 44px;
+    left: 159px;
+}
+
+.input-group input[type="date"]:last-child {
+    margin-right: 0;
+}
+
+.input-group textarea {   
+    height: 100px;
+}
+
+.input-group input[type="file"] {
+    padding: 8px 12px;
+    height: 54px;
+    cursor: pointer;
+}
+
+.save-btn {
+    width: 100%;
+    padding: 15px 0;
+    background-color: #6997e5;
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.save-btn:hover {
+    background-color: #4272bb;
+}

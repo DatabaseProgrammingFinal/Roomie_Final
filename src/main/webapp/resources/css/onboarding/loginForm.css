@@ -1,0 +1,109 @@
+/* 기본 페이지 설정 */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d6d6d6;
+}
+
+/* 컨테이너 */
+.container {
+    width: 390px;
+    height: 844px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* 컨텐츠 정렬 */
+.content {
+    width: 100%;
+    text-align: left; /* 왼쪽 정렬 */
+    padding: 0 20px;
+}
+
+/* 로고 박스 */
+.logo-box {
+    margin-bottom: 20px;
+}
+
+.logo {
+    max-width: 180px;
+    height: auto;
+}
+
+/* 환영 메시지 */
+.welcome-msg {
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 30px;
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+/* 로그인 폼 */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 입력 그룹 스타일 */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.input-group label {
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #898989;
+}
+
+.input-group input {
+    height: 44px;
+    padding: 0 12px;
+    font-size: 16px;
+    border: 1px solid #898989;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* 로그인 버튼 스타일 */
+.login-btn {
+    height: 48px;
+    background-color: #6997E5;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #4272bb;
+}
+
+/* 회원가입 링크 스타일 */
+.signup-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #898989;
+    text-align: center; /* 회원가입 텍스트는 중앙 */
+}
+
+.signup-link a {
+    color: #6997E5;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
