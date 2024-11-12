@@ -13,7 +13,7 @@ public class ConnectionManager {
     /*
     private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
     private static final String DB_URL = "jdbc:oracle:thin:@dblab.dongduk.ac.kr:1521/orclpdb";
-    private static final String DB_USERNAME = "dbp";
+    private static final String DB_USERnickname = "dbp";
     private static final String DB_PASSWORD = "dbp2023#";
     */
 	private static DataSource ds = null;
@@ -41,9 +41,9 @@ public class ConnectionManager {
 		try {
     		// DataSource 생성 및 설정
 			BasicDataSource bds = new BasicDataSource();
-	        bds.setDriverClassName(prop.getProperty("db.driver"));
+	        bds.setDriverClassnickname(prop.getProperty("db.driver"));
 	        bds.setUrl(prop.getProperty("db.url"));
-	        bds.setUsername(prop.getProperty("db.username"));
+	        bds.setUsernickname(prop.getProperty("db.usernickname"));
 	        bds.setPassword(prop.getProperty("db.password"));     
 			ds = bds;
 			

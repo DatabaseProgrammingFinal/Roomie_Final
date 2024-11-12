@@ -36,17 +36,17 @@ public class UserManager {
 	}
 	
 	public int create(User user) throws SQLException, ExistingUserException {
-		if (userDAO.existingUser(user.getUserId()) == true) {
-			throw new ExistingUserException(user.getUserId() + "는 존재하는 아이디입니다.");
+		if (userDAO.existingUser(user.getlogin_id()) == true) {
+			throw new ExistingUserException(user.getlogin_id() + "는 존재하는 아이디입니다.");
 		}
 		return userDAO.create(user);
 	}
 
 	public int update(User user) throws SQLException, UserNotFoundException {
-		int oldCommId = findUser(user.getUserId()).getCommId();
+		int oldCommId = findUser(user.getlogin_id()).getCommId();
 		if (user.getCommId() != oldCommId) { 	// 소속 커뮤티니가 변경됨
 			Community comm = commDAO.findCommunity(oldCommId);  // 기존 소속 커뮤니티
-			if (comm != null && user.getUserId().equals(comm.getChairId())) {
+			if (comm != null && user.getlogin_id().equals(comm.getChairId())) {
 				// 사용자가 기존 소속 커뮤니티의 회장인 경우 -> 그 커뮤니티의 회장을 null로 변경 및 저장
 				comm.setChairId(null);
 				commDAO.updateChair(comm);
@@ -55,23 +55,23 @@ public class UserManager {
 		return userDAO.update(user);
 	}	
 
-	public int remove(String userId) throws SQLException, UserNotFoundException {
-		int commId = findUser(userId).getCommId();
+	public int remove(String login_id) throws SQLException, UserNotFoundException {
+		int commId = findUser(login_id).getCommId();
 		Community comm = commDAO.findCommunity(commId);  // 소속 커뮤니티
-		if (comm != null && userId.equals(comm.getChairId())) {
+		if (comm != null && login_id.equals(comm.getChairId())) {
 			// 사용자가 소속 커뮤니티의 회장인 경우 -> 그 커뮤니티의 회장을 null로 변경 및 저장
 			comm.setChairId(null);
 			commDAO.updateChair(comm);
 		}
-		return userDAO.remove(userId);
+		return userDAO.remove(login_id);
 	}
 
-	public User findUser(String userId)
+	public User findUser(String login_id)
 		throws SQLException, UserNotFoundException {
-		User user = userDAO.findUser(userId);
+		User user = userDAO.findUser(login_id);
 		
 		if (user == null) {
-			throw new UserNotFoundException(userId + "는 존재하지 않는 아이디입니다.");
+			throw new UserNotFoundException(login_id + "는 존재하지 않는 아이디입니다.");
 		}		
 		return user;
 	}
@@ -85,9 +85,9 @@ public class UserManager {
 		return userDAO.findUserList(currentPage, countPerPage);
 	}
 
-	public boolean login(String userId, String password)
+	public boolean login(String login_id, String password)
 		throws SQLException, UserNotFoundException, PasswordMismatchException {
-		User user = findUser(userId);
+		User user = findUser(login_id);
 
 		if (!user.matchPassword(password)) {
 			throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
@@ -95,8 +95,8 @@ public class UserManager {
 		return true;
 	}
 
-	public List<User> makeFriends(String userId) throws Exception {
-		return userAanlysis.recommendFriends(userId);
+	public List<User> makeFriends(String login_id) throws Exception {
+		return userAanlysis.recommendFriends(login_id);
 	}
 	
 	public Community createCommunity(Community comm) throws SQLException {

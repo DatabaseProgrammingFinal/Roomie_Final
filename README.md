@@ -1,4 +1,4 @@
-# Roomie_Final
+# room_numberie_Final
 
 ## 커밋 컨벤션
 
@@ -10,6 +10,6 @@
 - **feat:** 새로운 기능 추가
 - **fix:** 버그 픽스
 - **refactor:** 코드 리팩토링 관련
-- **chore:** 버그 픽스 또는 기능 추가에 해당되지 않는 '자잘한' 변경사항(rename, remove 등)
+- **chore:** 버그 픽스 또는 기능 추가에 해당되지 않는 '자잘한' 변경사항(renickname, remove 등)
 - **test:** 테스트 관련 수정
 - **style:** UI 변경사항

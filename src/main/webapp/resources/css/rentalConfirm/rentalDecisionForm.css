@@ -169,7 +169,7 @@ body {
     outline: none; /* 클릭 시 파란 테두리 제거 */
 }
 
-.roomie-img {
+.room_numberie-img {
     position: absolute;
     left: 8px;
     width: 24px;

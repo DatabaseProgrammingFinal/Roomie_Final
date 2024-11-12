@@ -8,31 +8,31 @@ import java.util.List;
  */
 public class Community {
 	private int id;
-	private String name;
+	private String nickname;
 	private String description;
 	private Date startDate;
 	private String chairId;
-	private String chairName;
+	private String chairnickname;
 	private int numOfMembers;
 	private List<User> memberList;
 
 	public Community() { }		// 기본 생성자
 	
-	public Community(int id, String name, String description, Date startDate, String chairId, String chairName) {
+	public Community(int id, String nickname, String description, Date startDate, String chairId, String chairnickname) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.nickname = nickname;
 		this.description = description;
 		this.startDate = startDate;
 		this.chairId = chairId;
-		this.chairName = chairName;
+		this.chairnickname = chairnickname;
 		this.setNumOfMembers(0);
 	}
 	
-	public Community(int id, String name, String description, int numOfMembers) {
+	public Community(int id, String nickname, String description, int numOfMembers) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.nickname = nickname;
 		this.description = description;
 		this.numOfMembers = numOfMembers;
 	}
@@ -45,12 +45,12 @@ public class Community {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getnickname() {
+		return nickname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setnickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public String getDescription() {
@@ -77,12 +77,12 @@ public class Community {
 		this.chairId = chairId;
 	}
 
-	public String getChairName() {
-		return chairName;
+	public String getChairnickname() {
+		return chairnickname;
 	}
 
-	public void setChairName(String chairName) {
-		this.chairName = chairName;
+	public void setChairnickname(String chairnickname) {
+		this.chairnickname = chairnickname;
 	}
 
 	public int getNumOfMembers() {
@@ -103,7 +103,7 @@ public class Community {
 
 	@Override
 	public String toString() {
-		return "Community [id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate
-				+ ", chairId=" + chairId + ", chairName=" + chairName + ", numOfMembers=" + numOfMembers + "]";
+		return "Community [id=" + id + ", nickname=" + nickname + ", description=" + description + ", startDate=" + startDate
+				+ ", chairId=" + chairId + ", chairnickname=" + chairnickname + ", numOfMembers=" + numOfMembers + "]";
 	}
 }

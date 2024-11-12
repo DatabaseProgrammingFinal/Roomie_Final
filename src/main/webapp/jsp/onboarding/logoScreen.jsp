@@ -3,8 +3,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomie</title>
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
+    <title>room_numberie</title>
     <!-- CSS 경로를 동적으로 처리 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/onboarding/logoscreen.css">
 </head>
@@ -12,7 +12,7 @@
     <div class="container">
         <div class="logo-box">
             <!-- 이미지 경로를 동적으로 처리 -->
-            <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="Roomie Logo" class="logo">
+            <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="room_numberie Logo" class="logo">
         </div>
     </div>
 </body>

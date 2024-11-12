@@ -13,14 +13,14 @@ import javax.servlet.ServletResponse;
 /**
  * ServletRequest 객체에 인코딩을 설정하는 Filter 클래스.
  * 
- * @web.filter name="Encoding Filter" display-name="Encoding Filter"
- * @web.filter-init-param name="encoding" value="UTF-8"		    
+ * @web.filter nickname="Encoding Filter" display-nickname="Encoding Filter"
+ * @web.filter-init-param nickname="encoding" value="UTF-8"		    
  * @web.filter-mapping url-pattern="/*"
  * 					   
  */
 /*
-@WebFilter(filterName="Encoding Filter", urlPatterns="/*",
-	initParams=@WebInitParam(name="encoding", value="utf-8"))
+@WebFilter(filternickname="Encoding Filter", urlPatterns="/*",
+	initParams=@WebInitParam(nickname="encoding", value="utf-8"))
 */ 
 public class EncodingFilter implements Filter {
 	private String encoding = null;

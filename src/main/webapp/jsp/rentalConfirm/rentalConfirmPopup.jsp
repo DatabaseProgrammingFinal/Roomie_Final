@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rental Confirmation</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/retntalConfirm/rentalConfirmPopup.css">
 </head>

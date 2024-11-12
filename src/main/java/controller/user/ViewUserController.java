@@ -17,11 +17,11 @@ public class ViewUserController implements Controller {
         }
     	
 		UserManager manager = UserManager.getInstance();
-		String userId = request.getParameter("userId");
+		String login_id = request.getParameter("login_id");
 		
     	User user = null;
 		try {
-			user = manager.findUser(userId);	// 사용자 정보 검색
+			user = manager.findUser(login_id);	// 사용자 정보 검색
 		} catch (UserNotFoundException e) {				
 	        return "redirect:/user/list";
 		}	

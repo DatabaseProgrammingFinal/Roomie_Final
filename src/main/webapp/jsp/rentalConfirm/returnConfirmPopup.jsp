@@ -3,7 +3,7 @@
 <html lang="ko"> 
 <head> 
     <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Return Confirmation</title> 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/retntalConfirm/returnConfirmPopup.css"> 
 </head> 
@@ -14,8 +14,8 @@
             <p class="confirmation-text">반납이 완료되었습니까?</p> 
             <div class="button-container"> 
                 <form action="returnConfirmationProcess.jsp" method="post">
-                    <button type="submit" name="confirm" value="yes" class="yes-btn">예</button> 
-                    <button type="submit" name="confirm" value="no" class="no-btn">아니오</button> 
+                    <button type="submit" nickname="confirm" value="yes" class="yes-btn">예</button> 
+                    <button type="submit" nickname="confirm" value="no" class="no-btn">아니오</button> 
                 </form>
             </div> 
             <p class="info-text">예 버튼을 누르면 실제 반납이 자동 등록됩니다.</p> 

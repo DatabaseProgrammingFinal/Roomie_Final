@@ -3,8 +3,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomie App</title>
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
+    <title>room_numberie App</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/provide/write_provide.css">
 </head>
 <body>
@@ -30,12 +30,12 @@
                             <input type="text" id="title">
                         </div>
         
-                        <!-- Price and Item Name -->
+                        <!-- Price and Item nickname -->
                         <div class="input-group price-item-group">
                             <div class="price-item">
                                 <label for="price">가격</label>
                                 <div class="select-container">
-                                    <img src="${pageContext.request.contextPath}/resources/images/roomie.png" alt="Point" class="roomie-img">
+                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img">
                                     <select id="price">
                                         <option value="100">100 루미</option>
                                         <option value="200">200 루미</option>
@@ -45,9 +45,9 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="item-name">
-                                <label for="item-name">물품명</label>
-                                <input type="text" id="item-name">
+                            <div class="item-nickname">
+                                <label for="item-nickname">물품명</label>
+                                <input type="text" id="item-nickname">
                             </div>
                         </div>
 

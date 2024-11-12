@@ -120,13 +120,13 @@ a.back-btn {
     margin-top: 5px;
 }
 
-/* Dormitory Fields */
-.dorm-group {
+/* dormitory_nameitory Fields */
+.dormitory_name-group {
     display: flex;
     justify-content: space-between;
 }
 
-.dorm-group .input-group {
+.dormitory_name-group .input-group {
     width: 48%;
 }
 

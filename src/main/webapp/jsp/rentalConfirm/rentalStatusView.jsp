@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
     <title>대여 정보 결정</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/retntalConfirm/rentalDecisionForm.css">
 </head>
@@ -21,7 +21,7 @@
             <div class="info">
                 <div class="info-row">
                     <span class="label">물품명</span>
-                    <span class="value" id="item-name">${itemName}</span> <!-- 서버에서 전달된 물품명 -->
+                    <span class="value" id="item-nickname">${itemnickname}</span> <!-- 서버에서 전달된 물품명 -->
                 </div>
                 <div class="info-row">
                     <span class="label">대여 제공자</span>
@@ -39,7 +39,7 @@
                     <div class="input-group">
                         <label for="store">대여 제공 상점</label>
                         <div class="select-container">
-                            <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Roomie Icon" class="roomie-img">
+                            <img src="${pageContext.request.contextPath}/images/room_numberie.png" alt="room_numberie Icon" class="room_numberie-img">
                             <select id="store">
                                 <option value="300">300 루미</option>
                                 <option value="400">400 루미</option>

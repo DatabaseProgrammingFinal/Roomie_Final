@@ -273,7 +273,7 @@ body, html {
 }
 
 
-.roomie-img {
+.room_numberie-img {
     margin-left: 5px; /* 아이콘과 텍스트 사이 간격 설정 */
     width: 16px;
     height: 16px;
@@ -281,7 +281,7 @@ body, html {
     background: url(<path-to-image>) lightgray 50% / cover no-repeat;
 }
 
-.roomie-point {
+.room_numberie-point {
     display: flex;
     font-size: 13px;
     font-weight: 400;
@@ -289,7 +289,7 @@ body, html {
     margin-left: 5px; /* 텍스트와 아이콘 사이 간격 설정 */
     margin-top: 0px; /* 기본적으로 텍스트를 같은 줄에 두기 위한 설정 */
 }
-.roomie-info {
+.room_numberie-info {
     display: flex;
     align-items: center;  /* 세로 정렬 */
 }

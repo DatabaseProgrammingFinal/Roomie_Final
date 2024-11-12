@@ -3,8 +3,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomie App</title>
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
+    <title>room_numberie App</title>
     <!-- CSS 경로를 동적으로 처리 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/default.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/message_main.css">
@@ -29,13 +29,13 @@
                 </div>
 
                 <div class="filter-buttons">
-                    <input type="radio" name="filter" id="all" checked>
+                    <input type="radio" nickname="filter" id="all" checked>
                     <label for="all" class="filter-button">All</label>
                     
-                    <input type="radio" name="filter" id="sent">
+                    <input type="radio" nickname="filter" id="sent">
                     <label for="sent" class="filter-button">보낸 쪽지</label>
 
-                    <input type="radio" name="filter" id="received">
+                    <input type="radio" nickname="filter" id="received">
                     <label for="received" class="filter-button">받은 쪽지</label>
                 </div>
 
@@ -78,7 +78,7 @@
                     <div class="message-item">
                         <div class="avatar"></div>
                         <div class="message-info">
-                            <span class="name">솜솜${i + 1}</span>
+                            <span class="nickname">솜솜${i + 1}</span>
                             <span class="message-preview">어쩌고 저쩌고</span>
                         </div>
                         <span class="time">1시간 전</span>

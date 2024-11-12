@@ -3,8 +3,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomie App</title>
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
+    <title>room_numberie App</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/request/view_request.css">
 </head>
 <body>
@@ -24,8 +24,8 @@
                 <div class="profile">
                     <img src="${pageContext.request.contextPath}/resources/images/user.png" alt="User Profile" class="profile-img" width="44px" height="44px">
                     <div class="profile-info">
-                        <h3 class="nickname">닉네임~~</h3>
-                        <p class="room">○○기숙사 301호실</p>
+                        <h3 class="nicknickname">닉네임~~</h3>
+                        <p class="room_number">○○기숙사 301호실</p>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@
             
             <!-- 하단 버튼 -->
             <div class="footer">
-                <img src="${pageContext.request.contextPath}/resources/images/roomie.png" alt="Point" class="roomie-img" width="24px" height="24px">
+                <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="24px" height="24px">
                 <span class="points">300 루미</span>
                 <button class="send-msg-btn">쪽지 보내기</button>
             </div>

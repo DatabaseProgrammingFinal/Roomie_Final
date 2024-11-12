@@ -149,7 +149,7 @@ h1 {
     flex-grow: 1;
 }
 
-.name {
+.nickname {
     font-weight: bold;
     font-size: 1rem;
     margin-left: -3.125rem;
@@ -261,7 +261,7 @@ h1 {
         padding: 0.625rem 0;
     }
 
-    .name,
+    .nickname,
     .message-preview,
     .time {
         font-size: 0.875rem;
