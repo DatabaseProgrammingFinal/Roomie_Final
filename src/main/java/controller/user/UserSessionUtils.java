@@ -1,13 +1,13 @@
-package controller.user;
+package controller.User;
 
 import javax.servlet.http.HttpSession;
 
 public class UserSessionUtils {
-    public static final String USER_SESSION_KEY = "login_id";
+    public static final String User_SESSION_KEY = "login_id";
 
     /* 현재 로그인한 사용자의 ID를 구함 */
     public static String getLoginlogin_id(HttpSession session) {
-        String login_id = (String)session.getAttribute(USER_SESSION_KEY);
+        String login_id = (String)session.getAttribute(User_SESSION_KEY);
         return login_id;
     }
 

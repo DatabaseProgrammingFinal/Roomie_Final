@@ -10,15 +10,13 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 public class ConnectionManager {
-    /*
-    private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String DB_URL = "jdbc:oracle:thin:@dblab.dongduk.ac.kr:1521/orclpdb";
-    private static final String DB_USERnickname = "dbp";
-    private static final String DB_PASSWORD = "dbp2023#";
-    */
-	private static DataSource ds = null;
     
-	
+	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static final String DB_URL = "jdbc:oracle:thin:@//dblab.dongduk.ac.kr:1521/orclpdb";
+	private static final String DB_USER = "dbp240210";
+	private static final String DB_PASSWORD = "21703";
+	private static DataSource ds = null;
+   
     public ConnectionManager() {
 		InputStream input = null;
     	Properties prop = new Properties();
@@ -41,10 +39,10 @@ public class ConnectionManager {
 		try {
     		// DataSource 생성 및 설정
 			BasicDataSource bds = new BasicDataSource();
-	        bds.setDriverClassnickname(prop.getProperty("db.driver"));
-	        bds.setUrl(prop.getProperty("db.url"));
-	        bds.setUsernickname(prop.getProperty("db.usernickname"));
-	        bds.setPassword(prop.getProperty("db.password"));     
+	        bds.setDriverClassName(prop.getProperty("DB_DRIVER"));
+	        bds.setUrl(prop.getProperty("DB_URL"));
+	        bds.setUsername(prop.getProperty("DB_USER"));
+	        bds.setPassword(prop.getProperty("DB_PASSWORD"));     
 			ds = bds;
 			
 			// 참고: WAS의 DataSource를 이용할 경우: 

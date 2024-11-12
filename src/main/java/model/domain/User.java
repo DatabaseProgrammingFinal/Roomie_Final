@@ -1,3 +1,5 @@
+package model.domain;
+
 public class User {
     private int id;
     private String loginId;
@@ -63,6 +65,10 @@ public class User {
         this.password = password;
     }
 
+    public boolean matchPassword(String inputPassword) {
+        return this.password.equals(inputPassword);
+    }
+    
     public String getNickname() {
         return nickname;
     }

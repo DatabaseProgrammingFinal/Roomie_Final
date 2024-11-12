@@ -20,28 +20,28 @@ public class UserAnalysis {
 
 	// an example business method
 	public List<User> recommendFriends(String login_id) throws Exception {
-		User thisuser = dao.findUser(login_id);
-		if (thisuser == null) {
-			throw new Exception("invalid user ID!");
+		User thisUser = dao.findUser(login_id);
+		if (thisUser == null) {
+			throw new Exception("invalid User ID!");
 		}
 		int m1 = login_id.indexOf('@');
 		if (m1 == -1) return null;
-		String mserver1 = thisuser.getdormitory_name().substring(m1);
+		String mserver1 = thisUser.getDormitoryName().substring(m1);
 		
 		List<User> friends = new ArrayList<User>();
 		
-		List<User> userList = dao.findUserList(1, 10000);
-		Iterator<User> userIter = userList.iterator();		
-		while (userIter.hasNext()) {
-			User user = (User)userIter.next();
+		List<User> UserList = dao.findUserList();
+		Iterator<User> UserIter = UserList.iterator();		
+		while (UserIter.hasNext()) {
+			User User = (User)UserIter.next();
 			
-			if (user.getlogin_id().equals(login_id)) continue;
-			int m2 = user.getdormitory_name().indexOf('@');
+			if (User.getLoginId().equals(login_id)) continue;
+			int m2 = User.getDormitoryName().indexOf('@');
 			if (m2 == -1) continue;
-			String mserver2 = user.getdormitory_name().substring(m2);
+			String mserver2 = User.getDormitoryName().substring(m2);
 
 			if (mserver1.equals(mserver2)) 
-				friends.add(user);		
+				friends.add(User);		
 		}
 		return friends;
 	}

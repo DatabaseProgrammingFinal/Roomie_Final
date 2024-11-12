@@ -25,16 +25,9 @@ public class UserDAO {
         String sql = "INSERT INTO Member (id, login_id, password, nickname, dormitory_name, room_number, profile_url, points, commId, commnickname) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Object[] param = new Object[] {
-            user.getId(),
-            user.getLogin_id(),
-            user.getPassword(),
-            user.getNickname(),
-            user.getDormitory_name(),
-            user.getRoom_number(),
-            user.getProfile_url(),
-            user.getPoints(),
-            (user.getCommId() != 0) ? user.getCommId() : null,
-            user.getCommnickname()
+            user.getId(), user.getLoginId(), user.getPassword(), user.getNickname(),
+            user.getDormitoryName(), user.getRoomNumber(), user.getProfileUrl(),
+            user.getPoints(), user.getCommId(), user.getCommNickname()
         };
         jdbcUtil.setSqlAndParameters(sql, param); // JDBCUtil에 insert문과 매개 변수 설정
 
@@ -59,15 +52,10 @@ public class UserDAO {
                      "SET password=?, nickname=?, dormitory_name=?, room_number=?, profile_url=?, points=?, commId=?, commnickname=? " +
                      "WHERE login_id=?";
         Object[] param = new Object[] {
-            user.getPassword(),
-            user.getNickname(),
-            user.getDormitory_name(),
-            user.getRoom_number(),
-            user.getProfile_url(),
-            user.getPoints(),
+            user.getPassword(), user.getNickname(), user.getDormitoryName(),
+            user.getRoomNumber(), user.getProfileUrl(), user.getPoints(),
             (user.getCommId() != 0) ? user.getCommId() : null,
-            user.getCommnickname(),
-            user.getLogin_id()
+            user.getCommNickname(), user.getLoginId()
         };
         jdbcUtil.setSqlAndParameters(sql, param); // JDBCUtil에 update문과 매개 변수 설정
 
@@ -248,4 +236,3 @@ public class UserDAO {
         return false;
     }
 }
-
