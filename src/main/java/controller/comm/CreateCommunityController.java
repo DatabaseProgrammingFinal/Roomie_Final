@@ -15,7 +15,7 @@ public class CreateCommunityController implements Controller {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	Community comm = new Community(
-    		0, request.getParameter("name"),
+    		0, request.getParameter("nickname"),
 			request.getParameter("desc"),
 			null, null, null);		
         

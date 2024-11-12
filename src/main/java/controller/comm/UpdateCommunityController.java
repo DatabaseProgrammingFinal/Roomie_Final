@@ -34,7 +34,7 @@ public class UpdateCommunityController implements Controller {
     	// POST request (커뮤니티 정보가 parameter로 전송됨)
     	Community comm = new Community(
     		commId,
-    		request.getParameter("name"),
+    		request.getParameter("nickname"),
     		request.getParameter("desc"),
     		null, request.getParameter("chairId"), null);
 

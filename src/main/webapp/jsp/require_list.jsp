@@ -3,8 +3,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomie App</title>
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
+    <title>room_numberie App</title>
     <!-- CSS 파일 경로 수정 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/require_list.css">
 </head>
@@ -38,9 +38,9 @@
                             <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
-                                <div class="roomie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/roomie.png" alt="Point" class="roomie-img" width="18px" height="18px">
-                                    <span class="roomie-point">300 루미</span>
+                                <div class="room_numberie-info">
+                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
                             <span class="date">0000.00.00 ~ 0000.00.00</span>
@@ -51,9 +51,9 @@
                             <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
-                                <div class="roomie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/roomie.png" alt="Point" class="roomie-img" width="18px" height="18px">
-                                    <span class="roomie-point">300 루미</span>
+                                <div class="room_numberie-info">
+                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
                             <span class="date">0000.00.00 ~ 0000.00.00</span>
@@ -64,9 +64,9 @@
                             <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
-                                <div class="roomie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/roomie.png" alt="Point" class="roomie-img" width="18px" height="18px">
-                                    <span class="roomie-point">300 루미</span>
+                                <div class="room_numberie-info">
+                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
                             <span class="date">0000.00.00 ~ 0000.00.00</span>
@@ -77,9 +77,9 @@
                             <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
-                                <div class="roomie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/roomie.png" alt="Point" class="roomie-img" width="18px" height="18px">
-                                    <span class="roomie-point">300 루미</span>
+                                <div class="room_numberie-info">
+                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
                             <span class="date">0000.00.00 ~ 0000.00.00</span>
@@ -90,9 +90,9 @@
                             <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
-                                <div class="roomie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/roomie.png" alt="Point" class="roomie-img" width="18px" height="18px">
-                                    <span class="roomie-point">300 루미</span>
+                                <div class="room_numberie-info">
+                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
                             <span class="date">0000.00.00 ~ 0000.00.00</span>

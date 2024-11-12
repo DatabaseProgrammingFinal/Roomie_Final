@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//@WebFilter(filterName="Resource Filter", urlPatterns="/*")
+//@WebFilter(filternickname="Resource Filter", urlPatterns="/*")
 public class ResourceFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(ResourceFilter.class);
     private static final List<String> resourcePrefixs = new ArrayList<>();
@@ -33,7 +33,7 @@ public class ResourceFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.defaultRequestDispatcher = filterConfig.getServletContext().getNamedDispatcher("default");
+        this.defaultRequestDispatcher = filterConfig.getServletContext().getnicknamedDispatcher("default");
     }
 
     @Override

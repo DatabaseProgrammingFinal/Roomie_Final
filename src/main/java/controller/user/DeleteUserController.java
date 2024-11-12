@@ -16,7 +16,7 @@ public class DeleteUserController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)	throws Exception {
-		String deleteId = request.getParameter("userId");
+		String deleteId = request.getParameter("login_id");
     	log.debug("Delete User : {}", deleteId);
 
 		UserManager manager = UserManager.getInstance();		

@@ -19,14 +19,14 @@ public class UserAnalysis {
 	}
 
 	// an example business method
-	public List<User> recommendFriends(String userId) throws Exception {
-		User thisuser = dao.findUser(userId);
+	public List<User> recommendFriends(String login_id) throws Exception {
+		User thisuser = dao.findUser(login_id);
 		if (thisuser == null) {
 			throw new Exception("invalid user ID!");
 		}
-		int m1 = userId.indexOf('@');
+		int m1 = login_id.indexOf('@');
 		if (m1 == -1) return null;
-		String mserver1 = thisuser.getDorm().substring(m1);
+		String mserver1 = thisuser.getdormitory_name().substring(m1);
 		
 		List<User> friends = new ArrayList<User>();
 		
@@ -35,10 +35,10 @@ public class UserAnalysis {
 		while (userIter.hasNext()) {
 			User user = (User)userIter.next();
 			
-			if (user.getUserId().equals(userId)) continue;
-			int m2 = user.getDorm().indexOf('@');
+			if (user.getlogin_id().equals(login_id)) continue;
+			int m2 = user.getdormitory_name().indexOf('@');
 			if (m2 == -1) continue;
-			String mserver2 = user.getDorm().substring(m2);
+			String mserver2 = user.getdormitory_name().substring(m2);
 
 			if (mserver1.equals(mserver2)) 
 				friends.add(user);		

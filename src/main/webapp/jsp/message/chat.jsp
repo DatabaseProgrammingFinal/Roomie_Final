@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
     <!-- CSS 파일 경로 설정 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/chat.css">
@@ -14,7 +14,7 @@
             <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/resources/images/back.png" alt="Back"></a>
             <div class="profile">
                 <img src="${pageContext.request.contextPath}/resources/images/profile.png" alt="Profile" class="profile-img">
-                <div class="name">솜솜1</div>
+                <div class="nickname">솜솜1</div>
             </div>
         </header>
 

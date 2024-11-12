@@ -23,7 +23,7 @@ public class CommunityDAO {
 	 */
 	public Community create(Community comm) throws SQLException {
 		String sql = "INSERT INTO Community VALUES (commId_seq.nextval, ?, ?, SYSDATE, ?)";		
-		Object[] param = new Object[] {comm.getName(), comm.getDescription(),
+		Object[] param = new Object[] {comm.getnickname(), comm.getDescription(),
 			comm.getChairId()};				
 		jdbcUtil.setSqlAndParameters(sql, param);	// JDBCUtil 에 insert문과 매개 변수 설정
 						
@@ -51,11 +51,11 @@ public class CommunityDAO {
 	 */
 	public int update(Community comm) throws SQLException {
 		String sql = "UPDATE Community "
-					+ "SET cName=?, descr=?, chairId=? "
+					+ "SET cnickname=?, descr=?, chairId=? "
 					+ "WHERE cId=?";
 		String chairId = comm.getChairId();
 		if (chairId.equals("")) chairId = null;
-		Object[] param = new Object[] {comm.getName(), comm.getDescription(),
+		Object[] param = new Object[] {comm.getnickname(), comm.getDescription(),
 				chairId, comm.getId()};				
 		jdbcUtil.setSqlAndParameters(sql, param);	// JDBCUtil에 update문과 매개 변수 설정
 			
@@ -123,8 +123,8 @@ public class CommunityDAO {
 	 * 저장하여 반환.
 	 */
 	public Community findCommunity(int commId) throws SQLException {
-        String sql = "SELECT cName, descr, startDate, chairId, u.name As chairName "
-        			+ "FROM Community c LEFT OUTER JOIN UserInfo u ON c.chairId = u.userId "
+        String sql = "SELECT cnickname, descr, startDate, chairId, u.nickname As chairnickname "
+        			+ "FROM Community c LEFT OUTER JOIN UserInfo u ON c.chairId = u.login_id "
         			+ "WHERE cId=? ";              
 		jdbcUtil.setSqlAndParameters(sql, new Object[] {commId});	// JDBCUtil에 query문과 매개 변수 설정
 		Community comm = null;
@@ -133,11 +133,11 @@ public class CommunityDAO {
 			if (rs.next()) {						// 학생 정보 발견
 				comm = new Community(		// Community 객체를 생성하여 커뮤니티 정보를 저장
 					commId,
-					rs.getString("cName"),
+					rs.getString("cnickname"),
 					rs.getString("descr"),
 					rs.getDate("startDate"),
 					rs.getString("chairId"),
-					rs.getString("chairName"));
+					rs.getString("chairnickname"));
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -151,10 +151,10 @@ public class CommunityDAO {
 	 * 전체 커뮤니티 정보를 검색하여 List에 저장 및 반환
 	 */
 	public List<Community> findCommunityList() throws SQLException {
-        String sql = "SELECT cId, cName, descr, COUNT(u.userId) AS numOfMem "
+        String sql = "SELECT cId, cnickname, descr, COUNT(u.login_id) AS numOfMem "
         		   + "FROM Community c LEFT OUTER JOIN UserInfo u ON c.cId = u.commId "
-        		   + "GROUP BY cId, cName, descr "
-        		   + "ORDER BY cName";        
+        		   + "GROUP BY cId, cnickname, descr "
+        		   + "ORDER BY cnickname";        
 		jdbcUtil.setSqlAndParameters(sql, null);		// JDBCUtil에 query문 설정
 					
 		try {
@@ -163,7 +163,7 @@ public class CommunityDAO {
 			while (rs.next()) {
 				Community comm = new Community(			// Community 객체를 생성하여 현재 행의 정보를 저장
 						rs.getInt("cId"),
-						rs.getString("cName"),
+						rs.getString("cnickname"),
 						rs.getString("descr"),
 						rs.getInt("numOfMem"));
 				commList.add(comm);				// List에 Community 객체 저장

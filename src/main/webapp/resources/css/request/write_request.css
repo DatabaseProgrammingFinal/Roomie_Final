@@ -157,7 +157,7 @@ body {
     align-items: center;
 }
 
-.roomie-img {
+.room_numberie-img {
     position: absolute;
     left: 8px; 
     width: 24px;
@@ -171,13 +171,13 @@ body {
 }
 
 .price-item,
-.item-name {
+.item-nickname {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-.item-name input {
+.item-nickname input {
     width: 157px; 
     border-radius: 14px;
     height: 54px;

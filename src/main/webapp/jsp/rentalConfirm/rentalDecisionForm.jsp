@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
     <title>대여 정보 결정</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/retntalConfirm/rentalDecisionForm.css">
 </head>
@@ -22,7 +22,7 @@
             <div class="info">
                 <div class="info-row">
                     <span class="label">물품명</span>
-                    <span class="value" id="item-name">${itemName}</span> <!-- JSP로 전달된 값 출력 -->
+                    <span class="value" id="item-nickname">${itemnickname}</span> <!-- JSP로 전달된 값 출력 -->
                 </div>
                 <div class="info-row">
                     <span class="label">대여 제공자</span>
@@ -40,8 +40,8 @@
                     <div class="input-group">
                         <label for="store">대여 제공 상점</label>
                         <div class="select-container">
-                            <img src="${pageContext.request.contextPath}/resources/images/roomie.png" alt="Roomie Icon" class="roomie-img">
-                            <select id="store" name="store">
+                            <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="room_numberie Icon" class="room_numberie-img">
+                            <select id="store" nickname="store">
                                 <option value="300">300 루미</option>
                                 <option value="400">400 루미</option>
                             </select>
@@ -51,23 +51,23 @@
                 <div class="location-group">
                     <div class="input-group">
                         <label for="rental-place">대여 장소</label>
-                        <input type="text" id="rental-place" name="rental-place" placeholder="대여 장소 입력">
+                        <input type="text" id="rental-place" nickname="rental-place" placeholder="대여 장소 입력">
                     </div>
                     <div class="input-group">
                         <label for="return-place">반납 장소</label>
-                        <input type="text" id="return-place" name="return-place" placeholder="반납 장소 입력">
+                        <input type="text" id="return-place" nickname="return-place" placeholder="반납 장소 입력">
                     </div>
                 </div>
 
                 <div class="date-group">
                     <div class="input-group">
                         <label for="rental-date">대여 날짜</label>
-                        <input type="date" id="rental-date" name="rental-date" value="${rentalDate}">
+                        <input type="date" id="rental-date" nickname="rental-date" value="${rentalDate}">
                     </div>
                     <span class="date-separator">~</span>
                     <div class="input-group">
                         <label for="return-date">반납 날짜</label>
-                        <input type="date" id="return-date" name="return-date" value="${returnDate}">
+                        <input type="date" id="return-date" nickname="return-date" value="${returnDate}">
                     </div>
                 </div>
 

@@ -129,20 +129,20 @@ public class JDBCUtil {
 	}
 
 	// PK 컬럼 이름 배열을 이용하여 PreparedStatement를 생성 (INSERT문에서 Sequence를 통해 PK 값을 생성하는 경우)
-	private PreparedStatement getPreparedStatement(String[] columnNames) throws SQLException {
+	private PreparedStatement getPreparedStatement(String[] columnnicknames) throws SQLException {
 		if (conn == null) {
 			conn = connMan.getConnection();
 			conn.setAutoCommit(false);
 		}
 		if (pstmt != null)
 			pstmt.close();
-		pstmt = conn.prepareStatement(sql, columnNames);
+		pstmt = conn.prepareStatement(sql, columnnicknames);
 		return pstmt;
 	}
 
 	// 위 메소드를 이용하여 PreparedStatement를 생성한 후 executeUpdate 실행
-	public int executeUpdate(String[] columnNames) throws SQLException, Exception {
-		pstmt = getPreparedStatement(columnNames); // 위 메소드를 호출
+	public int executeUpdate(String[] columnnicknames) throws SQLException, Exception {
+		pstmt = getPreparedStatement(columnnicknames); // 위 메소드를 호출
 		int parameterSize = getParameterSize();
 		for (int i = 0; i < parameterSize; i++) {
 			if (getParameter(i) == null) { // 매개변수 값이 널이 부분이 있을 경우
