@@ -22,7 +22,7 @@
                     <img src="${pageContext.request.contextPath}/resources/images/menu.png" alt="Menu" class="menu-img" width="24px" height="24px">
                 </div>
                 <div class="profile">
-                    <img src="${pageContext.request.contextPath}/resources/images/user.png" alt="User Profile" class="profile-img" width="44px" height="44px">
+                    <img src="${pageContext.request.contextPath}/resources/images/User.png" alt="User Profile" class="profile-img" width="44px" height="44px">
                     <div class="profile-info">
                         <h3 class="nicknickname">닉네임~~</h3>
                         <p class="room_number">○○기숙사 301호실</p>

@@ -28,8 +28,8 @@
         <form action="${pageContext.request.contextPath}/register_process.jsp" method="POST" class="register-form">
             <!-- 아이디 -->
             <div class="input-group">
-                <label for="usernickname">아이디</label>
-                <input type="text" id="usernickname" nickname="usernickname" placeholder="아이디 입력">
+                <label for="Usernickname">아이디</label>
+                <input type="text" id="Usernickname" nickname="Usernickname" placeholder="아이디 입력">
                 <button type="button" class="check-btn">중복확인</button>
             </div>
             <span class="validation-msg">사용 가능한 아이디입니다.</span>

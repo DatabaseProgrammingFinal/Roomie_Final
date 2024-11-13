@@ -1,4 +1,4 @@
-package controller.user;
+package controller.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,19 +30,19 @@ public class DeleteUserController implements Controller {
 				
 			manager.remove(deleteId);				// 사용자 정보 삭제
 			if (UserSessionUtils.isLoginUser("admin", session))	// 로그인한 사용자가 관리자 	
-				return "redirect:/user/list";		// 사용자 리스트로 이동
+				return "redirect:/User/list";		// 사용자 리스트로 이동
 			else 									// 로그인한 사용자는 이미 삭제됨
-				return "redirect:/user/logout";		// logout 처리
+				return "redirect:/User/logout";		// logout 처리
 		}
 		
 		/* 삭제가 불가능한 경우 */
-		User user = manager.findUser(deleteId);	// 사용자 정보 검색
-		request.setAttribute("user", user);						
+		User User = manager.findUser(deleteId);	// 사용자 정보 검색
+		request.setAttribute("User", User);						
 		request.setAttribute("deleteFailed", true);
 		String msg = (UserSessionUtils.isLoginUser("admin", session)) 
 				   ? "시스템 관리자 정보는 삭제할 수 없습니다."		
 				   : "타인의 정보는 삭제할 수 없습니다.";													
 		request.setAttribute("exception", new IllegalStateException(msg));            
-		return "/user/view.jsp";		// 사용자 보기 화면으로 이동 (forwarding)	
+		return "/User/view.jsp";		// 사용자 보기 화면으로 이동 (forwarding)	
 	}
 }

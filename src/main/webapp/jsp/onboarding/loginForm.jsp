@@ -22,8 +22,8 @@
             <!-- 로그인 폼 -->
             <form action="${pageContext.request.contextPath}/login_process.jsp" method="POST" class="login-form">
                 <div class="input-group">
-                    <label for="usernickname">아이디</label>
-                    <input type="text" id="usernickname" nickname="usernickname" placeholder="아이디 입력">
+                    <label for="Usernickname">아이디</label>
+                    <input type="text" id="Usernickname" nickname="Usernickname" placeholder="아이디 입력">
                 </div>
                 <div class="input-group">
                     <label for="password">비밀번호</label>

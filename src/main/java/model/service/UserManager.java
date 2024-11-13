@@ -16,43 +16,43 @@ import model.domain.User;
  * 별도로 둘 수 있다.
  */
 public class UserManager {
-	private static UserManager userMan = new UserManager();
-	private UserDAO userDAO;
+	private static UserManager UserMan = new UserManager();
+	private UserDAO UserDAO;
 	private CommunityDAO commDAO;
-	private UserAnalysis userAanlysis;
+	private UserAnalysis UserAanlysis;
 
 	private UserManager() {
 		try {
-			userDAO = new UserDAO();
+			UserDAO = new UserDAO();
 			commDAO = new CommunityDAO();
-			userAanlysis = new UserAnalysis(userDAO);
+			UserAanlysis = new UserAnalysis(UserDAO);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}			
 	}
 	
 	public static UserManager getInstance() {
-		return userMan;
+		return UserMan;
 	}
 	
-	public int create(User user) throws SQLException, ExistingUserException {
-		if (userDAO.existingUser(user.getlogin_id()) == true) {
-			throw new ExistingUserException(user.getlogin_id() + "는 존재하는 아이디입니다.");
+	public int create(User User) throws SQLException, ExistingUserException {
+		if (UserDAO.existingUser(User.getLoginId()) == true) {
+			throw new ExistingUserException(User.getLoginId() + "는 존재하는 아이디입니다.");
 		}
-		return userDAO.create(user);
+		return UserDAO.create(User);
 	}
 
-	public int update(User user) throws SQLException, UserNotFoundException {
-		int oldCommId = findUser(user.getlogin_id()).getCommId();
-		if (user.getCommId() != oldCommId) { 	// 소속 커뮤티니가 변경됨
+	public int update(User User) throws SQLException, UserNotFoundException {
+		int oldCommId = findUser(User.getLoginId()).getCommId();
+		if (User.getCommId() != oldCommId) { 	// 소속 커뮤티니가 변경됨
 			Community comm = commDAO.findCommunity(oldCommId);  // 기존 소속 커뮤니티
-			if (comm != null && user.getlogin_id().equals(comm.getChairId())) {
+			if (comm != null && User.getLoginId().equals(comm.getChairId())) {
 				// 사용자가 기존 소속 커뮤니티의 회장인 경우 -> 그 커뮤니티의 회장을 null로 변경 및 저장
 				comm.setChairId(null);
 				commDAO.updateChair(comm);
 			}
 		}
-		return userDAO.update(user);
+		return UserDAO.update(User);
 	}	
 
 	public int remove(String login_id) throws SQLException, UserNotFoundException {
@@ -63,40 +63,40 @@ public class UserManager {
 			comm.setChairId(null);
 			commDAO.updateChair(comm);
 		}
-		return userDAO.remove(login_id);
+		return UserDAO.remove(login_id);
 	}
 
 	public User findUser(String login_id)
 		throws SQLException, UserNotFoundException {
-		User user = userDAO.findUser(login_id);
+		User User = UserDAO.findUser(login_id);
 		
-		if (user == null) {
+		if (User == null) {
 			throw new UserNotFoundException(login_id + "는 존재하지 않는 아이디입니다.");
 		}		
-		return user;
+		return User;
 	}
 
 	public List<User> findUserList() throws SQLException {
-			return userDAO.findUserList();
+			return UserDAO.findUserList();
 	}
 	
 	public List<User> findUserList(int currentPage, int countPerPage)
 		throws SQLException {
-		return userDAO.findUserList(currentPage, countPerPage);
+		return UserDAO.findUserList();
 	}
 
 	public boolean login(String login_id, String password)
 		throws SQLException, UserNotFoundException, PasswordMismatchException {
-		User user = findUser(login_id);
+		User User = findUser(login_id);
 
-		if (!user.matchPassword(password)) {
+		if (!User.matchPassword(password)) {
 			throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
 		}
 		return true;
 	}
 
 	public List<User> makeFriends(String login_id) throws Exception {
-		return userAanlysis.recommendFriends(login_id);
+		return UserAanlysis.recommendFriends(login_id);
 	}
 	
 	public Community createCommunity(Community comm) throws SQLException {
@@ -110,10 +110,10 @@ public class UserManager {
 	public Community findCommunity(int commId) throws SQLException {
 		Community comm = commDAO.findCommunity(commId); 
 		
-		List<User> memberList = userDAO.findUsersInCommunity(commId);
+		List<User> memberList = UserDAO.findUsersInCommunity(commId);
 		comm.setMemberList(memberList);
 		
-		int numOfMembers = userDAO.getNumberOfUsersInCommunity(commId);
+		int numOfMembers = UserDAO.getNumberOfUsersInCommunity(commId);
 		comm.setNumOfMembers(numOfMembers);
 		return comm;
 	}
@@ -123,10 +123,10 @@ public class UserManager {
 	}
 	
 	public List<User> findCommunityMembers(int commId) throws SQLException {
-		return userDAO.findUsersInCommunity(commId);
+		return UserDAO.findUsersInCommunity(commId);
 	}
 
 	public UserDAO getUserDAO() {
-		return this.userDAO;
+		return this.UserDAO;
 	}
 }
