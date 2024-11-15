@@ -60,7 +60,14 @@ public class RequestConfirmDAO {
         jdbcUtil.setSqlAndParameters(sql, new Object[]{id});
         
         try {
-            ResultSet rs = jdbcUtil.executeQuery(); 
+        	ResultSet rs = jdbcUtil.executeQuery(); 
+        	if (rs.next()) {
+        	    System.out.println("Data found for ID 9999");
+        	    // 정상적으로 데이터를 읽는지 확인
+        	} else {
+        	    System.out.println("No data found for ID 9999");
+        	}
+
             if (rs.next()) {
                 RequestConfirm pc = new RequestConfirm();
                 pc.setId(rs.getInt("id"));
