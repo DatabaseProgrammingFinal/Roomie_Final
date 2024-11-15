@@ -13,6 +13,11 @@ public class User {
     private String commNickname;
 
     public User() { }  // 기본 생성자
+ // 추가 생성자: id를 통해 User 객체를 생성할 수 있도록 함
+    
+    public User(int id) {
+        this.id = id;
+    }
     
     // 모든 필드를 사용하는 생성자
     public User(int id, String loginId, String password, String nickname, String dormitoryName, 
