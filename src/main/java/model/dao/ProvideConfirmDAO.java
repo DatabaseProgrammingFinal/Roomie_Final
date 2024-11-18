@@ -17,32 +17,39 @@ public class ProvideConfirmDAO {
 	}
 	
 	/*테이블에 새로운 행 생성, pk 값은 sequence이용해서 자동 생성*/
-	public ProvideConfirm create(ProvideConfirm pc) throws SQLException{
-		String sql = "INSERT INTO Rental_provide_post " +
-                "(id, actual_return_date, penalty_points, overdue_days, provide_post_id, requester_id) " +
-                "VALUES (Rental_request_confirm_seq.NEXTVAL, TO_DATE('2024-11-02', 'YYYY-MM-DD'), 0, 0, 1, 1)";
-	
-		Object[] param = new Object[] {pc.getId(), pc.getActual_return_date(), pc.getPenalty_points(), pc.getOverdue_days(), pc.getProvide_post_id(), pc.getRequester_id()};
-		jdbcUtil.setSqlAndParameters(sql, param);
-		
-		String key[] = {"id"}; // PK 컬럼 이름
-        try {
-            jdbcUtil.executeUpdate(key); // insert 문 실행
-            ResultSet rs = jdbcUtil.getGeneratedKeys();
-            if (rs.next()) {
-                int generatedKey = rs.getInt(1); 
-                pc.setId(generatedKey);          
-            }
-            return pc;
-        } catch (Exception ex) {
-            jdbcUtil.rollback();
-            ex.printStackTrace();
-            return null;
-        } finally {
-            jdbcUtil.commit();
-            jdbcUtil.close(); 
-        }
-    }
+	public ProvideConfirm create(ProvideConfirm pc) throws SQLException {
+	    String sql = "INSERT INTO Rental_provide_confirm " +
+	                 "(id, actual_return_date, penalty_points, overdue_days, provide_post_id, requester_id) " +
+	                 "VALUES (Rental_request_confirm_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+
+	    Object[] param = new Object[] {
+	        new java.sql.Date(pc.getActual_return_date().getTime()), // Date 객체로 변환
+	        pc.getPenalty_points(),
+	        pc.getOverdue_days(),
+	        pc.getProvide_post_id(),
+	        pc.getRequester_id()
+	    };
+	    jdbcUtil.setSqlAndParameters(sql, param);
+
+	    String[] key = {"id"}; // PK 컬럼 이름
+	    try {
+	        jdbcUtil.executeUpdate(key); // insert 문 실행
+	        ResultSet rs = jdbcUtil.getGeneratedKeys();
+	        if (rs.next()) {
+	            int generatedKey = rs.getInt(1); 
+	            pc.setId(generatedKey);          
+	        }
+	        return pc;
+	    } catch (Exception ex) {
+	        jdbcUtil.rollback();
+	        ex.printStackTrace();
+	        return null;
+	    } finally {
+	        jdbcUtil.commit();
+	        jdbcUtil.close(); 
+	    }
+	}
+
 	
 	public ProvideConfirm findById(int id) throws SQLException {
         String sql = "SELECT id, actual_return_date, penalty_points, overdue_days, provide_post_id, requester_id " +
