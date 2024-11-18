@@ -9,19 +9,14 @@ public class User {
     private String roomNumber;
     private String profileUrl;
     private int points;
-    private int commId;
-    private String commNickname;
 
-    public User() { }  // 기본 생성자
- // 추가 생성자: id를 통해 User 객체를 생성할 수 있도록 함
-    
-    public User(int id) {
-        this.id = id;
+    // 기본 생성자
+    public User() {
     }
-    
-    // 모든 필드를 사용하는 생성자
-    public User(int id, String loginId, String password, String nickname, String dormitoryName, 
-                String roomNumber, String profileUrl, int points, int commId, String commNickname) {
+
+    // 매개변수 생성자
+    public User(int id, String loginId, String password, String nickname, 
+                String dormitoryName, String roomNumber, String profileUrl, int points) {
         this.id = id;
         this.loginId = loginId;
         this.password = password;
@@ -30,22 +25,9 @@ public class User {
         this.roomNumber = roomNumber;
         this.profileUrl = profileUrl;
         this.points = points;
-        this.commId = commId;
-        this.commNickname = commNickname;
     }
 
-    // 필요한 필드를 사용하는 추가 생성자 (컴파일 에러 해결용)
-    public User(String loginId, String password, String nickname, String dormitoryName, 
-                String roomNumber, int points) {
-        this.loginId = loginId;
-        this.password = password;
-        this.nickname = nickname;
-        this.dormitoryName = dormitoryName;
-        this.roomNumber = roomNumber;
-        this.points = points;
-    }
-
-    // Getter and Setter methods with CamelCase naming convention
+    // Getter and Setter methods
     public int getId() {
         return id;
     }
@@ -70,10 +52,6 @@ public class User {
         this.password = password;
     }
 
-    public boolean matchPassword(String inputPassword) {
-        return this.password.equals(inputPassword);
-    }
-    
     public String getNickname() {
         return nickname;
     }
@@ -114,27 +92,17 @@ public class User {
         this.points = points;
     }
 
-    public int getCommId() {
-        return commId;
-    }
-
-    public void setCommId(int commId) {
-        this.commId = commId;
-    }
-
-    public String getCommNickname() {
-        return commNickname;
-    }
-
-    public void setCommNickname(String commNickname) {
-        this.commNickname = commNickname;
-    }
-
+    // toString() 메서드 (디버깅 용도로 유용)
     @Override
     public String toString() {
-        return "User [id=" + id + ", loginId=" + loginId + ", password=" + password + ", nickname=" + nickname
-                + ", dormitoryName=" + dormitoryName + ", roomNumber=" + roomNumber + ", profileUrl=" + profileUrl
-                + ", points=" + points + ", commId=" + commId + ", commNickname=" + commNickname + "]";
+        return "User{" +
+                "id=" + id +
+                ", loginId='" + loginId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", dormitoryName='" + dormitoryName + '\'' +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", points=" + points +
+                '}';
     }
 }
-
