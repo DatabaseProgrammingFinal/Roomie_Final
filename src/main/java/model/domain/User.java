@@ -11,7 +11,7 @@ public class User {
     private int points;
 
     // 기본 생성자
-    public User() {
+    public User(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, Object object) {
     }
 
     // 매개변수 생성자
@@ -90,6 +90,10 @@ public class User {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+    
+    public boolean matchPassword(String inputPassword) {
+        return this.password.equals(inputPassword);
     }
 
     // toString() 메서드 (디버깅 용도로 유용)
