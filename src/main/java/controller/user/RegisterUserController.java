@@ -19,40 +19,52 @@ public class RegisterUserController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	
-    	UserManager manager = UserManager.getInstance();
 
-       	if (request.getMethod().equals("GET")) {	
-    		// GET request: 회원정보 등록 form 요청	
-    		log.debug("RegisterForm Request");
+        UserManager manager = UserManager.getInstance();
 
-    		List<Community> commList = manager.findCommunityList();	// 커뮤니티 리스트 검색
-			request.setAttribute("commList", commList);	
-		
-			return "/User/registerForm.jsp";   // 검색한 커뮤니티 리스트를 registerForm으로 전송     	
-	    }	
+        if (request.getMethod().equals("GET")) {
+            // GET request: 회원정보 등록 form 요청
+            log.debug("RegisterForm Request");
 
-    	// POST request (회원정보가 parameter로 전송됨)
-       	User User = new User(
-			request.getParameter("login_id"),
-			request.getParameter("password"),
-			request.getParameter("nickname"),
-			request.getParameter("dormitory_name"),
-			request.getParameter("room_number"),
-			Integer.parseInt(request.getParameter("commId")));
-		
-        log.debug("Create User : {}", User);
+            List<Community> commList = manager.findCommunityList();  // 커뮤니티 리스트 검색
+            request.setAttribute("commList", commList);
 
-		try {
-			manager.create(User);
-	        return "redirect:/User/list";	// 성공 시 사용자 리스트 화면으로 redirect
-	        
-		} catch (ExistingUserException e) {	// 예외 발생 시 회원가입 form으로 forwarding
+            return "/User/registerForm.jsp";  // 검색한 커뮤니티 리스트를 registerForm으로 전송
+        }
+
+        // POST request (회원정보가 parameter로 전송됨)
+        try {
+            // 사용자 입력 값 가져오기
+        	int id = Integer.parseInt(request.getParameter("id"));
+            String loginId = request.getParameter("login_id");
+            String password = request.getParameter("password");
+            String nickname = request.getParameter("nickname");
+            String dormitoryName = request.getParameter("dormitory_name");
+            String roomNumber = request.getParameter("room_number");
+            String profileUrl = request.getParameter("profileUrl");
+            int points = Integer.parseInt(request.getParameter("points"));
+
+            // User 객체 생성
+            User user = new User(id, loginId, password, nickname, dormitoryName, roomNumber, profileUrl, points);
+
+            log.debug("Create User : {}", user);
+
+            // 사용자 생성
+            manager.create(user);
+
+            return "redirect:/User/list";  // 성공 시 사용자 리스트 화면으로 redirect
+
+        } catch (ExistingUserException e) {
+            // 예외 발생 시 회원가입 form으로 forwarding
             request.setAttribute("registerFailed", true);
-			request.setAttribute("exception", e);
-			request.setAttribute("User", User);
-			return "/User/registerForm.jsp";
-		}
+            request.setAttribute("exception", e);
+            return "/User/registerForm.jsp";
+        } catch (Exception e) {
+            // 일반적인 예외 처리 (예: 입력값 문제)
+            log.error("Error during user registration", e);
+            request.setAttribute("registerFailed", true);
+            request.setAttribute("exception", new IllegalStateException("회원 가입 중 오류가 발생했습니다."));
+            return "/User/registerForm.jsp";  // 오류가 발생하면 form으로 돌아감
+        }
     }
 }
-

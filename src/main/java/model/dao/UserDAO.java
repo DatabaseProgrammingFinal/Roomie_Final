@@ -22,6 +22,12 @@ public class UserDAO {
      * Member 테이블에 새로운 사용자 생성
      */
     public int create(User user) throws SQLException {
+        // 먼저 중복된 login_id가 존재하는지 확인
+        if (existingUser(user.getLoginId())) {
+            // 중복된 login_id가 존재하면 삽입하지 않고 0을 반환
+            return 0;
+        }
+
         String sql = "INSERT INTO Member (id, login_id, password, nickname, dormitory_name, room_number, profile_url, points) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         Object[] param = new Object[] {
@@ -40,8 +46,9 @@ public class UserDAO {
             jdbcUtil.commit();
             jdbcUtil.close();	// resource 반환
         }		
-        return 0;			
+        return 0;
     }
+
 
     /**
      * 기존의 사용자 정보를 수정
@@ -173,4 +180,60 @@ public class UserDAO {
         }
         return false;
     }
+    
+    public List<User> findUsersInCommunity(int communityId) throws SQLException {
+        String sql = "SELECT m.id, m.login_id, m.password, m.nickname, m.dormitory_name, " +
+                     "m.room_number, m.profile_url, m.points " +
+                     "FROM Member m " +
+                     "JOIN community_member cm ON m.login_id = cm.login_id " +
+                     "WHERE cm.community_id = ?";  // community_member 테이블에서 사용자를 찾음
+        
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {communityId}); // JDBCUtil에 쿼리와 매개 변수 설정
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
+            List<User> userList = new ArrayList<User>(); // User 객체 리스트 생성
+            while (rs.next()) {
+                User user = new User(
+                    rs.getInt("id"),
+                    rs.getString("login_id"),
+                    rs.getString("password"),  // 비밀번호 포함
+                    rs.getString("nickname"),
+                    rs.getString("dormitory_name"),
+                    rs.getString("room_number"),
+                    rs.getString("profile_url"),
+                    rs.getInt("points")
+                );
+                userList.add(user);  // 리스트에 사용자 추가
+            }
+            return userList;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;  // 예외 발생 시 null 반환
+        } finally {
+            jdbcUtil.close(); // 리소스 반환
+        }
+    }
+    
+    /**
+     * 특정 커뮤니티에 속한 사용자 수 반환
+     */
+    public int getNumberOfUsersInCommunity(int commId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM community_member WHERE community_id = ?";  // count the number of users in the community
+        
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {commId}); 
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); 
+            if (rs.next()) {
+                return rs.getInt(1); 
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new SQLException("Error retrieving the number of users in community", ex);
+        } finally {
+            jdbcUtil.close(); 
+        }
+        return 0; 
+    }
+
 }

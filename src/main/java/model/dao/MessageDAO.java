@@ -146,9 +146,7 @@ public class MessageDAO {
                 message.setStatus(rs.getInt("status"));
                 message.setRequestPostId(rs.getObject("request_post_id") != null ? rs.getInt("request_post_id") : null);
                 message.setProvidePostId(rs.getObject("provide_post_id") != null ? rs.getInt("provide_post_id") : null);
-             // 보낸 메시지 및 받은 메시지 관련 메서드에서 User 객체 생성 시, id만 전달하여 생성하도록 수정
-                message.setSender(new User(rs.getInt("sender_id"))); // sender_id를 가진 User 객체 생성
-                message.setReceiver(new User(rs.getInt("recipient_id"))); // recipient_id를 가진 User 객체 생성
+            
                 messages.add(message);
             }
             return messages;

@@ -43,27 +43,29 @@ public class UserManager {
 	}
 
 	public int update(User User) throws SQLException, UserNotFoundException {
-		int oldCommId = findUser(User.getLoginId()).getCommId();
-		if (User.getCommId() != oldCommId) { 	// 소속 커뮤티니가 변경됨
-			Community comm = commDAO.findCommunity(oldCommId);  // 기존 소속 커뮤니티
-			if (comm != null && User.getLoginId().equals(comm.getChairId())) {
-				// 사용자가 기존 소속 커뮤니티의 회장인 경우 -> 그 커뮤니티의 회장을 null로 변경 및 저장
-				comm.setChairId(null);
-				commDAO.updateChair(comm);
-			}
-		}
-		return UserDAO.update(User);
+		 try {
+	            // 사용자 정보 업데이트
+	            return UserDAO.update(User);
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return 0;  // SQLException 발생 시 실패
+	        }
 	}	
 
 	public int remove(String login_id) throws SQLException, UserNotFoundException {
-		int commId = findUser(login_id).getCommId();
-		Community comm = commDAO.findCommunity(commId);  // 소속 커뮤니티
-		if (comm != null && login_id.equals(comm.getChairId())) {
-			// 사용자가 소속 커뮤니티의 회장인 경우 -> 그 커뮤니티의 회장을 null로 변경 및 저장
-			comm.setChairId(null);
-			commDAO.updateChair(comm);
-		}
-		return UserDAO.remove(login_id);
+		try {
+            // 먼저, 사용자가 존재하는지 확인
+            if (UserDAO.existingUser(login_id)) {
+                // 사용자 존재하면 삭제
+                return UserDAO.remove(login_id);
+            } else {
+                System.out.println("사용자가 존재하지 않습니다.");
+                return 0;  // 사용자 없음
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;  // SQLException 발생 시 실패
+        }
 	}
 
 	public User findUser(String login_id)

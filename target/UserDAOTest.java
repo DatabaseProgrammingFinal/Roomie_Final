@@ -19,7 +19,8 @@ public class UserDAOTest {
         if (!userDAO.existingUser("testuser")) {
             User newUser = new User(1, "testuser", "password123", "Test User", 
                                     "Test Dorm", "101", "http://profile.url", 100);
-            userDAO.create(newUser);
+            int result = userDAO.create(newUser);
+            assertEquals(1, result);  // create가 성공적으로 실행되었는지 확인
         }
     }
 
@@ -28,7 +29,8 @@ public class UserDAOTest {
         // "testuser" 삭제 후 테스트 환경 정리
         User userToRemove = userDAO.findUser("testuser");
         if (userToRemove != null) {
-            userDAO.remove("testuser");
+            int result = userDAO.remove("testuser");
+            assertEquals(1, result);  // remove가 성공적으로 실행되었는지 확인
         }
     }
 
