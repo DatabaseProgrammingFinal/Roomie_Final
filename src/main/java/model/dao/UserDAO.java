@@ -22,12 +22,11 @@ public class UserDAO {
      * Member 테이블에 새로운 사용자 생성
      */
     public int create(User user) throws SQLException {
-        String sql = "INSERT INTO Member (id, login_id, password, nickname, dormitory_name, room_number, profile_url, points, commId, commnickname) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Member (id, login_id, password, nickname, dormitory_name, room_number, profile_url, points) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         Object[] param = new Object[] {
             user.getId(), user.getLoginId(), user.getPassword(), user.getNickname(),
-            user.getDormitoryName(), user.getRoomNumber(), user.getProfileUrl(),
-            user.getPoints(), user.getCommId(), user.getCommNickname()
+            user.getDormitoryName(), user.getRoomNumber(), user.getProfileUrl(), user.getPoints()
         };
         jdbcUtil.setSqlAndParameters(sql, param); // JDBCUtil에 insert문과 매개 변수 설정
 
@@ -49,13 +48,11 @@ public class UserDAO {
      */
     public int update(User user) throws SQLException {
         String sql = "UPDATE Member " +
-                     "SET password=?, nickname=?, dormitory_name=?, room_number=?, profile_url=?, points=?, commId=?, commnickname=? " +
+                     "SET password=?, nickname=?, dormitory_name=?, room_number=?, profile_url=?, points=? " +
                      "WHERE login_id=?";
         Object[] param = new Object[] {
             user.getPassword(), user.getNickname(), user.getDormitoryName(),
-            user.getRoomNumber(), user.getProfileUrl(), user.getPoints(),
-            (user.getCommId() != 0) ? user.getCommId() : null,
-            user.getCommNickname(), user.getLoginId()
+            user.getRoomNumber(), user.getProfileUrl(), user.getPoints(), user.getLoginId()
         };
         jdbcUtil.setSqlAndParameters(sql, param); // JDBCUtil에 update문과 매개 변수 설정
 
@@ -96,7 +93,7 @@ public class UserDAO {
      * 주어진 사용자 ID에 해당하는 사용자 정보를 데이터베이스에서 찾아 User 도메인 클래스에 저장하여 반환
      */
     public User findUser(String login_id) throws SQLException {
-        String sql = "SELECT id, login_id, password, nickname, dormitory_name, room_number, profile_url, points, commId, commnickname " +
+        String sql = "SELECT id, login_id, password, nickname, dormitory_name, room_number, profile_url, points " +
                      "FROM Member WHERE login_id=?";
         jdbcUtil.setSqlAndParameters(sql, new Object[] {login_id}); // JDBCUtil에 query문과 매개 변수 설정
 
@@ -111,9 +108,7 @@ public class UserDAO {
                     rs.getString("dormitory_name"),
                     rs.getString("room_number"),
                     rs.getString("profile_url"),
-                    rs.getInt("points"),
-                    rs.getInt("commId"),
-                    rs.getString("commnickname")
+                    rs.getInt("points")
                 );
                 return user;
             }
@@ -129,7 +124,7 @@ public class UserDAO {
      * 전체 사용자 정보를 검색하여 List에 저장 및 반환
      */
     public List<User> findUserList() throws SQLException {
-        String sql = "SELECT id, login_id, nickname, dormitory_name, room_number, profile_url, points, commId, commnickname " +
+        String sql = "SELECT id, login_id, nickname, dormitory_name, room_number, profile_url, points " +
                      "FROM Member ORDER BY login_id";
         jdbcUtil.setSqlAndParameters(sql, null); // JDBCUtil에 query문 설정
 
@@ -145,9 +140,7 @@ public class UserDAO {
                     rs.getString("dormitory_name"),
                     rs.getString("room_number"),
                     rs.getString("profile_url"),
-                    rs.getInt("points"),
-                    rs.getInt("commId"),
-                    rs.getString("commnickname")
+                    rs.getInt("points")
                 );
                 userList.add(user); // List에 User 객체 저장
             }
@@ -158,61 +151,6 @@ public class UserDAO {
             jdbcUtil.close(); // resource 반환
         }
         return null;
-    }
-
-    /**
-     * 특정 커뮤니티에 속한 사용자들을 검색하여 List에 저장 및 반환
-     */
-    public List<User> findUsersInCommunity(int communityId) throws SQLException {
-        String sql = "SELECT id, login_id, nickname, dormitory_name, room_number, profile_url, points FROM Member " +
-                     "WHERE commId=?";
-        jdbcUtil.setSqlAndParameters(sql, new Object[] {communityId}); // JDBCUtil에 query문과 매개 변수 설정
-
-        try {
-            ResultSet rs = jdbcUtil.executeQuery(); // query 실행
-            List<User> memList = new ArrayList<User>(); // member들의 리스트 생성
-            while (rs.next()) {
-                User member = new User(
-                    rs.getInt("id"),
-                    rs.getString("login_id"),
-                    null,
-                    rs.getString("nickname"),
-                    rs.getString("dormitory_name"),
-                    rs.getString("room_number"),
-                    rs.getString("profile_url"),
-                    rs.getInt("points"),
-                    communityId,
-                    null
-                );
-                memList.add(member); // List에 Community 객체 저장
-            }		
-            return memList;					
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            jdbcUtil.close(); // resource 반환
-        }
-        return null;
-    }
-
-    /**
-     * 특정 커뮤니티에 속한 사용자들의 수를 count하여 반환
-     */
-    public int getNumberOfUsersInCommunity(int communityId) {
-        String sql = "SELECT COUNT(login_id) FROM Member WHERE commId=?";
-        jdbcUtil.setSqlAndParameters(sql, new Object[] {communityId}); // JDBCUtil에 query문과 매개 변수 설정
-
-        try {
-            ResultSet rs = jdbcUtil.executeQuery(); // query 실행
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            jdbcUtil.close(); // resource 반환
-        }
-        return 0;
     }
 
     /**
