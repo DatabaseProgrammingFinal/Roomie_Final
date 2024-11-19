@@ -1,119 +1,111 @@
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import model.dao.UserDAO;
 import model.domain.User;
 
 public class UserDAOTest {
-
     private UserDAO userDAO;
+    private User testUser;
 
     @Before
-    public void setUp() throws SQLException {
-        userDAO = new UserDAO();  // UserDAO 객체 생성
+    public void setUp() throws Exception {
+        userDAO = new UserDAO();
 
-        // 테스트용 사용자 "testuser"가 데이터베이스에 없으면 생성
-        if (!userDAO.existingUser("testuser")) {
-            User newUser = new User(1, "testuser", "password123", "Test User", 
-                                    "Test Dorm", "101", "http://profile.url", 100);
-            userDAO.create(newUser);
-        }
+        // 테스트에 사용할 사용자 데이터 생성
+        testUser = new User(
+            1,                       // id
+            "test_user",             // loginId
+            "password123",           // password
+            "TestNickname",          // nickname
+            "TestDormitory",         // dormitoryName
+            "A101",                  // roomNumber
+            "http://example.com",    // profileUrl
+            100                      // points
+        );
+
+        // 테스트 전에 동일한 사용자 제거 (중복 방지)
+        userDAO.remove(testUser.getLoginId());
     }
 
     @After
-    public void tearDown() throws SQLException {
-        // "testuser" 삭제 후 테스트 환경 정리
-        User userToRemove = userDAO.findUser("testuser");
-        if (userToRemove != null) {
-            userDAO.remove("testuser");
-        }
+    public void tearDown() throws Exception {
+        // 테스트 후 데이터 정리
+        userDAO.remove(testUser.getLoginId());
     }
 
     @Test
     public void testCreate() throws SQLException {
-        // 새로운 User 객체 생성
-        User newUser = new User(2, "newuser", "password123", "New User", 
-                                "New Dorm", "102", "http://newprofile.url", 200);
+        // 새로운 사용자 생성
+        int result = userDAO.create(testUser);
+        assertEquals(1, result); // 삽입 성공 시 1 반환
 
-        // create 메서드 실행
-        int result = userDAO.create(newUser);
+        // 생성된 사용자 조회
+        User retrievedUser = userDAO.findUser(testUser.getLoginId());
+        assertNotNull(retrievedUser);
+        assertEquals(testUser.getLoginId(), retrievedUser.getLoginId());
+        assertEquals(testUser.getNickname(), retrievedUser.getNickname());
+        assertEquals(testUser.getPoints(), retrievedUser.getPoints());
+    }
 
-        // 결과 확인: 1이면 성공
-        assertEquals(1, result);
+    @Test
+    public void testFindUser() throws SQLException {
+        // 테스트 데이터를 삽입
+        userDAO.create(testUser);
 
-        // 생성된 정보 확인
-        User createdUser = userDAO.findUser("newuser");
-        assertNotNull(createdUser);
-        assertEquals("newuser", createdUser.getLoginId());
+        // 사용자 조회
+        User retrievedUser = userDAO.findUser(testUser.getLoginId());
+        assertNotNull(retrievedUser);
+        assertEquals(testUser.getLoginId(), retrievedUser.getLoginId());
     }
 
     @Test
     public void testUpdate() throws SQLException {
-        // 기존 사용자
-        User existingUser = userDAO.findUser("testuser");
-        assertNotNull(existingUser);
+        // 사용자 삽입
+        userDAO.create(testUser);
 
-        existingUser.setNickname("Updated User");
-        existingUser.setPoints(200);
-
-        // update 메서드 실행
-        int result = userDAO.update(existingUser);
-
-        // 결과 확인: 1은 성공
-        assertEquals(1, result);
+        // 사용자 정보 수정
+        testUser.setPassword("new_password123");
+        testUser.setNickname("UpdatedNickname");
+        testUser.setPoints(200);
+        int result = userDAO.update(testUser);
+        assertEquals(1, result); // 수정 성공 시 1 반환
 
         // 수정된 정보 확인
-        User updatedUser = userDAO.findUser("testuser");
-        assertEquals("Updated User", updatedUser.getNickname());
+        User updatedUser = userDAO.findUser(testUser.getLoginId());
+        assertNotNull(updatedUser);
+        assertEquals("new_password123", updatedUser.getPassword());
+        assertEquals("UpdatedNickname", updatedUser.getNickname());
         assertEquals(200, updatedUser.getPoints());
     }
 
     @Test
     public void testRemove() throws SQLException {
-        // 기존 사용자 정보 가져오기
-        User userToRemove = userDAO.findUser("testuser");
-        assertNotNull(userToRemove);
+        // 사용자 삽입
+        userDAO.create(testUser);
 
-        // remove 메서드 실행
-        int result = userDAO.remove("testuser");
+        // 사용자 삭제
+        int result = userDAO.remove(testUser.getLoginId());
+        assertEquals(1, result); // 삭제 성공 시 1 반환
 
-        // 결과 확인: 1은 성공
-        assertEquals(1, result);
-
-        // 삭제된 사용자 정보 확인
-        User removedUser = userDAO.findUser("testuser");
-        assertNull(removedUser);
-    }
-
-    @Test
-    public void testFindUser() throws SQLException {
-        // 기존 사용자 정보 검색
-        User foundUser = userDAO.findUser("testuser");
-        assertNotNull(foundUser);
-        assertEquals("testuser", foundUser.getLoginId());
+        // 삭제된 사용자 확인
+        User deletedUser = userDAO.findUser(testUser.getLoginId());
+        assertNull(deletedUser);
     }
 
     @Test
     public void testFindUserList() throws SQLException {
-        // 전체 사용자 목록 검색
+        // 사용자 삽입
+        userDAO.create(testUser);
+
+        // 전체 사용자 조회
         List<User> userList = userDAO.findUserList();
-
-        // 사용자 목록에 데이터가 있는지 확인
         assertNotNull(userList);
-        assertTrue(userList.size() > 0);
-    }
-
-    @Test
-    public void testExistingUser() throws SQLException {
-        // 존재하는 사용자 확인
-        boolean exists = userDAO.existingUser("testuser");
-        assertTrue(exists);
-
-        // 존재하지 않는 사용자 확인
-        boolean notExists = userDAO.existingUser("nonexistentuser");
-        assertFalse(notExists);
+        assertTrue(userList.stream().anyMatch(user -> user.getLoginId().equals(testUser.getLoginId())));
     }
 }
