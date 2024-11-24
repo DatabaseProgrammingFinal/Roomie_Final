@@ -5,24 +5,24 @@
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
     <title>room_numberie App</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/request/view_request.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/request/view_request.css">
 </head>
 <body>
     <div class="container">
         <div class="content"> 
             <!-- 상단 (Header) -->
             <div class="header">
-                <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/resources/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
+                <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
             </div>
 
             <!-- 본문 (Body) -->
             <div class="body">
                 <div class="title-container">
                     <p class="title">계산기 빌려주세요제발</p>
-                    <img src="${pageContext.request.contextPath}/resources/images/menu.png" alt="Menu" class="menu-img" width="24px" height="24px">
+                    <img src="${pageContext.request.contextPath}/images/menu.png" alt="Menu" class="menu-img" width="24px" height="24px">
                 </div>
                 <div class="profile">
-                    <img src="${pageContext.request.contextPath}/resources/images/User.png" alt="User Profile" class="profile-img" width="44px" height="44px">
+                    <img src="${pageContext.request.contextPath}/images/user.png" alt="User Profile" class="profile-img" width="44px" height="44px">
                     <div class="profile-info">
                         <h3 class="nicknickname">닉네임~~</h3>
                         <p class="room_number">○○기숙사 301호실</p>
@@ -54,7 +54,7 @@
             
             <!-- 하단 버튼 -->
             <div class="footer">
-                <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="24px" height="24px">
+                <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="24px" height="24px">
                 <span class="points">300 루미</span>
                 <button class="send-msg-btn">쪽지 보내기</button>
             </div>
