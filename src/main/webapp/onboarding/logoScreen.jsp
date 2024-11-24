@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>room_numberie</title>
+    <title>Roomie</title>
     <!-- CSS 경로를 동적으로 처리 -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/onboarding/logoscreen.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/onboarding/logoScreen.css">
 </head>
 <body>
     <div class="container">
         <div class="logo-box">
             <!-- 이미지 경로를 동적으로 처리 -->
-            <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="room_numberie Logo" class="logo">
+            <img src="${pageContext.request.contextPath}/images/logo.png" alt="room_numberie Logo" class="logo">
         </div>
     </div>
 </body>

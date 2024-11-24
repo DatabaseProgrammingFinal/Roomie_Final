@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>대여 정보 결정</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/retntalConfirm/rentalDecisionForm.css">
+    <title>Roomie</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/rentalConfirm/rentalDecisionForm.css">
 </head>
 <body>
     <div class="container">
@@ -39,7 +39,7 @@
                     <div class="input-group">
                         <label for="store">대여 제공 상점</label>
                         <div class="select-container">
-                            <img src="${pageContext.request.contextPath}/images/room_numberie.png" alt="room_numberie Icon" class="room_numberie-img">
+                            <img src="${pageContext.request.contextPath}/images/roomie.png" alt="room_numberie Icon" class="room_numberie-img">
                             <select id="store">
                                 <option value="300">300 루미</option>
                                 <option value="400">400 루미</option>

@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>room_numberie App</title>
+    <title>Roomie</title>
     <!-- CSS 파일 경로 수정 -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/require_list.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/require_list.css">
 </head>
 <body>
     <div class="container">
@@ -15,10 +15,10 @@
             <div class="header">
                 <a href="#" class="back-btn">
                     <!-- 뒤로 가기 버튼 이미지 -->
-                    <img src="${pageContext.request.contextPath}/resources/images/back.png" alt="Back" class="back-img">
+                    <img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img">
                 </a>
                 <!-- 헤더 이미지 -->
-                <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="Profile" class="header-img">
+                <img src="${pageContext.request.contextPath}/images/logo.png" alt="Profile" class="header-img">
                 <hr>
             </div>
             <!-- 본문 (Body) -->
@@ -35,11 +35,11 @@
                     <div class="list-req">
                         <div class="list-item">
                             <!-- 이미지 경로 수정 -->
-                            <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
+                            <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
                                 <div class="room_numberie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
                                     <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
@@ -48,11 +48,11 @@
                     </div>
                     <div class="list-req">
                         <div class="list-item">
-                            <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
+                            <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
                                 <div class="room_numberie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
                                     <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
@@ -61,11 +61,11 @@
                     </div>            
                     <div class="list-req">
                         <div class="list-item">
-                            <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
+                            <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
                                 <div class="room_numberie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
                                     <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
@@ -74,11 +74,11 @@
                     </div>
                     <div class="list-req">
                         <div class="list-item">
-                            <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
+                            <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
                                 <div class="room_numberie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
                                     <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
@@ -87,11 +87,11 @@
                     </div>
                     <div class="list-req">
                         <div class="list-item">
-                            <img src="${pageContext.request.contextPath}/resources/images/no-img.png" alt="item image" class="item-img">
+                            <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
                             <div class="item-details">
                                 <p>계산기빌려주세요</p>
                                 <div class="room_numberie-info">
-                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+                                    <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
                                     <span class="room_numberie-point">300 루미</span>
                                 </div>
                             </div>
@@ -104,13 +104,13 @@
                 <!-- 하단 (네비게이션바) -->
                 <nav class="navbar">
                     <a href="#" class="nav-item">
-                        <img src="${pageContext.request.contextPath}/resources/images/message.png" alt="Mail">
+                        <img src="${pageContext.request.contextPath}/images/message.png" alt="Mail">
                     </a>
                     <a href="#" class="nav-item">
-                        <img src="${pageContext.request.contextPath}/resources/images/home.png" alt="Home">
+                        <img src="${pageContext.request.contextPath}/images/home.png" alt="Home">
                     </a>
                     <a href="#" class="nav-item">
-                        <img src="${pageContext.request.contextPath}/resources/images/search.png" alt="Search">
+                        <img src="${pageContext.request.contextPath}/images/search.png" alt="Search">
                     </a>
                 </nav>
             </div>

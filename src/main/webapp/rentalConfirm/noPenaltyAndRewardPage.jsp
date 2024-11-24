@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>대여 정보 확인</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/retntalConfirm/noPenaltyAndRewardPage.css">
+    <title>Roomie</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/rentalConfirm/noPenaltyAndRewardPage.css">
 </head>
 <body>
     <div class="container">
         <!-- 상단 (Header) -->
         <div class="header">
             <a href="#" class="back-btn">
-                <img src="${pageContext.request.contextPath}/resources/images/back.png" alt="Back" class="back-img">
+                <img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img">
             </a> <!-- 뒤로 가기 버튼 이미지 -->
         </div>
 
@@ -39,7 +39,7 @@
                 <div class="store-info">
                     <label for="store">대여 제공 상점</label>
                     <div class="select-container non-editable">
-                        <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="room_numberie Icon" class="room_numberie-img">
+                        <img src="${pageContext.request.contextPath}/images/roomie.png" alt="room_numberie Icon" class="room_numberie-img">
                         <span id="store">${store}</span>
                     </div>
                 </div>
@@ -89,13 +89,13 @@
                 <!-- 하단 (네비게이션바) -->
                 <nav class="navbar">
                     <a href="#" class="nav-item">
-                        <img src="${pageContext.request.contextPath}/resources/images/message.png" alt="Mail">
+                        <img src="${pageContext.request.contextPath}/images/message.png" alt="Mail">
                     </a>
                     <a href="#" class="nav-item">
-                        <img src="${pageContext.request.contextPath}/resources/images/home.png" alt="Home">
+                        <img src="${pageContext.request.contextPath}/images/home.png" alt="Home">
                     </a>
                     <a href="#" class="nav-item">
-                        <img src="${pageContext.request.contextPath}/resources/images/search.png" alt="Search">
+                        <img src="${pageContext.request.contextPath}/images/search.png" alt="Search">
                     </a>
                 </nav>
             </div>

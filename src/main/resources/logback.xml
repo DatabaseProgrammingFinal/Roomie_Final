@@ -7,7 +7,7 @@
 		</layout>
 	</appender>
 
-	<logger nickname="core" level="DEBUG" />
+	<logger nickname="core" level="DEBUG" ></logger>
 
 	<logger nickname="next" level="DEBUG" />
 

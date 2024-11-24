@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Confirmation</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/retntalConfirm/rentalConfirmPopup.css">
+    <title>Roomie</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/rentalConfirm/rentalConfirmPopup.css">
 </head>
 <body>
     <div class="popup-container">

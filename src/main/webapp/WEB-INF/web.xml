@@ -36,6 +36,10 @@
 		<servlet-name>dispatcherServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	<!-- 로그인 30분 저장을 위해 작성한 코드 오류나면 삭제 -->
+	<session-config>
+    	<session-timeout>30</session-timeout> <!-- 세션 유지 시간을 30분으로 설정 -->
+	</session-config>
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
