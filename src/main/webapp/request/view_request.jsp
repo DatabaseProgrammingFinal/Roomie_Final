@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>room_numberie App</title>
+    <title>roomie App</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/request/view_request.css">
 </head>
 <body>
