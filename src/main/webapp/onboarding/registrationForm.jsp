@@ -4,23 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Roomie</title>
     <!-- CSS 경로 동적으로 설정 -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/onboarding/registrationForm.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/onboarding/registrationForm.css">
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
             <a href="#" class="back-btn">
-			    <img src="${pageContext.request.contextPath}/resources/images/back.png" alt="Back" class="back-img">
+			    <img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img">
 			</a>
             
         </div>
 
         <!-- Logo and Welcome Message -->
         <div class="logo-box">
-            <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="room_numberie Logo">
+            <img src="${pageContext.request.contextPath}/images/logo.png" alt="room_numberie Logo">
         </div>
         <p class="welcome-msg">안녕하세요<br>room_numberIE에 가입해주세요</p>
 

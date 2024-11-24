@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>room_numberie App</title>
+    <title>Roomie</title>
     <!-- CSS 경로를 동적으로 처리 -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/default.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/message/message_main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/message/default.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/message/message_main.css">
 </head>
 <body>
     <div class="container">
         <div class="content"> 
             <!-- 상단 (Header) -->
             <div class="header">
-                <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/resources/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
-                <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="Profile" class="header-img"> <!-- 헤더 이미지 -->
+                <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
+                <img src="${pageContext.request.contextPath}/images/logo.png" alt="Profile" class="header-img"> <!-- 헤더 이미지 -->
                 <hr>
             </div>
 
@@ -25,7 +25,7 @@
 
                 <div class="search-bar">
                     <input type="text" placeholder="검색어를 입력해주세요.">
-                    <button type="submit"><img src="${pageContext.request.contextPath}/resources/images/search.png" alt="Search"></button>
+                    <button type="submit"><img src="${pageContext.request.contextPath}/images/search.png" alt="Search"></button>
                 </div>
 
                 <div class="filter-buttons">
@@ -54,9 +54,9 @@
             <!-- 하단 (네비게이션바) -->
             <div class="nav">
                 <nav class="navbar">
-                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/resources/images/message.png" alt="Mail"></a>
-                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/resources/images/home.png" alt="Home"></a>
-                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/resources/images/search.png" alt="Search"></a>
+                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/message.png" alt="Mail"></a>
+                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/home.png" alt="Home"></a>
+                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/search.png" alt="Search"></a>
                 </nav>
             </div>
         </div>
