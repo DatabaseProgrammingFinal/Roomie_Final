@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>room_numberie App</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/request/write_request.css">
+    <title>Roomie</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/request/write_request.css">
 </head>
 <body>
     <div class="container">
         <div class="content"> 
             <!-- 상단 (Header) -->
             <div class="header">
-                <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/resources/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
+                <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
             </div>
 
             <!-- 본문 (Body) -->
@@ -35,7 +35,7 @@
                             <div class="price-item">
                                 <label for="price">가격</label>
                                 <div class="select-container">
-                                    <img src="${pageContext.request.contextPath}/resources/images/room_numberie.png" alt="Point" class="room_numberie-img">
+                                    <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img">
                                     <select id="price">
                                         <option value="100">100 루미</option>
                                         <option value="200">200 루미</option>

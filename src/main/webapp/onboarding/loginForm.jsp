@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
+    <title>Roomie</title>
     <!-- CSS 경로를 동적으로 처리 -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/onboarding/loginForm.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/onboarding/loginForm.css">
 </head>
 <body>
     <div class="container">
         <div class="content">
             <!-- 로고 -->
             <div class="logo-box">
-                <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="room_numberie Logo" class="logo">
+                <img src="${pageContext.request.contextPath}/images/logo.png" alt="room_numberie Logo" class="logo">
             </div>
 
             <!-- 환영 메시지 -->
