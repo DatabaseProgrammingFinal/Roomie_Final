@@ -1,135 +1,103 @@
 package model.dao;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import model.domain.RentalProvidePost;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.domain.RentalPost;
+
 public class RentalProvidePostDAO {
-    private JDBCUtil jdbcUtil = null;
-    public RentalProvidePostDAO() {
-        jdbcUtil = new JDBCUtil();
+    private Connection connection;
+
+    // 생성자
+    public RentalProvidePostDAO(Connection connection) {
+        this.connection = connection;
     }
-    // 대여글 등록
-    public RentalPost create(RentalPost post) throws SQLException {
-        String sql = "INSERT INTO Rental_provide_post (id, title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, provider_id, image_url) " +
-                     "VALUES (Rental_provide_post_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Object[] params = new Object[] {
-            post.getTitle(),
-            post.getRentalItem(),
-            post.getContent(),
-            post.getPoints(),
-            new java.sql.Date(post.getRentalStartDate().getTime()),
-            new java.sql.Date(post.getRentalEndDate().getTime()),
-            post.getRentalLocation(),
-            post.getStatus(),
-            post.getProviderId(),
-            post.getImageUrl()
-        };
-        jdbcUtil.setSqlAndParameters(sql, params);
-        String[] key = {"id"};
-        try {
-            jdbcUtil.executeUpdate(key);
-            ResultSet rs = jdbcUtil.getGeneratedKeys();
-            if (rs.next()) {
-                int generatedKey = rs.getInt(1);
-                post.setId(generatedKey);
-            }
-            return post;
-        } catch (Exception ex) {
-            jdbcUtil.rollback();
-            ex.printStackTrace();
-            return null;
-        } finally {
-            jdbcUtil.commit();
-            jdbcUtil.close();
+
+    // 1. 대여글 등록
+    public boolean createRentalProvidePost(RentalProvidePost post) {
+        String query = "INSERT INTO rental_provide_posts (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, provider_id, image_url) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, post.getTitle());
+            pstmt.setString(2, post.getRentalItem());
+            pstmt.setString(3, post.getContent());
+            pstmt.setInt(4, post.getPoints());
+            pstmt.setDate(5, new java.sql.Date(post.getRentalStartDate().getTime()));
+            pstmt.setDate(6, new java.sql.Date(post.getRentalEndDate().getTime()));
+            pstmt.setString(7, post.getRentalLocation());
+            pstmt.setInt(8, post.getStatus());
+            pstmt.setInt(9, post.getProviderId());
+            pstmt.setString(10, post.getImageUrl());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
-    // 특정 대여글 조회 (ID로)
-    public RentalPost findById(int id) throws SQLException {
-        String sql = "SELECT * FROM Rental_provide_post WHERE id = ?";
-        jdbcUtil.setSqlAndParameters(sql, new Object[] {id});
-        try {
-            ResultSet rs = jdbcUtil.executeQuery();
-            if (rs.next()) {
-                RentalPost post = new RentalPost();
-                post.setId(rs.getInt("id"));
-                post.setTitle(rs.getString("title"));
-                post.setRentalItem(rs.getString("rental_item"));
-                post.setContent(rs.getString("content"));
-                post.setPoints(rs.getInt("points"));
-                post.setRentalStartDate(rs.getDate("rental_start_date"));
-                post.setRentalEndDate(rs.getDate("rental_end_date"));
-                post.setRentalLocation(rs.getString("rental_location"));
-                post.setStatus(rs.getInt("status"));
-                post.setProviderId(rs.getInt("provider_id"));
-                post.setImageUrl(rs.getString("image_url"));
-                return post;
+
+    // 2. 특정 대여글 조회 (ID로)
+    public RentalProvidePost getRentalProvidePostById(int id) {
+        String query = "SELECT * FROM rental_provide_posts WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToRentalProvidePost(rs);
+                }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            jdbcUtil.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
-    // 제목으로 대여글 검색
-    public List<RentalPost> searchByTitle(String title) throws SQLException {
-        String sql = "SELECT * FROM Rental_provide_post WHERE title LIKE ?";
-        jdbcUtil.setSqlAndParameters(sql, new Object[] {"%" + title + "%"});
-        try {
-            ResultSet rs = jdbcUtil.executeQuery();
-            List<RentalPost> posts = new ArrayList<>();
+
+    // 3. 제목으로 대여글 검색
+    public List<RentalProvidePost> searchRentalProvidePostsByTitle(String title) {
+        String query = "SELECT * FROM rental_provide_posts WHERE title LIKE ?";
+        List<RentalProvidePost> posts = new ArrayList<>();
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, "%" + title + "%");
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    posts.add(mapResultSetToRentalProvidePost(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
+    // 4. 모든 대여글 조회
+    public List<RentalProvidePost> getAllRentalProvidePosts() {
+        String query = "SELECT * FROM rental_provide_posts";
+        List<RentalProvidePost> posts = new ArrayList<>();
+        try (PreparedStatement pstmt = connection.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                RentalPost post = new RentalPost();
-                post.setId(rs.getInt("id"));
-                post.setTitle(rs.getString("title"));
-                post.setRentalItem(rs.getString("rental_item"));
-                post.setContent(rs.getString("content"));
-                post.setPoints(rs.getInt("points"));
-                post.setRentalStartDate(rs.getDate("rental_start_date"));
-                post.setRentalEndDate(rs.getDate("rental_end_date"));
-                post.setRentalLocation(rs.getString("rental_location"));
-                post.setStatus(rs.getInt("status"));
-                post.setProviderId(rs.getInt("provider_id"));
-                post.setImageUrl(rs.getString("image_url"));
-                posts.add(post);
+                posts.add(mapResultSetToRentalProvidePost(rs));
             }
-            return posts;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            jdbcUtil.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null;
+        return posts;
     }
-    // 모든 대여글 조회
-    public List<RentalPost> findAll() throws SQLException {
-        String sql = "SELECT * FROM Rental_provide_post";
-        jdbcUtil.setSqlAndParameters(sql, null);
-        try {
-            ResultSet rs = jdbcUtil.executeQuery();
-            List<RentalPost> posts = new ArrayList<>();
-            while (rs.next()) {
-                RentalPost post = new RentalPost();
-                post.setId(rs.getInt("id"));
-                post.setTitle(rs.getString("title"));
-                post.setRentalItem(rs.getString("rental_item"));
-                post.setContent(rs.getString("content"));
-                post.setPoints(rs.getInt("points"));
-                post.setRentalStartDate(rs.getDate("rental_start_date"));
-                post.setRentalEndDate(rs.getDate("rental_end_date"));
-                post.setRentalLocation(rs.getString("rental_location"));
-                post.setStatus(rs.getInt("status"));
-                post.setProviderId(rs.getInt("provider_id"));
-                post.setImageUrl(rs.getString("image_url"));
-                posts.add(post);
-            }
-            return posts;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            jdbcUtil.close();
-        }
-        return null;
+
+    // ResultSet을 RentalProvidePost 객체로 매핑하는 메서드
+    private RentalProvidePost mapResultSetToRentalProvidePost(ResultSet rs) throws SQLException {
+        RentalProvidePost post = new RentalProvidePost();
+        post.setId(rs.getInt("id"));
+        post.setTitle(rs.getString("title"));
+        post.setRentalItem(rs.getString("rental_item"));
+        post.setContent(rs.getString("content"));
+        post.setPoints(rs.getInt("points"));
+        post.setRentalStartDate(rs.getDate("rental_start_date"));
+        post.setRentalEndDate(rs.getDate("rental_end_date"));
+        post.setRentalLocation(rs.getString("rental_location"));
+        post.setStatus(rs.getInt("status"));
+        post.setProviderId(rs.getInt("provider_id"));
+        post.setImageUrl(rs.getString("image_url"));
+        return post;
     }
 }
