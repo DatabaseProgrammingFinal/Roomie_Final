@@ -19,7 +19,7 @@ public class UserDAOTest {
 
         // 테스트에 사용할 사용자 데이터 생성
         testUser = new User(
-            1,                       // id
+            12,                       // id
             "test_user",             // loginId
             "password123",           // password
             "TestNickname",          // nickname
