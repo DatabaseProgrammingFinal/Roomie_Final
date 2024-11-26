@@ -236,4 +236,35 @@ public class UserDAO {
         return 0; 
     }
 
+
+
+    // 이거 방금 추가.
+    public User findUserById(int userId) throws SQLException {
+        String sql = "SELECT id, login_id, password, nickname, dormitory_name, room_number, profile_url, points " +
+                     "FROM Member WHERE id = ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[]{userId}); // SQL 및 매개변수 설정
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
+            if (rs.next()) {
+                // User 객체 생성 및 반환
+                return new User(
+                    rs.getInt("id"),
+                    rs.getString("login_id"),
+                    rs.getString("password"),
+                    rs.getString("nickname"),
+                    rs.getString("dormitory_name"),
+                    rs.getString("room_number"),
+                    rs.getString("profile_url"),
+                    rs.getInt("points")
+                );
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            jdbcUtil.close(); // 리소스 반환
+        }
+        return null; // 사용자 없음
+    }
+
 }
