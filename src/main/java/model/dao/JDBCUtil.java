@@ -91,8 +91,6 @@ public class JDBCUtil {
         int parameterSize = getParameterSize();
         System.out.println("Executing SQL: " + sql); // SQL 쿼리 출력
         System.out.println("Parameters:"); // 매개변수 출력 시작
-
-
         int expectedParams = sql.split("\\?").length - 1; // 예상되는 ?의 개수 계산
         System.out.println("Expected parameters count: " + expectedParams);
 

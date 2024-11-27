@@ -43,6 +43,13 @@ public class RequestMapping {
         mappings.put("/community/create", new CreateCommunityController());
         mappings.put("/community/update", new UpdateCommunityController());
         
+        /*
+        // message
+        mappings.put("/message/send", new MessageServiceAdapter("createMessage")); // 메시지 생성
+        mappings.put("/message/all", new MessageServiceAdapter("getAllMessages")); // 메시지 전체 조회
+        mappings.put("/message/detail", new MessageServiceAdapter("getMessageById")); // 메시지 상세 조회
+        */
+        
         logger.info("Initialized Request Mapping!");
     }
 

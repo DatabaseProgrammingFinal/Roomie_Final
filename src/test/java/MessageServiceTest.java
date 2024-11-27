@@ -38,7 +38,7 @@ public class MessageServiceTest {
                 "테스트 메시지 내용",
                 new Date(),
                 0, // 상태
-                null, // requestPostId
+                2, // requestPostId
                 null, // providePostId
                 sender,
                 receiver
@@ -68,7 +68,7 @@ public class MessageServiceTest {
                 "새로운 메시지 내용",
                 new Date(),
                 1,
-                null,
+                2,
                 null,
                 sender,
                 receiver
