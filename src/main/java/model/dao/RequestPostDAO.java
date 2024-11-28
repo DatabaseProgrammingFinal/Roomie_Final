@@ -6,11 +6,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RentalRequestPostDAO {
+public class RequestPostDAO {
     private final Connection connection;
 
     // 생성자
-    public RentalRequestPostDAO(Connection connection) {
+    public RequestPostDAO(Connection connection) {
         this.connection = connection;
     }
 
@@ -34,14 +34,7 @@ public class RentalRequestPostDAO {
             pstmt.setInt(9, post.getRequesterId());
 
             int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        post.setId(rs.getInt(1)); // 트리거가 생성한 ID 가져오기
-                        return true;
-                    }
-                }
-            }
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,8 @@
 import java.sql.*;
-import model.dao.RentalProvidePostDAO;
-import model.domain.RentalProvidePost;
+import model.dao.RequestPostDAO;
+import model.domain.RentalRequestPost;
 
-public class RentalProvidePostTest {
+public class RequestPostDAOTest {
     public static void main(String[] args) {
         // Oracle 데이터베이스 연결 정보
         String url = "jdbc:oracle:thin:@//dblab.dongduk.ac.kr:1521/orclpdb";
@@ -10,15 +10,15 @@ public class RentalProvidePostTest {
         String password = "21703";
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            // RentalProvidePostDAO 객체 생성
-            RentalProvidePostDAO rentalProvidePostDAO = new RentalProvidePostDAO(connection);
+            // RentalRequestPostDAO 객체 생성
+            RequestPostDAO requestPostDAO = new RequestPostDAO(connection);
 
             // 테스트 데이터 삽입
-            boolean isInserted = insertTestData(connection, rentalProvidePostDAO);
+            boolean isInserted = insertTestData(connection, requestPostDAO);
             System.out.println("데이터 삽입 성공 여부: " + isInserted);
 
             // 데이터 확인
-            checkInsertedData(connection, rentalProvidePostDAO);
+            checkInsertedData(connection, requestPostDAO);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -26,29 +26,28 @@ public class RentalProvidePostTest {
     }
 
     // 테스트 데이터를 삽입하는 메서드
-    private static boolean insertTestData(Connection connection, RentalProvidePostDAO dao) {
-        RentalProvidePost newPost = new RentalProvidePost();
-        newPost.setTitle("Test Rental Post");
-        newPost.setRentalItem("Laptop");
-        newPost.setContent("A laptop available for rent");
-        newPost.setPoints(100);
-        newPost.setRentalStartDate(Date.valueOf("2024-11-01"));
-        newPost.setRentalEndDate(Date.valueOf("2024-11-10"));
-        newPost.setRentalLocation("Dormitory A");
-        newPost.setStatus(1); // 상태 값 1 (예: 활성 상태)
-        newPost.setProviderId(1); // 제공자 ID
-        newPost.setImageUrl("https://example.com/laptop.jpg");
+    private static boolean insertTestData(Connection connection, RequestPostDAO dao) {
+        RentalRequestPost newPost = new RentalRequestPost();
+        newPost.setTitle("Test Request Post");
+        newPost.setRentalItem("Projector");
+        newPost.setContent("A request for a projector");
+        newPost.setPoints(50);
+        newPost.setRentalStartDate(Date.valueOf("2024-12-01"));
+        newPost.setRentalEndDate(Date.valueOf("2024-12-05"));
+        newPost.setRentalLocation("Library");
+        newPost.setStatus(0); // 상태 값 0 (예: 요청 상태)
+        newPost.setRequesterId(1); // 요청자 ID
 
         // DAO를 이용하여 데이터 삽입
-        return dao.createRentalProvidePost(newPost);
+        return dao.createRentalRequestPost(newPost);
     }
 
     // 삽입된 데이터를 확인하는 메서드
-    private static void checkInsertedData(Connection connection, RentalProvidePostDAO dao) {
-        String title = "Test Rental Post";
+    private static void checkInsertedData(Connection connection, RequestPostDAO dao) {
+        String title = "Test Request Post";
         try {
             // Title로 데이터 검색
-            RentalProvidePost insertedPost = dao.searchRentalProvidePostsByTitle(title).stream().findFirst().orElse(null);
+            RentalRequestPost insertedPost = dao.searchRentalRequestPostsByTitle(title).stream().findFirst().orElse(null);
 
             if (insertedPost != null) {
                 System.out.println("데이터 삽입 확인 성공!");
@@ -61,8 +60,7 @@ public class RentalProvidePostTest {
                 System.out.println("End Date: " + insertedPost.getRentalEndDate());
                 System.out.println("Location: " + insertedPost.getRentalLocation());
                 System.out.println("Status: " + insertedPost.getStatus());
-                System.out.println("Provider ID: " + insertedPost.getProviderId());
-                System.out.println("Image URL: " + insertedPost.getImageUrl());
+                System.out.println("Requester ID: " + insertedPost.getRequesterId());
             } else {
                 System.out.println("삽입된 데이터를 찾을 수 없습니다.");
             }

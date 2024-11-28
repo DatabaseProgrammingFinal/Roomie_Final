@@ -6,11 +6,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RentalProvidePostDAO {
+public class ProvidePostDAO {
     private Connection connection;
 
     // 생성자
-    public RentalProvidePostDAO(Connection connection) {
+    public ProvidePostDAO(Connection connection) {
         this.connection = connection;
     }
 
