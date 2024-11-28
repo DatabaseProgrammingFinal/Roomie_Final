@@ -20,11 +20,10 @@ public class RentalRequestPostTest {
     }
 
     private static boolean insertTestData(Connection connection) throws SQLException {
-        // ID를 시퀀스를 사용하여 삽입하는 방법
         String insertSQL = """
             INSERT INTO rental_request_post 
-                (id, title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, requester_id)
-            VALUES (RENTAL_REQUEST_POST_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, requester_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
@@ -42,6 +41,7 @@ public class RentalRequestPostTest {
             return rowsAffected > 0;
         }
     }
+
 
     private static void checkInsertedData(Connection connection) throws SQLException {
         String query = "SELECT * FROM rental_request_post WHERE title = ?";

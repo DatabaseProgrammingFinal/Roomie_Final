@@ -16,11 +16,13 @@ public class RentalRequestPostDAO {
 
     // 1. 대여 요청글 등록
     public boolean createRentalRequestPost(RentalRequestPost post) {
-        String sql = "INSERT INTO rental_request_post (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, requester_id)" +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String getGeneratedIdQuery = "SELECT rental_request_post_seq.CURRVAL FROM dual";
+        String sql = """
+            INSERT INTO rental_request_post 
+                (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, requester_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, post.getTitle());
             pstmt.setString(2, post.getRentalItem());
             pstmt.setString(3, post.getContent());
@@ -33,11 +35,9 @@ public class RentalRequestPostDAO {
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                try (Statement stmt = connection.createStatement();
-                     ResultSet rs = stmt.executeQuery(getGeneratedIdQuery)) {
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
                     if (rs.next()) {
-                        int generatedId = rs.getInt(1);
-                        post.setId(generatedId);
+                        post.setId(rs.getInt(1)); // 트리거가 생성한 ID 가져오기
                         return true;
                     }
                 }
@@ -47,6 +47,7 @@ public class RentalRequestPostDAO {
         }
         return false;
     }
+
 
     // 2. 대여 요청글 조회 (ID로)
     public RentalRequestPost getRentalRequestPostById(int id) {

@@ -18,7 +18,6 @@ public class RentalProvidePostDAO {
     public boolean createRentalProvidePost(RentalProvidePost post) {
         String query = "INSERT INTO rental_provide_post (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, provider_id, image_url) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String getGeneratedIdQuery = "SELECT rental_provide_post_seq.CURRVAL FROM dual";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, post.getTitle());
@@ -33,16 +32,7 @@ public class RentalProvidePostDAO {
             pstmt.setString(10, post.getImageUrl());
 
             int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                try (Statement stmt = connection.createStatement();
-                     ResultSet rs = stmt.executeQuery(getGeneratedIdQuery)) {
-                    if (rs.next()) {
-                        int generatedId = rs.getInt(1);
-                        post.setId(generatedId);
-                        return true;
-                    }
-                }
-            }
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
