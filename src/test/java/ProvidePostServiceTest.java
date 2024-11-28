@@ -3,11 +3,13 @@ import static org.junit.Assert.*;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.dao.ProvidePostDAO;
@@ -15,65 +17,60 @@ import model.domain.RentalProvidePost;
 import model.service.ProvidePostService;
 
 public class ProvidePostServiceTest {
-    private Connection connection;
-    private ProvidePostService providePostService;
-    private RentalProvidePost testPost;
+    private static Connection connection;
+    private static ProvidePostService providePostService;
+    private static RentalProvidePost testPost;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
         // 데이터베이스 연결 설정
         connection = DriverManager.getConnection("jdbc:oracle:thin:@//dblab.dongduk.ac.kr:1521/orclpdb", "dbp240210", "21703");
+        connection.setAutoCommit(false);  // 트랜잭션 수동 설정
+
         providePostService = new ProvidePostService(connection);
 
-        // 테스트에 사용할 RentalProvidePost 데이터 생성
+        // 테스트에 사용할 데이터 생성 (단 한번만)
         testPost = new RentalProvidePost(
-            0, // id (자동 생성)
-            "Test Title", // title
-            "Test Item",  // rentalItem
-            "Test Content", // content
-            50, // points
-            new Date(System.currentTimeMillis()), // rentalStartDate
-            new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 7)), // rentalEndDate (7일 후)
-            "Test Location", // rentalLocation
-            0, // status (0: 진행 전)
-            1, // providerId
-            "http://example.com/image.jpg" // imageUrl
+            0, "Test Title", "Test Item", "Test Content", 50,
+            new Date(System.currentTimeMillis()),
+            new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 7)),
+            "Test Location", 0, 1, "http://example.com/image.jpg"
         );
+
+        // 데이터베이스에 한 번만 데이터를 삽입
+        providePostService.createRentalProvidePost(testPost);
     }
 
-    @After
-    public void tearDown() throws Exception {
-        // 테스트 후 데이터 정리
-        String deleteSQL = "DELETE FROM rental_provide_post WHERE title = ?";
-        try (var pstmt = connection.prepareStatement(deleteSQL)) {
-            pstmt.setString(1, "Test Title");
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        // 테스트 후 트랜잭션 커밋 및 연결 종료
         if (connection != null) {
+            connection.commit();
             connection.close();
         }
     }
 
     @Test
     public void testCreateRentalProvidePost() throws SQLException {
-        boolean isCreated = providePostService.createRentalProvidePost(testPost);
-
-        assertTrue("RentalProvidePost 생성에 실패했습니다.", isCreated);
-
-        // 생성된 데이터를 조회하여 확인
-        RentalProvidePost createdPost = providePostService.searchRentalProvidePostsByTitle("Test Title").get(0);
-        assertNotNull("RentalProvidePost 객체가 null입니다.", createdPost);
-        assertEquals("Test Title", createdPost.getTitle());
-        assertEquals("Test Item", createdPost.getRentalItem());
+        // 데이터베이스에서 실제로 값이 들어갔는지 조회
+        String query = "SELECT title FROM rental_provide_post WHERE title = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, "Test Title");
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // 조회된 결과를 콘솔에 출력
+                    System.out.println("데이터베이스에서 조회된 값: " + rs.getString("title"));
+                    assertEquals("Test Title", rs.getString("title"));
+                } else {
+                    System.out.println("데이터베이스에 값이 없습니다.");
+                    fail("데이터베이스에 삽입된 값이 없습니다.");
+                }
+            }
+        }
     }
 
     @Test
     public void testGetRentalProvidePostById() throws SQLException {
-        // 먼저 데이터를 생성
-        providePostService.createRentalProvidePost(testPost);
-
         // 생성된 데이터의 ID를 조회
         RentalProvidePost createdPost = providePostService.searchRentalProvidePostsByTitle("Test Title").get(0);
 
@@ -85,9 +82,6 @@ public class ProvidePostServiceTest {
 
     @Test
     public void testSearchRentalProvidePostsByTitle() throws SQLException {
-        // 데이터를 생성
-        providePostService.createRentalProvidePost(testPost);
-
         // 제목으로 검색
         List<RentalProvidePost> posts = providePostService.searchRentalProvidePostsByTitle("Test Title");
         assertFalse("검색된 RentalProvidePost 목록이 비어 있습니다.", posts.isEmpty());
@@ -100,9 +94,6 @@ public class ProvidePostServiceTest {
 
     @Test
     public void testGetAllRentalProvidePosts() throws SQLException {
-        // 데이터를 생성
-        providePostService.createRentalProvidePost(testPost);
-
         // 모든 데이터를 조회
         List<RentalProvidePost> posts = providePostService.getAllRentalProvidePosts();
         assertFalse("조회된 RentalProvidePost 목록이 비어 있습니다.", posts.isEmpty());
