@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestPostDAO {
-    private final Connection connection;
+	 private Connection connection;
 
     // 생성자
     public RequestPostDAO(Connection connection) {
