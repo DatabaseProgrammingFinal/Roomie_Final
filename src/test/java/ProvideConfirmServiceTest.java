@@ -85,29 +85,29 @@ public class ProvideConfirmServiceTest {
         );
     }
 
-    @After
-    public void tearDown() throws Exception {
-        // 테스트 후 데이터 삭제
-        JDBCUtil jdbcUtil = new JDBCUtil();
-        try {
-            String[] deleteSQL = {
-                "DELETE FROM Rental_provide_confirm",
-                "DELETE FROM Rental_provide_post",
-                "DELETE FROM Member"
-            };
-
-            for (String sql : deleteSQL) {
-                jdbcUtil.setSqlAndParameters(sql, null);
-                jdbcUtil.executeUpdate();
-            }
-
-            jdbcUtil.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            jdbcUtil.close();
-        }
-    }
+//    @After
+//    public void tearDown() throws Exception {
+//        // 테스트 후 데이터 삭제
+//        JDBCUtil jdbcUtil = new JDBCUtil();
+//        try {
+//            String[] deleteSQL = {
+//                "DELETE FROM Rental_provide_confirm",
+//                "DELETE FROM Rental_provide_post",
+//                "DELETE FROM Member"
+//            };
+//
+//            for (String sql : deleteSQL) {
+//                jdbcUtil.setSqlAndParameters(sql, null);
+//                jdbcUtil.executeUpdate();
+//            }
+//
+//            jdbcUtil.commit();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            jdbcUtil.close();
+//        }
+//    }
 
     @Test
     public void testCreateProvideConfirm() throws SQLException {
