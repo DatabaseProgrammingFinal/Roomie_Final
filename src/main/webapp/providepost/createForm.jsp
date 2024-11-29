@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roomie</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/provide/write_provide.css">
+    <link rel="stylesheet" href="../css/provide/write_provide.css">
 </head>
 <body>
     <div class="container">
@@ -23,8 +23,8 @@
                 </div>
 
                 <div class="form-container">
-                <form action="/providepost" method="post">	
-                <input type="hidden" name="action" value="create">
+                <form action="/providepost" method="post" enctype="multipart/form-data">  <!-- enctype 추가 -->
+                    <input type="hidden" name="action" value="create">
                         <!-- Title -->
                         <div class="input-group">
                             <label for="title">제목</label>
@@ -56,43 +56,43 @@
                         <div class="input-group location-group">
                             <div class="rental-place">
                                 <label for="rentalLocation">대여 장소</label>
-                                <input type="text" id="rentalLocation" name="rentalLocation">
+                                <input type="text" id="rentalLocation" name="rentalLocation" required>
                             </div>
 
                             <div class="return-place">
-                                <label for="rentalLocation">반납 장소</label>
-                                <input type="text" id="rentalLocation" name="rentalLocation">
+                                <label for="returnLocation">반납 장소</label> <!-- name 수정 -->
+                                <input type="text" id="returnLocation" name="returnLocation" required> <!-- name 수정 -->
                             </div>
                         </div>
         
                         <!-- Date Info -->
                         <div class="input-group date-group">
                             <div class="rental-date">
-                                <label for="rental-date">대여 날짜</label>
-                                <input type="date" id="rental-date">
+                                <label for="startDate">대여 시작일</label>
+                                <input type="date" id="startDate" name="startDate" required>
                             </div>
 
                             <span class="date-separator">~</span>
 
                             <div class="return-date">
-                                <label for="return-date">반납 날짜</label>
-                                <input type="date" id="return-date">
+                                <label for="endDate">반납 날짜</label>
+                                <input type="date" id="endDate" name="endDate" required>
                             </div>
                         </div>
 
                         <!-- Description -->
                         <div class="input-group">
-                            <label for="description">설명</label>
-                            <textarea id="description" rows="4"></textarea>
+                            <label for="content">설명</label>
+                            <textarea id="content" name="content" rows="4" required></textarea> <!-- name 추가 -->
                         </div>
         
                         <!-- File Upload -->
                         <div class="input-group">
                             <label for="file-upload">사진</label>
-                            <input type="file" id="file-upload">
+                            <input type="file" id="file-upload" name="imageUrl">
                         </div>
         
-                        <button type="button" class="save-btn">저장하기</button>
+                        <button type="submit" class="save-btn">저장하기</button> <!-- type 수정 -->
                     </form>
                 </div>
             </div>

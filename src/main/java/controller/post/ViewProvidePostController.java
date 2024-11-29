@@ -10,6 +10,11 @@ import controller.Controller;
 public class ViewProvidePostController implements Controller {
     private ProvidePostService providePostService;
 
+    // 기본 생성자
+    public ViewProvidePostController() {
+    }
+
+    // 매개변수 생성자
     public ViewProvidePostController(ProvidePostService providePostService) {
         this.providePostService = providePostService;
     }

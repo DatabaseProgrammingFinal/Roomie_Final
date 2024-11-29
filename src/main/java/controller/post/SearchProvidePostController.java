@@ -11,6 +11,11 @@ import java.util.List;
 public class SearchProvidePostController implements Controller {
     private ProvidePostService providePostService;
 
+    // 기본 생성자
+    public SearchProvidePostController() {
+    }
+
+    // 매개변수 생성자
     public SearchProvidePostController(ProvidePostService providePostService) {
         this.providePostService = providePostService;
     }

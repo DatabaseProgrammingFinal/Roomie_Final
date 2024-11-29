@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import controller.user.*;
 import controller.comm.*;
-import controller.post.ProvidePostController;
+import controller.post.*;
 import controller.user.LoginController;
 
 public class RequestMapping {
@@ -45,10 +45,10 @@ public class RequestMapping {
         mappings.put("/community/update", new UpdateCommunityController());
         
      // ProvidePost 관련 매핑 추가
-        mappings.put("/providepost", new ForwardController("/providepost/list.jsp")); // 목록 페이지
-        mappings.put("/providepost/view", new ForwardController("/providepost/view.jsp")); // 상세 조회 페이지
-        mappings.put("/providepost/create/form", new ForwardController("/providepost/createForm.jsp")); // 작성 페이지
-        mappings.put("/providepost/action", new ProvidePostController()); // POST 처리 (생성 및 기타 작업)
+        mappings.put("/providepost/list", new ListProvidePostController()); // 전체 대여글 조회
+        mappings.put("/providepost/view", new ViewProvidePostController()); // 특정 대여글 조회
+        mappings.put("/providepost/create", new CreateProvidePostController()); // 대여글 등록
+        mappings.put("/providepost/search", new SearchProvidePostController()); // 제목으로 대여글 검색
 
         
         logger.info("Initialized Request Mapping!");
