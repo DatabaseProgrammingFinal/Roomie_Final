@@ -7,6 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import controller.user.*;
 import controller.comm.*;
+import controller.confirm.ConfirmController;
+import controller.confirm.CreateConfirmController;
+import controller.confirm.StartConfirmController;
+import controller.confirm.ReturnConfirmController;
+import controller.confirm.ViewConfirmController;
+import controller.confirm.OutComeConfirmController;
 import controller.user.LoginController;
 
 public class RequestMapping {
@@ -42,6 +48,15 @@ public class RequestMapping {
         mappings.put("/community/create/form", new ForwardController("/community/creationForm.jsp"));
         mappings.put("/community/create", new CreateCommunityController());
         mappings.put("/community/update", new UpdateCommunityController());
+        
+        
+        //대여확정 confrim관련 기능
+        mappings.put("/confirm/create", new CreateConfirmController());
+        mappings.put("/confirm/start", new StartConfirmController());
+        mappings.put("/confirm/return", new ReturnConfirmController());
+        mappings.put("/confirm/view", new ViewConfirmController());
+        mappings.put("/confirm/outcome", new OutComeConfirmController());
+        mappings.put("/confirm", new ConfirmController());
         
         logger.info("Initialized Request Mapping!");
     }
