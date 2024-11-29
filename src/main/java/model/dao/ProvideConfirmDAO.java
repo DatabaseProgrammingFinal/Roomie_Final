@@ -2,7 +2,8 @@ package model.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.Map;
+import java.util.HashMap;
 import model.domain.ProvideConfirm;
 
 /**
@@ -77,4 +78,44 @@ public class ProvideConfirmDAO {
         }
         return null; 
     }
+
+	public Map<String, Object> getRequesterAndProviderInfo(int requesterId, int providePostId) throws SQLException {
+	    String sql = "SELECT " +
+	                 "m1.nickname AS requester_nickname, m1.dormitory_name AS requester_dormitory, m1.room_number AS requester_room, " +
+	                 "m2.nickname AS provider_nickname, m2.dormitory_name AS provider_dormitory, m2.room_number AS provider_room " +
+	                 "FROM Member m1 " +
+	                 "JOIN Rental_provide_confirm rpc ON rpc.requester_id = m1.id " +
+	                 "JOIN Rental_provide_post rp ON rp.id = rpc.provide_post_id " +
+	                 "JOIN Member m2 ON rp.provider_id = m2.id " +
+	                 "WHERE m1.id = ? AND rp.id = ?";
+	    jdbcUtil.setSqlAndParameters(sql, new Object[]{requesterId, providePostId});
+
+	    try {
+	        ResultSet rs = jdbcUtil.executeQuery();
+	        if (rs.next()) {
+	            Map<String, Object> result = new HashMap<>();
+	            Map<String, Object> requester = new HashMap<>();
+	            requester.put("nickname", rs.getString("requester_nickname"));
+	            requester.put("dormitory_name", rs.getString("requester_dormitory"));
+	            requester.put("room_number", rs.getString("requester_room"));
+	            result.put("requester", requester);
+
+	            Map<String, Object> provider = new HashMap<>();
+	            provider.put("nickname", rs.getString("provider_nickname"));
+	            provider.put("dormitory_name", rs.getString("provider_dormitory"));
+	            provider.put("room_number", rs.getString("provider_room"));
+	            result.put("provider", provider);
+
+	            return result;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+	    } finally {
+	        jdbcUtil.close();
+	    }
+	    return null;
+	}
+
+	
 }

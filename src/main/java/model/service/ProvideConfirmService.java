@@ -1,6 +1,8 @@
 package model.service;
 
 import java.sql.SQLException;
+import java.util.Map;
+
 import model.dao.ProvideConfirmDAO;
 import model.domain.ProvideConfirm;
 
@@ -42,6 +44,19 @@ public class ProvideConfirmService {
                 throw new SQLException("ProvideConfirm ID " + id + "에 해당하는 데이터가 존재하지 않습니다.");
             }
             return pc;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
+    public Map<String, Object> getRequesterAndProviderInfo(int requesterId, int providePostId) throws SQLException {
+        try {
+            Map<String, Object> info = provideConfirmDAO.getRequesterAndProviderInfo(requesterId, providePostId);
+            if (info == null) {
+                throw new SQLException("Invalid requesterId or providePostId.");
+            }
+            return info;
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
