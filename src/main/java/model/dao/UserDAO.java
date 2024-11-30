@@ -29,9 +29,9 @@ public class UserDAO {
         }
 
         String sql = "INSERT INTO Member (id, login_id, password, nickname, dormitory_name, room_number, profile_url, points) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                     "VALUES (member_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
         Object[] param = new Object[] {
-            user.getId(), user.getLoginId(), user.getPassword(), user.getNickname(),
+            user.getLoginId(), user.getPassword(), user.getNickname(),
             user.getDormitoryName(), user.getRoomNumber(), user.getProfileUrl(), user.getPoints()
         };
         jdbcUtil.setSqlAndParameters(sql, param); // JDBCUtil에 insert문과 매개 변수 설정

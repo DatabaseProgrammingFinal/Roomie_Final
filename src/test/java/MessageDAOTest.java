@@ -28,16 +28,16 @@ public class MessageDAOTest {
         if (connectionManager.getConnection() == null) {
             throw new IllegalStateException("ConnectionManager에서 Connection을 가져올 수 없습니다. context.properties 파일 설정을 확인하세요.");
         }
-
+        
         messageDAO = new MessageDAO();
         userDAO = new UserDAO();
 
         // Sender와 Receiver 사용자 생성
         sender = new User(
-            1, "user01", "password123", "김철수", "행복관", "101", "example.jpg", 100
+            "user01", "password123", "김철수", "행복관", "101", "example.jpg", 100
         );
         receiver = new User(
-            2, "user02", "password456", "이영희", "자유관", "202", "example2.jpg", 150
+            "user02", "password456", "이영희", "자유관", "202", "example2.jpg", 150
         );
 
         // 기존 데이터 제거 및 삽입
@@ -55,7 +55,7 @@ public class MessageDAOTest {
             "테스트 메시지 내용",
             new Date(),
             1,
-            1,
+            2,
             null,
             sender,
             receiver

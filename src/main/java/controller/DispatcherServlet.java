@@ -28,6 +28,7 @@ public class DispatcherServlet extends HttpServlet {
     	throws ServletException, IOException {
     	logger.debug("Method : {}, Request URI : {}, ServletPath : {}", 
     			request.getMethod(), request.getRequestURI(), request.getServletPath());
+    	System.out.println(request.getMethod() + request.getRequestURI());
     	String contextPath = request.getContextPath();
     	String servletPath = request.getServletPath();
     	

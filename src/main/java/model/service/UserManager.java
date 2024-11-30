@@ -19,13 +19,13 @@ public class UserManager {
 	private static UserManager UserMan = new UserManager();
 	private UserDAO UserDAO;
 	private CommunityDAO commDAO;
-	private UserAnalysis UserAanlysis;
+	private UserAnalysis UserAnalysis;
 
 	private UserManager() {
 		try {
 			UserDAO = new UserDAO();
 			commDAO = new CommunityDAO();
-			UserAanlysis = new UserAnalysis(UserDAO);
+			UserAnalysis = new UserAnalysis(UserDAO);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}			
@@ -98,7 +98,7 @@ public class UserManager {
 	}
 
 	public List<User> makeFriends(String login_id) throws Exception {
-		return UserAanlysis.recommendFriends(login_id);
+		return UserAnalysis.recommendFriends(login_id);
 	}
 	
 	public Community createCommunity(Community comm) throws SQLException {

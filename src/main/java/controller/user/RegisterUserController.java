@@ -29,7 +29,7 @@ public class RegisterUserController implements Controller {
             List<Community> commList = manager.findCommunityList();  // 커뮤니티 리스트 검색
             request.setAttribute("commList", commList);
 
-            return "/User/registerForm.jsp";  // 검색한 커뮤니티 리스트를 registerForm으로 전송
+            return "/onboarding/registrationForm.jsp"; 
         }
 
         // POST request (회원정보가 parameter로 전송됨)
@@ -52,19 +52,19 @@ public class RegisterUserController implements Controller {
             // 사용자 생성
             manager.create(user);
 
-            return "redirect:/User/list";  // 성공 시 사용자 리스트 화면으로 redirect
+            return "redirect:/onboarding/loginForm";  // 성공 시 사용자 리스트 화면으로 redirect
 
         } catch (ExistingUserException e) {
             // 예외 발생 시 회원가입 form으로 forwarding
             request.setAttribute("registerFailed", true);
             request.setAttribute("exception", e);
-            return "/User/registerForm.jsp";
+            return "/onboarding/registrationForm.jsp";
         } catch (Exception e) {
             // 일반적인 예외 처리 (예: 입력값 문제)
             log.error("Error during user registration", e);
             request.setAttribute("registerFailed", true);
             request.setAttribute("exception", new IllegalStateException("회원 가입 중 오류가 발생했습니다."));
-            return "/User/registerForm.jsp";  // 오류가 발생하면 form으로 돌아감
+            return "/onboarding/registrationForm.jsp";  // 오류가 발생하면 form으로 돌아감
         }
     }
 }

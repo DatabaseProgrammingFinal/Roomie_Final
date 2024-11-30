@@ -25,8 +25,24 @@ public class MessageService {
      * @return 생성된 Message 객체
      * @throws SQLException 데이터베이스 오류
      */
+    
+    public Message createMessage(int recipientId, int senderId, String content, Integer requestPostId, Integer providePostId) throws SQLException {
+        // Message 객체 생성
+    	User sender = userDAO.findUserById(senderId);
+        User receiver = userDAO.findUserById(recipientId);
+    	
+    	Message message = new Message();
+        message.setContent(content);
+        message.setSentDate(new java.util.Date()); // 현재 시간
+        message.setStatus(0); // 기본 상태 설정
+        message.setRequestPostId(requestPostId);
+        message.setProvidePostId(providePostId);
+        message.setSender(sender); // senderId를 가진 User 객체 생성
+        message.setReceiver(receiver); // recipientId를 가진 User 객체 생성
+
+        return createMessage(message); // 기존 createMessage(Message) 메서드 호출
+    }
     public Message createMessage(Message message) throws SQLException {
-        // request_post_id와 provide_post_id 중 하나가 반드시 있어야 함
         if (message.getRequestPostId() == null && message.getProvidePostId() == null) {
             throw new IllegalArgumentException("request_post_id와 provide_post_id 중 하나는 값이 있어야 합니다.");
         }
@@ -105,4 +121,24 @@ public class MessageService {
         int result = messageDAO.delete(messageId);
         return result > 0;
     }
+    
+//    public Message getMessageById(int messageId) throws SQLException {
+//        // DAO를 사용하여 메시지 조회
+//        Message message = messageDAO.findMessageById(messageId);
+//
+//        if (message != null) {
+//            // Sender와 Receiver 정보를 채워줌
+//            if (message.getSender() != null) {
+//                User sender = userDAO.findUserById(message.getSender().getId());
+//                message.setSender(sender);
+//            }
+//            if (message.getReceiver() != null) {
+//                User receiver = userDAO.findUserById(message.getReceiver().getId());
+//                message.setReceiver(receiver);
+//            }
+//        }
+//
+//        return message;
+//    }
+
 }

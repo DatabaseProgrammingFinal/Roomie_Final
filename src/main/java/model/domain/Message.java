@@ -14,7 +14,9 @@ public class Message {
 
     // 기본 생성자
     public Message() {}
-
+    public Message(int id) {
+    	this.id = id;
+    }
     // 생성자
     public Message(int id, String content, Date sentDate, int status, Integer requestPostId, Integer providePostId, User sender, User receiver) {
         this.id = id;

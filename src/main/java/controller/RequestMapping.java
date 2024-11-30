@@ -17,38 +17,15 @@ public class RequestMapping {
 
     public void initMapping() {
     	// 각 uri에 대응되는 controller 객체를 생성 및 저장
-        mappings.put("/", new ForwardController("index.jsp"));
-        mappings.put("/User/login/form", new ForwardController("/User/loginForm.jsp"));
-        mappings.put("/User/login", new LoginController());
-        mappings.put("/User/logout", new LogoutController());
-        mappings.put("/User/list", new ListUserController());
-        mappings.put("/User/view", new ViewUserController());
+        mappings.put("/", new ForwardController("/onboarding/logoScreen.jsp"));
+        System.out.println("onboarding");
+        mappings.put("/user/login", new LoginController());
+        mappings.put("/user/register", new RegisterUserController());
         
-        // 회원 가입 폼 요청과 가입 요청 처리 병합 (폼에 커뮤니티 선택 메뉴 추가를 위함)
-//      mappings.put("/User/register/form", new ForwardController("/User/registerForm.jsp"));
-//      mappings.put("/User/register", new RegisterUserController());
-        mappings.put("/User/register", new RegisterUserController());
-
-        // 사용자 정보 수정 폼 요청과 수정 요청 처리 병합
-//      mappings.put("/User/update/form", new UpdateUserFormController());
-//      mappings.put("/User/update", new UpdateUserController());        
-        mappings.put("/User/update", new UpdateUserController());
-        
-        mappings.put("/User/delete", new DeleteUserController());
-        
-        // 커뮤니티 관련 request URI 추가
-        mappings.put("/community/list", new ListCommunityController());
-        mappings.put("/community/view", new ViewCommunityController());
-        mappings.put("/community/create/form", new ForwardController("/community/creationForm.jsp"));
-        mappings.put("/community/create", new CreateCommunityController());
-        mappings.put("/community/update", new UpdateCommunityController());
-        
-        /*
-        // message
-        mappings.put("/message/send", new MessageServiceAdapter("createMessage")); // 메시지 생성
-        mappings.put("/message/all", new MessageServiceAdapter("getAllMessages")); // 메시지 전체 조회
-        mappings.put("/message/detail", new MessageServiceAdapter("getMessageById")); // 메시지 상세 조회
-        */
+//        // message
+//        mappings.put("/message", new sendMessageController()); // 메시지 생성
+//        mappings.put("/message/{id}", ViewMessagesController()); // 메시지 조회
+//        
         
         logger.info("Initialized Request Mapping!");
     }

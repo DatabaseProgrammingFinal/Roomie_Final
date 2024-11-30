@@ -22,14 +22,15 @@ public class LoginController implements Controller {
 			HttpSession session = request.getSession();
             session.setAttribute(UserSessionUtils.User_SESSION_KEY, login_id);
             
-            return "redirect:/User/list";			
+            return "redirect:/onboarding/registrationForm";			
 		} catch (Exception e) {
 			/* UserNotFoundException이나 PasswordMismatchException 발생 시
 			 * 다시 login form을 사용자에게 전송하고 오류 메세지도 출력
 			 */
             request.setAttribute("loginFailed", true);
 			request.setAttribute("exception", e);
-            return "/User/loginForm.jsp";			
+			e.printStackTrace(); // 오류 내용을 출력
+            return "/onboarding/loginForm.jsp";			
 		}	
     }
 }
