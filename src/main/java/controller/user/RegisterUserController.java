@@ -74,7 +74,6 @@ public class RegisterUserController implements Controller {
 	            return "/onboarding/registrationForm.jsp";
 	        }
 	    }
-
 	    return "/onboarding/registrationForm.jsp";
 	}
 

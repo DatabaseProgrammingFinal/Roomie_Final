@@ -16,46 +16,55 @@ public class MessageDAO {
 
     // 메시지 생성
     public Message create(Message message) throws SQLException {
-    	String sql = "INSERT INTO Message (id, content, sent_date, status, request_post_id, provide_post_id, sender_id, recipient_id) "
-    	           + "VALUES (Message_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
-
+    	System.out.println("DEBUG: Message created successfully");
+        String sql = "INSERT INTO Message (id, content, sent_date, status, request_post_id, provide_post_id, sender_id, recipient_id) "
+                   + "VALUES (Message_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
         Object[] params = new Object[] {
             message.getContent(),
             new java.sql.Date(message.getSentDate().getTime()),
             message.getStatus(),
-            message.getRequestPostId() != null ? message.getRequestPostId() : null,
-            message.getProvidePostId() != null ? message.getProvidePostId() : null,
+            message.getRequestPostId(),
+            message.getProvidePostId(),
             message.getSender().getId(),
             message.getReceiver().getId()
         };
-        jdbcUtil.setSqlAndParameters(sql, params);
-        String[] key = {"id"}; // PK
 
-        if (message.getRequestPostId() == null && message.getProvidePostId() == null) {
-            throw new IllegalArgumentException("request_post_id와 provide_post_id 중 하나는 값이 있어야 합니다.");
-        }
-        
+        jdbcUtil.setSqlAndParameters(sql, params);
+        String[] key = {"id"}; // PK 반환 설정
+
         try {
-        	System.out.println("SQL Query: " + sql);
-            jdbcUtil.executeUpdate(key);
-            ResultSet rs = jdbcUtil.getGeneratedKeys();
-            if (rs.next()) {
-                int generatedKey = rs.getInt(1);
-                message.setId(generatedKey);
-                System.out.println("DEBUG: Generated Key: " + generatedKey); // 디버깅
+            System.out.println("DEBUG: Executing SQL: " + sql);
+
+            int result = jdbcUtil.executeUpdate(key); // 실행 결과 반환
+            System.out.println("DEBUG: executeUpdate result: " + result);
+
+            if (result > 0) {
+                ResultSet rs = jdbcUtil.getGeneratedKeys();
+                if (rs.next()) {
+                    int generatedId = rs.getInt(1);
+                    message.setId(generatedId);
+                    System.out.println("DEBUG: Generated ID: " + generatedId);
+                } else {
+                    System.out.println("DEBUG: No key generated.");
+                }
             } else {
-                System.out.println("DEBUG: No key generated."); // 디버깅
+                System.out.println("DEBUG: No rows inserted.");
             }
-            jdbcUtil.commit();
+
+            jdbcUtil.commit(); // 트랜잭션 커밋
             return message;
-        } catch (Exception ex) {
-            jdbcUtil.rollback();
-            ex.printStackTrace();
-            return null;
-        }finally {
-            jdbcUtil.close();
+
+        } catch (Exception e) {
+            jdbcUtil.rollback(); // 트랜잭션 롤백
+            e.printStackTrace();
+            throw new SQLException("Message 저장 중 오류 발생", e);
+
+        } finally {
+            jdbcUtil.close(); // JDBC 연결 종료
+            System.out.println("DEBUG: JDBC connection closed.");
         }
     }
+
 
     // 모든 메시지 가져오기
     public List<Message> showAllMessages() throws SQLException {
@@ -250,6 +259,48 @@ public class MessageDAO {
             jdbcUtil.rollback();
             ex.printStackTrace();
             return 0;
+        } finally {
+            jdbcUtil.commit();
+            jdbcUtil.close();
+        }
+    }
+ // 특정 사용자가 송신자 또는 수신자인 메시지 가져오기
+    public List<Message> findMessagesByUserId(int userId) throws SQLException {
+        String sql = "SELECT * FROM Message WHERE sender_id = ? OR recipient_id = ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {userId, userId});
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            List<Message> messages = new ArrayList<>();
+            while (rs.next()) {
+                Message message = new Message();
+                message.setId(rs.getInt("id"));
+                message.setContent(rs.getString("content"));
+                message.setSentDate(rs.getDate("sent_date"));
+                message.setStatus(rs.getInt("status"));
+                message.setRequestPostId(rs.getObject("request_post_id") != null ? rs.getInt("request_post_id") : null);
+                message.setProvidePostId(rs.getObject("provide_post_id") != null ? rs.getInt("provide_post_id") : null);
+
+                int senderId = rs.getInt("sender_id");
+                int recipientId = rs.getInt("recipient_id");
+                System.out.println("DEBUG: Sender ID: " + senderId);
+                System.out.println("DEBUG: Recipient ID: " + recipientId);
+
+                // Sender와 Receiver 설정
+                User sender = new User();
+                sender.setId(senderId);
+                message.setSender(sender);
+
+                User receiver = new User();
+                receiver.setId(recipientId);
+                message.setReceiver(receiver);
+
+                messages.add(message);
+            }
+            return messages;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
         } finally {
             jdbcUtil.commit();
             jdbcUtil.close();

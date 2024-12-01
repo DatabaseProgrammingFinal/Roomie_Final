@@ -18,15 +18,16 @@ public class LoginController implements Controller {
 		try {
 			System.out.println("로그인 시도: " + login_id);
 
-			// 모델에 로그인 처리를 위임
-			UserManager manager = UserManager.getInstance();
-			manager.login(login_id, password);
+			// 로그인 처리 및 userId 가져오기
+	        UserManager manager = UserManager.getInstance();
+	        int userId = manager.login(login_id, password); // userId 반환
 
-			// 세션에 사용자 이이디 저장
-			HttpSession session = request.getSession();
-			session.setAttribute(UserSessionUtils.User_SESSION_KEY, login_id);
+	        // 세션에 userId 저장
+	        HttpSession session = request.getSession();
+	        session.setAttribute("userId", userId);
 
-			return "redirect:/request/view_request.jsp";
+	        return "redirect:/providepost/view";
+
 		} catch (UserNotFoundException e) {
 			// 실패 시 경고 메시지 설정
 			request.setAttribute("exception", "아이디/비번이 틀렸습니다. 다시 입력하세요.");

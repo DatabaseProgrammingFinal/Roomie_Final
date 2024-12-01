@@ -7,7 +7,13 @@ import org.slf4j.LoggerFactory;
 
 import controller.user.*;
 import controller.comm.*;
+import controller.message.ChatController;
+import controller.message.ListMessagesController;
+import controller.message.SendMessageController;
+import controller.post.CreateProvidePostController;
+import controller.post.ListProvidePostController;
 import controller.user.LoginController;
+import model.service.ProvidePostService;
 
 public class RequestMapping {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
@@ -22,10 +28,14 @@ public class RequestMapping {
         mappings.put("/user/register", new RegisterUserController());
         mappings.put("/user/checkLoginId", new CheckUserIdController());
         mappings.put("/user/checkNickname", new CheckNicknameController());
-//        // message
-//        mappings.put("/message", new sendMessageController()); // 메시지 생성
-//        mappings.put("/message/{id}", ViewMessagesController()); // 메시지 조회
-//        
+       
+        mappings.put("/providepost/view", new ForwardController("/providepost/view.jsp")); // 상세 조회 페이지
+        
+        // chat
+        mappings.put("/message", new ListMessagesController()); 
+        mappings.put("/message/chat", new ChatController());
+        mappings.put("/message/send", new SendMessageController());
+        
         
         logger.info("Initialized Request Mapping!");
     }

@@ -87,14 +87,14 @@ public class UserManager {
 		return UserDAO.findUserList();
 	}
 
-	public boolean login(String login_id, String password)
+	public int login(String login_id, String password)
 		throws SQLException, UserNotFoundException, PasswordMismatchException {
 		User User = findUser(login_id);
 
 		if (!User.matchPassword(password)) {
 			throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
 		}
-		return true;
+		return User.getId();
 	}
 
 	public List<User> makeFriends(String login_id) throws Exception {

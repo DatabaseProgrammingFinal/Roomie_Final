@@ -239,7 +239,6 @@ public class UserDAO {
     }
 
 
-
     // 이거 방금 추가.
     public User findUserById(int userId) throws SQLException {
         String sql = "SELECT id, login_id, password, nickname, dormitory_name, room_number, profile_url, points " +
@@ -286,4 +285,20 @@ public class UserDAO {
         }
         return false;
     }
+    public int findUserIdByLoginId(String loginId) throws SQLException {
+        String sql = "SELECT id FROM member WHERE login_id = ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {loginId});
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                throw new SQLException("사용자를 찾을 수 없습니다: " + loginId);
+            }
+        } finally {
+            jdbcUtil.close();
+        }
+    }
+
 }

@@ -12,133 +12,67 @@ public class MessageService {
     private MessageDAO messageDAO;
     private UserDAO userDAO;
 
-    // 기본 생성자
     public MessageService() {
         this.messageDAO = new MessageDAO();
         this.userDAO = new UserDAO();
     }
-
     /**
      * 메시지 생성
-     *
-     * @param message 생성할 Message 객체
-     * @return 생성된 Message 객체
-     * @throws SQLException 데이터베이스 오류
      */
-    
-    public Message createMessage(int recipientId, int senderId, String content, Integer requestPostId, Integer providePostId) throws SQLException {
-        // Message 객체 생성
-    	User sender = userDAO.findUserById(senderId);
-        User receiver = userDAO.findUserById(recipientId);
-    	
-    	Message message = new Message();
-        message.setContent(content);
-        message.setSentDate(new java.util.Date()); // 현재 시간
-        message.setStatus(0); // 기본 상태 설정
-        message.setRequestPostId(requestPostId);
-        message.setProvidePostId(providePostId);
-        message.setSender(sender); // senderId를 가진 User 객체 생성
-        message.setReceiver(receiver); // recipientId를 가진 User 객체 생성
-
-        return createMessage(message); // 기존 createMessage(Message) 메서드 호출
-    }
     public Message createMessage(Message message) throws SQLException {
-        if (message.getRequestPostId() == null && message.getProvidePostId() == null) {
-            throw new IllegalArgumentException("request_post_id와 provide_post_id 중 하나는 값이 있어야 합니다.");
+    	
+    	System.out.println("DEBUG: Message before creation: " + message);
+        if (message.getSender() == null || message.getReceiver() == null) {
+            throw new IllegalArgumentException("Sender와 Receiver 정보는 필수입니다.");
         }
-        return messageDAO.create(message);
+
+        // 메시지 생성 시 필요한 기본값 설정
+        if (message.getSentDate() == null) {
+            message.setSentDate(new java.util.Date()); // 현재 시간으로 설정
+        }
+        if (message.getStatus() == 0) {
+            message.setStatus(1); // 기본 상태값 설정
+        }
+
+        return messageDAO.create(message); // DAO를 통해 DB에 저장
     }
 
     /**
-     * 모든 메시지 조회
-     *
-     * @return 모든 메시지 리스트
-     * @throws SQLException 데이터베이스 오류
+     * 필터에 따라 메시지 조회 (전체, 보낸 메시지, 받은 메시지)
      */
-    public List<Message> getAllMessages() throws SQLException {
-        return messageDAO.showAllMessages();
-    }
+    public List<Message> getMessages(int userId, String filter) throws SQLException {
+        List<Message> messages;
 
-    /**
-     * 특정 발신자가 보낸 메시지 조회
-     *
-     * @param senderId 발신자 ID
-     * @return 발신자가 보낸 메시지 리스트
-     * @throws SQLException 데이터베이스 오류
-     */
-    public List<Message> getSentMessages(int senderId) throws SQLException {
-        List<Message> messages = messageDAO.showSentMessages(senderId);
-
-        // Sender와 Receiver의 User 객체를 채움
-        for (Message message : messages) {
-            if (message.getReceiver() != null) {
-                User receiver = userDAO.findUserById(message.getReceiver().getId());
-                message.setReceiver(receiver);
-            }
+        switch (filter) {
+            case "sent":
+                messages = messageDAO.showSentMessages(userId); // 보낸 메시지
+                break;
+            case "received":
+                messages = messageDAO.showReceivedMessages(userId); // 받은 메시지
+                break;
+            default:
+                messages = messageDAO.findMessagesByUserId(userId); // 모든 메시지
+                break;
         }
+
+        // Sender와 Receiver 정보를 채워줌
+        populateUserDetails(messages);
         return messages;
     }
 
     /**
-     * 특정 수신자가 받은 메시지 조회
-     *
-     * @param recipientId 수신자 ID
-     * @return 수신자가 받은 메시지 리스트
-     * @throws SQLException 데이터베이스 오류
+     * 메시지 리스트에 Sender와 Receiver 정보를 채워줌
      */
-    public List<Message> getReceivedMessages(int recipientId) throws SQLException {
-        List<Message> messages = messageDAO.showReceivedMessages(recipientId);
-
-        // Sender와 Receiver의 User 객체를 채움
+    private void populateUserDetails(List<Message> messages) throws SQLException {
         for (Message message : messages) {
             if (message.getSender() != null) {
                 User sender = userDAO.findUserById(message.getSender().getId());
                 message.setSender(sender);
             }
+            if (message.getReceiver() != null) {
+                User receiver = userDAO.findUserById(message.getReceiver().getId());
+                message.setReceiver(receiver);
+            }
         }
-        return messages;
     }
-
-    /**
-     * 메시지 검색
-     *
-     * @param query 검색어
-     * @return 검색 결과 리스트
-     * @throws SQLException 데이터베이스 오류
-     */
-    public List<Message> searchMessages(String query) throws SQLException {
-        return messageDAO.searchMessages(query);
-    }
-
-    /**
-     * 메시지 삭제
-     *
-     * @param messageId 삭제할 메시지 ID
-     * @return 삭제 성공 여부
-     * @throws SQLException 데이터베이스 오류
-     */
-    public boolean deleteMessage(int messageId) throws SQLException {
-        int result = messageDAO.delete(messageId);
-        return result > 0;
-    }
-    
-//    public Message getMessageById(int messageId) throws SQLException {
-//        // DAO를 사용하여 메시지 조회
-//        Message message = messageDAO.findMessageById(messageId);
-//
-//        if (message != null) {
-//            // Sender와 Receiver 정보를 채워줌
-//            if (message.getSender() != null) {
-//                User sender = userDAO.findUserById(message.getSender().getId());
-//                message.setSender(sender);
-//            }
-//            if (message.getReceiver() != null) {
-//                User receiver = userDAO.findUserById(message.getReceiver().getId());
-//                message.setReceiver(receiver);
-//            }
-//        }
-//
-//        return message;
-//    }
-
 }
