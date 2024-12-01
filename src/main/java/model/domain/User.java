@@ -11,7 +11,8 @@ public class User {
     private int points;
 
     // 기본 생성자
-    public User(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, Object object) {
+    public User() {
+    	
     }
 
     // 매개변수 생성자
@@ -26,6 +27,17 @@ public class User {
         this.profileUrl = profileUrl;
         this.points = points;
     }
+    public User(String loginId, String password, String nickname, 
+            String dormitoryName, String roomNumber, String profileUrl, int points) {
+
+    this.loginId = loginId;
+    this.password = password;
+    this.nickname = nickname;
+    this.dormitoryName = dormitoryName;
+    this.roomNumber = roomNumber;
+    this.profileUrl = profileUrl;
+    this.points = points;
+}
 
     // Getter and Setter methods
     public int getId() {
