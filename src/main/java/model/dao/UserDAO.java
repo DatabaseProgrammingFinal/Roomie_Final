@@ -22,6 +22,7 @@ public class UserDAO {
      * Member 테이블에 새로운 사용자 생성
      */
     public int create(User user) throws SQLException {
+    	System.out.println("UserDAO.create 호출됨");
         // 먼저 중복된 login_id가 존재하는지 확인
         if (existingUser(user.getLoginId())) {
             // 중복된 login_id가 존재하면 삽입하지 않고 0을 반환
@@ -38,6 +39,7 @@ public class UserDAO {
 
         try {				
             int result = jdbcUtil.executeUpdate();	// insert 문 실행
+            System.out.println("INSERT 실행 결과: " + result); // 디버깅 로그
             return result;
         } catch (Exception ex) {
             jdbcUtil.rollback();
@@ -266,5 +268,22 @@ public class UserDAO {
         }
         return null; // 사용자 없음
     }
+    
+    public boolean existingNickname(String nickname) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Member WHERE nickname=?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {nickname}); // JDBCUtil에 query문과 매개 변수 설정
 
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // query 실행
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return (count == 1);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            jdbcUtil.close(); // resource 반환
+        }
+        return false;
+    }
 }

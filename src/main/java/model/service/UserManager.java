@@ -100,7 +100,12 @@ public class UserManager {
 	public List<User> makeFriends(String login_id) throws Exception {
 		return UserAnalysis.recommendFriends(login_id);
 	}
-	
+	public boolean isIdTaken(String loginId) throws SQLException {
+	    return UserDAO.existingUser(loginId); // 기존 메서드 호출
+	}
+	public boolean isNicknameTaken(String nickname) throws SQLException {
+	    return UserDAO.existingNickname(nickname); // UserDAO에서 닉네임 중복 여부 확인
+	}
 	public Community createCommunity(Community comm) throws SQLException {
 		return commDAO.create(comm);		
 	}
@@ -131,4 +136,5 @@ public class UserManager {
 	public UserDAO getUserDAO() {
 		return this.UserDAO;
 	}
+	
 }

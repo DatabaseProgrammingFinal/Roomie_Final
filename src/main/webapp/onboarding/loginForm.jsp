@@ -20,7 +20,7 @@
             <p class="welcome-msg">환영합니다<br>계정을 입력해주세요</p>
 
             <!-- 로그인 폼 -->
-            <form action="${pageContext.request.contextPath}/login_process.jsp" method="POST" class="login-form">
+            <form action="${pageContext.request.contextPath}/request/view_request.jsp" method="POST" class="login-form">
                 <div class="input-group">
                     <label for="Usernickname">아이디</label>
                     <input type="text" id="Usernickname" nickname="Usernickname" placeholder="아이디 입력">
@@ -34,7 +34,7 @@
 
             <!-- 회원가입 링크 -->
             <div class="signup-link">
-                계정이 없나요? <a href="${pageContext.request.contextPath}/signup.jsp">회원가입</a>
+                계정이 없나요? <a href="${pageContext.request.contextPath}/onboarding/registrationForm.jsp">회원가입</a>
             </div>
         </div>
     </div>

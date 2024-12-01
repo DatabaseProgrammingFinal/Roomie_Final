@@ -28,16 +28,21 @@ public class DispatcherServlet extends HttpServlet {
     	throws ServletException, IOException {
     	logger.debug("Method : {}, Request URI : {}, ServletPath : {}", 
     			request.getMethod(), request.getRequestURI(), request.getServletPath());
-    	System.out.println(request.getMethod() + request.getRequestURI());
+    	
     	String contextPath = request.getContextPath();
     	String servletPath = request.getServletPath();
     	
     	// URL 중 servletPath에 대응되는 controller를 구함
         Controller controller = rm.findController(servletPath);
+        
         try {
         	// controller를 통해 request 처리 후, 이동할 uri를 반환 받음
             String uri = controller.execute(request, response);
             
+            System.out.println("요청 URI: " + request.getRequestURI());
+            System.out.println("매핑된 Controller: " + controller);
+
+          
             if (uri == null) return;	// Ajax request 처리 완료
             
  			// 반환된 uri에 따라 forwarding 또는 redirection 여부를 결정하고 이동 

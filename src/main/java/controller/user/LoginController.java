@@ -5,32 +5,36 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.Controller;
+import model.service.PasswordMismatchException;
 import model.service.UserManager;
+import model.service.UserNotFoundException;
 
 public class LoginController implements Controller {
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	String login_id = request.getParameter("login_id");
+	@Override
+	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String login_id = request.getParameter("login_id");
 		String password = request.getParameter("password");
-		
+
 		try {
+			System.out.println("로그인 시도: " + login_id);
+
 			// 모델에 로그인 처리를 위임
 			UserManager manager = UserManager.getInstance();
 			manager.login(login_id, password);
-	
+
 			// 세션에 사용자 이이디 저장
 			HttpSession session = request.getSession();
-            session.setAttribute(UserSessionUtils.User_SESSION_KEY, login_id);
-            
-            return "redirect:/onboarding/registrationForm";			
-		} catch (Exception e) {
-			/* UserNotFoundException이나 PasswordMismatchException 발생 시
-			 * 다시 login form을 사용자에게 전송하고 오류 메세지도 출력
-			 */
-            request.setAttribute("loginFailed", true);
-			request.setAttribute("exception", e);
-			e.printStackTrace(); // 오류 내용을 출력
-            return "/onboarding/loginForm.jsp";			
-		}	
-    }
+			session.setAttribute(UserSessionUtils.User_SESSION_KEY, login_id);
+
+			return "redirect:/request/view_request.jsp";
+		} catch (UserNotFoundException e) {
+			// 실패 시 경고 메시지 설정
+			request.setAttribute("exception", "아이디/비번이 틀렸습니다. 다시 입력하세요.");
+			return "/onboarding/loginForm.jsp"; // 현재 화면 유지
+		} catch (PasswordMismatchException e) {
+			// 실패 시 경고 메시지 설정
+			request.setAttribute("exception", "아이디/비번이 틀렸습니다. 다시 입력하세요.");
+			return "/onboarding/loginForm.jsp"; // 현재 화면 유지
+		}
+	}
 }
