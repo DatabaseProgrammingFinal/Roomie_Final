@@ -1,5 +1,7 @@
 package model.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -306,5 +308,54 @@ public class MessageDAO {
             jdbcUtil.close();
         }
     }
+    
+    public List<Message> getMessages(Integer senderId, Integer recipientId) throws SQLException {
+        String sql = "SELECT * FROM Message WHERE " +
+                     "(sender_id = ? AND recipient_id = ?) " +
+                     "OR (sender_id = ? AND recipient_id = ?)";
+        jdbcUtil.setSqlAndParameters(sql, new Object[]{senderId, recipientId, recipientId, senderId});
+
+        ResultSet rs = null;
+        try {
+            rs = jdbcUtil.executeQuery();
+            List<Message> messages = new ArrayList<>();
+            while (rs.next()) {
+                Message message = new Message();
+                message.setId(rs.getInt("id"));
+                message.setContent(rs.getString("content"));
+                message.setSentDate(rs.getDate("sent_date"));
+                message.setStatus(rs.getInt("status"));
+
+                int senderIdFromDB = rs.getInt("sender_id");
+                int recipientIdFromDB = rs.getInt("recipient_id");
+
+                User sender = new User();
+                sender.setId(senderIdFromDB);
+
+                User receiver = new User();
+                receiver.setId(recipientIdFromDB);
+
+                message.setSender(sender);
+                message.setReceiver(receiver);
+
+                messages.add(message);
+            }
+            return messages;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("메시지를 가져오는 중 오류 발생", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("DEBUG: ResultSet close error: " + e.getMessage());
+                }
+            }
+            jdbcUtil.close();
+        }
+    }
+
+
 
 }

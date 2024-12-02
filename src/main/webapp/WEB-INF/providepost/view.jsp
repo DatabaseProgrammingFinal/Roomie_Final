@@ -65,7 +65,7 @@
 					alt="Point" class="room_numberie-img" width="24px" height="24px">
 				<span class="points">${post.points} 루미</span>
 				<button class="send-msg-btn"
-					onclick="location.href='${pageContext.request.contextPath}/message/chat?sender=${sessionScope.userId}&recipientId=1&providePostId=1'">
+					onclick="location.href='${pageContext.request.contextPath}/message/chat?sender=${sessionScope.userId}&recipientId=4&providePostId=1'">
 					쪽지 보내기</button>
 			</div>
 		</div>

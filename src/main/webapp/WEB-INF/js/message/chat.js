@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 const form = document.querySelector('.chat-footer form');
 const messageInput = form.querySelector('.input-field');
 
