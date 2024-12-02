@@ -31,7 +31,6 @@ public class ChatController implements Controller {
             System.out.println("ChatController - Recipient ID: " + recipientId);
 
             
-            
             if (senderId == null || recipientId == null) {
                 throw new IllegalArgumentException("sender 또는 recipient 값이 없습니다.");
             }
