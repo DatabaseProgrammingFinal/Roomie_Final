@@ -56,7 +56,6 @@
                 </form>
             </div>
             
-
             <!-- 쪽지 리스트 -->
             <ul class="message-list" id="messageList">
                 <!-- DB에서 가져온 메시지 데이터 출력 -->
