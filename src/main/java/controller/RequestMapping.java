@@ -9,6 +9,7 @@ import controller.user.*;
 import controller.comm.*;
 import controller.message.ChatController;
 import controller.message.ListMessagesController;
+import controller.message.SearchMessageController;
 import controller.message.SendMessageController;
 import controller.post.CreateProvidePostController;
 import controller.post.ListProvidePostController;
@@ -35,7 +36,7 @@ public class RequestMapping {
         mappings.put("/message", new ListMessagesController()); 
         mappings.put("/message/chat", new ChatController());
         mappings.put("/message/send", new SendMessageController());
-        
+        mappings.put("/message/search", new SearchMessageController());
         
         logger.info("Initialized Request Mapping!");
     }

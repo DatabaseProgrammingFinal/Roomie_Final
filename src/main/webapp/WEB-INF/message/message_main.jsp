@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> <!-- 시간 format바꾸기 위해서 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -28,10 +29,6 @@
             <hr>
         </div>
 
-<c:forEach var="message" items="${messages}">
-    <div>${message.sender.nickname}: ${message.content}</div>
-</c:forEach>
-
         <!-- 본문 (Body) -->
         <div class="body">
             <h1>쪽지함</h1>
@@ -43,6 +40,7 @@
                 </button>
             </div>
 
+			<!--  
             <div class="filter-buttons">
                 <form method="GET" action="${pageContext.request.contextPath}/message">
                     <input type="radio" name="filter" id="all" value="all" ${param.filter == null || param.filter == 'all' ? 'checked' : ''}>
@@ -55,6 +53,7 @@
                     <label for="received" class="filter-button">받은 쪽지</label>
                 </form>
             </div>
+            -->
             
             <!-- 쪽지 리스트 -->
             <ul class="message-list" id="messageList">
@@ -66,7 +65,9 @@
                             <span class="nickname">${message.sender.nickname}</span>
                             <span class="message-preview">${message.content}</span>
                         </div>
-                        <span class="time">${message.sentDate}</span>
+                        <span class="time">
+                        <fmt:formatDate value="${message.sentDate}" pattern="yyyy-MM-dd HH:mm"/>
+                    	</span>
                     </li>
                 </c:forEach>
             </ul>
