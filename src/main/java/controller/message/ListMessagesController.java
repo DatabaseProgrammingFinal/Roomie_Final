@@ -23,10 +23,11 @@ public class ListMessagesController implements Controller {
         try {
             // 세션에서 login_id 가져오기
             HttpSession session = request.getSession();
-            String loginId = (String) session.getAttribute("login_id");
+            String loginId = (String) session.getAttribute("userId");
             if (loginId == null) {
                 throw new IllegalStateException("로그인된 사용자가 아닙니다.");
             }
+            System.out.println("ListMessages: 세션에서 가져온 userId = " + loginId);
 
             // login_id로 member 테이블에서 id 가져오기
             UserDAO userDAO = new UserDAO();
@@ -39,9 +40,10 @@ public class ListMessagesController implements Controller {
             // JSP로 메시지 전달
             request.setAttribute("messages", messages);
 
-            return "/message"; // 메시지 목록 JSP로 이동
+            return "/message/message_main.jsp"; // 메시지 목록 JSP로 이동
         } catch (IllegalStateException e) {
-            request.setAttribute("error", "로그인이 필요합니다. 다시 로그인하세요.");
+            System.out.println("ListMessages: 세션로그인안돼");
+        	request.setAttribute("error", "로그인이 필요합니다. 다시 로그인하세요.");
             return "/onboarding/loginForm.jsp"; // 로그인 페이지로 이동
         } catch (Exception e) {
             e.printStackTrace();

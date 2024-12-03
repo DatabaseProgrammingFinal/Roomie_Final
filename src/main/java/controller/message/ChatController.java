@@ -19,42 +19,36 @@ public class ChatController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 요청 파라미터 가져오기
-        Integer userId = null;
+        Integer senderId = null;
         Integer recipientId = null;
 
         try {
-            String userIdParam = request.getParameter("userId");
-            String recipientIdParam = request.getParameter("recipientId");
+            // URL에서 sender와 recipientId 파라미터 읽기
+            senderId = Integer.parseInt(request.getParameter("sender"));
+            recipientId = Integer.parseInt(request.getParameter("recipientId"));
 
-            if (userIdParam != null && !userIdParam.isEmpty()) {
-                userId = Integer.parseInt(userIdParam);
-            } else {
-                userId = 1; // 기본값 설정
-                System.out.println("DEBUG: userId가 null이므로 기본값 1로 설정");
-            }
+            System.out.println("ChatController - Sender ID: " + senderId);
+            System.out.println("ChatController - Recipient ID: " + recipientId);
 
-            if (recipientIdParam != null && !recipientIdParam.isEmpty()) {
-                recipientId = Integer.parseInt(recipientIdParam);
-            } else {
-                throw new IllegalArgumentException("recipientId는 필수 파라미터입니다.");
+            
+            
+            if (senderId == null || recipientId == null) {
+                throw new IllegalArgumentException("sender 또는 recipient 값이 없습니다.");
             }
         } catch (NumberFormatException e) {
-            System.out.println("ERROR: 파라미터 값이 유효한 숫자가 아닙니다.");
             e.printStackTrace();
             throw e;
         }
 
-        String filter = "all"; // 기본값 설정
-
-        // 메시지 조회
-        List<Message> messages = messageService.getMessages(userId, filter);
+        // 메시지 필터링
+        List<Message> messages = messageService.getMessagesWithDetails(senderId, recipientId);
 
         // JSP로 데이터 전달
         request.setAttribute("messages", messages);
         request.setAttribute("recipientId", recipientId);
 
-        return "/message/chat.jsp"; // 채팅 화면으로 이동
+        return "/message/chat.jsp";
     }
+
 
 }

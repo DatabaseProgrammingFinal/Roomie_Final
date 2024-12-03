@@ -20,6 +20,7 @@ public class JDBCUtil {
     public static Connection getConnection() throws SQLException {
         if (conn == null || conn.isClosed()) {
             conn = connMan.getConnection();
+            System.out.println("DEBUG: Reconnected to DB");
             conn.setAutoCommit(false);
         }
         return conn;
