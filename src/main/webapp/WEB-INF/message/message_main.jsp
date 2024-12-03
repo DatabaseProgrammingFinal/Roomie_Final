@@ -14,17 +14,18 @@
 	href="${pageContext.request.contextPath}/css/message/message_main.css">
 </head>
 <body>
+<!-- 
 	<form method="GET" action="${pageContext.request.contextPath}/message">
 		<input type="hidden" name="userId" value="${sessionScope.userId}">
 		<input type="hidden" name="filter" value="all">
 		<button type="submit">메시지 보기</button>
 	</form>
-
+ -->
 	<div class="container">
 		<div class="content">
 			<!-- 상단 (Header) -->
 			<div class="header">
-				<a href="#" class="back-btn"> <img
+				<a href="javascript:history.back()" class="back-btn"> <img
 					src="${pageContext.request.contextPath}/images/back.png" alt="Back"
 					class="back-img">
 				</a> <img src="${pageContext.request.contextPath}/images/logo.png"
@@ -65,13 +66,14 @@
 					<!-- DB에서 가져온 메시지 데이터 출력 -->
 					<c:forEach var="message" items="${messages}">
 						<li class="message-item">
+						<a href="${pageContext.request.contextPath}/message/chat?sender=${message.sender.id}&recipientId=${message.receiver.id}&postId=${message.id}">
 							<div class="avatar"></div>
 							<div class="message-info">
 								<span class="nickname">${message.sender.nickname}</span> <span
 									class="message-preview">${message.content}</span>
 							</div> <span class="time"><fmt:formatDate
 									value="${message.sentDate}" pattern="yyyy-MM-dd HH:mm" /></span>
-						</li>
+						</a></li>
 					</c:forEach>
 				</ul>
 
@@ -84,7 +86,7 @@
 			<!-- 하단 (네비게이션바) -->
 			<div class="nav">
 				<nav class="navbar">
-					<a href="#" class="nav-item"><img
+					<a href="${pageContext.request.contextPath}/message?userId=${sessionScope.userId}&filter=all" class="nav-item"><img
 						src="${pageContext.request.contextPath}/images/message.png"
 						alt="Mail"></a> <a href="#" class="nav-item"><img
 						src="${pageContext.request.contextPath}/images/home.png"
