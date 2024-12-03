@@ -5,31 +5,37 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.Controller;
+import model.service.PasswordMismatchException;
 import model.service.UserManager;
+import model.service.UserNotFoundException;
 
 public class LoginController implements Controller {
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	String login_id = request.getParameter("login_id");
+	@Override
+	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String login_id = request.getParameter("login_id");
 		String password = request.getParameter("password");
-		
+
 		try {
-			// 모델에 로그인 처리를 위임
-			UserManager manager = UserManager.getInstance();
-			manager.login(login_id, password);
-	
-			// 세션에 사용자 이이디 저장
-			HttpSession session = request.getSession();
-            session.setAttribute(UserSessionUtils.User_SESSION_KEY, login_id);
-            
-            return "redirect:/User/list";			
-		} catch (Exception e) {
-			/* UserNotFoundException이나 PasswordMismatchException 발생 시
-			 * 다시 login form을 사용자에게 전송하고 오류 메세지도 출력
-			 */
-            request.setAttribute("loginFailed", true);
-			request.setAttribute("exception", e);
-            return "/User/loginForm.jsp";			
-		}	
-    }
+			System.out.println("로그인 시도: " + login_id);
+
+			// 로그인 처리 및 userId 가져오기
+	        UserManager manager = UserManager.getInstance();
+	        int userId = manager.login(login_id, password); // userId 반환
+
+	        // 세션에 userId 저장
+	        HttpSession session = request.getSession();
+	        session.setAttribute("userId", userId);
+
+	        return "redirect:/providepost/view";
+
+		} catch (UserNotFoundException e) {
+			// 실패 시 경고 메시지 설정
+			request.setAttribute("exception", "아이디/비번이 틀렸습니다. 다시 입력하세요.");
+			return "/onboarding/loginForm.jsp"; // 현재 화면 유지
+		} catch (PasswordMismatchException e) {
+			// 실패 시 경고 메시지 설정
+			request.setAttribute("exception", "아이디/비번이 틀렸습니다. 다시 입력하세요.");
+			return "/onboarding/loginForm.jsp"; // 현재 화면 유지
+		}
+	}
 }

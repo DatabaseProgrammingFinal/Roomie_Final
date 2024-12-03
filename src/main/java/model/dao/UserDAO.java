@@ -22,6 +22,7 @@ public class UserDAO {
      * Member 테이블에 새로운 사용자 생성
      */
     public int create(User user) throws SQLException {
+    	System.out.println("UserDAO.create 호출됨");
         // 먼저 중복된 login_id가 존재하는지 확인
         if (existingUser(user.getLoginId())) {
             // 중복된 login_id가 존재하면 삽입하지 않고 0을 반환
@@ -29,15 +30,16 @@ public class UserDAO {
         }
 
         String sql = "INSERT INTO Member (id, login_id, password, nickname, dormitory_name, room_number, profile_url, points) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                     "VALUES (member_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
         Object[] param = new Object[] {
-            user.getId(), user.getLoginId(), user.getPassword(), user.getNickname(),
+            user.getLoginId(), user.getPassword(), user.getNickname(),
             user.getDormitoryName(), user.getRoomNumber(), user.getProfileUrl(), user.getPoints()
         };
         jdbcUtil.setSqlAndParameters(sql, param); // JDBCUtil에 insert문과 매개 변수 설정
 
         try {				
             int result = jdbcUtil.executeUpdate();	// insert 문 실행
+            System.out.println("INSERT 실행 결과: " + result); // 디버깅 로그
             return result;
         } catch (Exception ex) {
             jdbcUtil.rollback();
@@ -234,6 +236,69 @@ public class UserDAO {
             jdbcUtil.close(); 
         }
         return 0; 
+    }
+
+
+    // 이거 방금 추가.
+    public User findUserById(int userId) throws SQLException {
+        String sql = "SELECT id, login_id, password, nickname, dormitory_name, room_number, profile_url, points " +
+                     "FROM Member WHERE id = ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[]{userId}); // SQL 및 매개변수 설정
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
+            if (rs.next()) {
+                // User 객체 생성 및 반환
+                return new User(
+                    rs.getInt("id"),
+                    rs.getString("login_id"),
+                    rs.getString("password"),
+                    rs.getString("nickname"),
+                    rs.getString("dormitory_name"),
+                    rs.getString("room_number"),
+                    rs.getString("profile_url"),
+                    rs.getInt("points")
+                );
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            jdbcUtil.close(); // 리소스 반환
+        }
+        return null; // 사용자 없음
+    }
+    
+    public boolean existingNickname(String nickname) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Member WHERE nickname=?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {nickname}); // JDBCUtil에 query문과 매개 변수 설정
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // query 실행
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return (count == 1);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            jdbcUtil.close(); // resource 반환
+        }
+        return false;
+    }
+    public int findUserIdByLoginId(String loginId) throws SQLException {
+        String sql = "SELECT id FROM member WHERE login_id = ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {loginId});
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                throw new SQLException("사용자를 찾을 수 없습니다: " + loginId);
+            }
+        } finally {
+            jdbcUtil.close();
+        }
     }
 
 }

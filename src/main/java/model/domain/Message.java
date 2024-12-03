@@ -14,7 +14,9 @@ public class Message {
 
     // 기본 생성자
     public Message() {}
-
+    public Message(int id) {
+    	this.id = id;
+    }
     // 생성자
     public Message(int id, String content, Date sentDate, int status, Integer requestPostId, Integer providePostId, User sender, User receiver) {
         this.id = id;
@@ -26,6 +28,17 @@ public class Message {
         this.sender = sender;
         this.receiver = receiver;
     }
+    
+    public Message(String content, Date sentDate, int status, Integer requestPostId, Integer providePostId, User sender, User receiver) {
+        this.content = content;
+        this.sentDate = sentDate;
+        this.status = status;
+        this.requestPostId = requestPostId;
+        this.providePostId = providePostId;
+        this.sender = sender;
+        this.receiver = receiver;
+    }
+
 
     // getter 및 setter
     public int getId() {

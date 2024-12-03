@@ -15,7 +15,7 @@
 	<div class="container">
 		<!-- Header -->
 		<div class="header">
-			<a href="#" class="back-btn"> <img
+			<a href="#" class="back-btn" onclick="history.back(); return false;"> <img
 				src="${pageContext.request.contextPath}/images/back.png" alt="Back"
 				class="back-img">
 			</a>
@@ -32,8 +32,7 @@
 		</p>
 
 		<!-- Registration Form -->
-		<form
-			action="${pageContext.request.contextPath}/user/register"
+		<form action="${pageContext.request.contextPath}/user/register"
 			method="POST" class="register-form">
 			<!-- 아이디 -->
 			<div class="input-group">
@@ -53,11 +52,10 @@
 			<!-- 비밀번호 확인 -->
 			<div class="input-group">
 				<label for="confirm-password">비밀번호 확인</label> <input type="password"
-					id="confirm-password" name="confirm-password"
-					placeholder="비밀번호 확인">
+					id="confirm-password" name="confirm-password" placeholder="비밀번호 확인">
 			</div>
 			<span class="validation-msg" id="pwdCheck-id-validation"></span>
-			
+
 			<!-- 닉네임 -->
 			<div class="input-group">
 				<label for="nicknickname">닉네임</label> <input type="text"
@@ -70,24 +68,24 @@
 			<div class="dormitory_name-group">
 				<div class="input-group">
 					<label for="dormitory_name-nickname">기숙사 관 이름</label> <input
-						type="text" id="dormitory_name-nickname"
-						name="dormitory_name" placeholder="○○관">
+						type="text" id="dormitory_name-nickname" name="dormitory_name"
+						placeholder="○○관">
 				</div>
 				<div class="input-group">
 					<label for="dormitory_name-room_number">기숙사 호실</label> <input
-						type="text" id="dormitory_name-room_number"
-						name="room_number" placeholder="○○호실">
+						type="text" id="dormitory_name-room_number" name="room_number"
+						placeholder="○○호실">
 				</div>
 			</div>
 
 			<button type="submit" class="register-btn">회원가입</button>
-		</form>
-		<c:if test="${registerFailed}">
+			<c:if test="${registerFailed}">
 			<div class="error-message"
 				style="color: red; text-align: center; margin-top: 10px;">
 				<c:out value="${errorMsg}" />
 			</div>
 		</c:if>
+		</form>
 	</div>
 </body>
 <script
