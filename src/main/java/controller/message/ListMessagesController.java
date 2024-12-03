@@ -80,13 +80,13 @@ public class ListMessagesController implements Controller {
             List<Message> messages;
 
             // MessageDAO를 사용하여 메시지 가져오기
-            MessageDAO messageDAO = new MessageDAO();
+            MessageService messageService = new MessageService();
             if (query != null && !query.trim().isEmpty()) {
                 // 검색어가 있을 경우
-                messages = messageDAO.searchMessages(query.trim());
+                messages = messageService.searchMessages(query.trim());
             } else {
                 // 검색어가 없을 경우
-                messages = messageDAO.findMessagesByUserId(userId);
+                messages = messageService.getLatestMessages(userId); // 여기 바꿔야해
             }
 
             // request에 messages 속성 설정

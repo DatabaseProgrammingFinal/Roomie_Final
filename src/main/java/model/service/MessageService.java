@@ -85,5 +85,9 @@ public class MessageService {
     public List<Message> getLatestMessages(int userId) throws SQLException {
         return messageDAO.findLatestMessagesByUserId(userId);
     }
+    public List<Message> searchMessages(String query) throws SQLException {
+        return messageDAO.searchMessages(query);
+    }
+
 
 }

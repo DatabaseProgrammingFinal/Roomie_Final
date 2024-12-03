@@ -36,14 +36,14 @@ public class ChatController implements Controller {
         }
 
         // 메시지 필터링
-        List<Message> messages = messageService.getMessagesWithDetails(senderId, recipientId);
+        List<Message> latestMessages = messageService.getLatestMessages(senderId);
+
 
         // JSP로 데이터 전달
-        request.setAttribute("messages", messages);
+        request.setAttribute("messages", latestMessages);
         request.setAttribute("recipientId", recipientId);
 
         return "/message/chat.jsp";
     }
-
 
 }

@@ -36,7 +36,7 @@ public class RequestMapping {
         mappings.put("/message", new ListMessagesController()); 
         mappings.put("/message/chat", new ChatController());
         mappings.put("/message/send", new SendMessageController());
-        mappings.put("/message/search", new SearchMessageController());
+        // mappings.put("/message/search", new SearchMessageController());
         
         logger.info("Initialized Request Mapping!");
     }

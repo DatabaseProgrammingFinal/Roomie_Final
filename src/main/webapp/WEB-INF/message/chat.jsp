@@ -66,6 +66,7 @@
 			</form>
 		</footer>
 	</div>
-
+<script
+	src="${pageContext.request.contextPath}/js/message/chat.js"></script>
 </body>
 </html>
