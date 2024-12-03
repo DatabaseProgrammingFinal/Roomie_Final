@@ -356,23 +356,41 @@ public class MessageDAO {
         }
     }
 
- // MessageDAO.java
 
     public List<Message> findLatestMessagesByUserId(int userId) throws SQLException {
         // SQL: 각 채팅방의 최신 메시지를 가져오는 쿼리
-        String sql = "SELECT " +
-                     "    GREATEST(sender_id, recipient_id) AS user1, " +
-                     "    LEAST(sender_id, recipient_id) AS user2, " +
-                     "    MAX(sent_date) AS latest_date, " +
-                     "    content, id, status, sender_id, recipient_id " +
-                     "FROM Message " +
-                     "WHERE sender_id = ? OR recipient_id = ? " +
-                     "GROUP BY " +
-                     "    GREATEST(sender_id, recipient_id), " +
-                     "    LEAST(sender_id, recipient_id), " +
-                     "    content, id, status, sender_id, recipient_id " +
-                     "ORDER BY latest_date DESC";
+//        String sql = "SELECT " +
+//                "    GREATEST(sender_id, recipient_id) AS user1, " +
+//                "    LEAST(sender_id, recipient_id) AS user2, " +
+//                "    MAX(sent_date) AS latest_date, " +
+//                "    content, id, status, sender_id, recipient_id " +
+//                "FROM Message " +
+//                "WHERE sender_id = ? OR recipient_id = ? " +
+//                "GROUP BY " +
+//                "    GREATEST(sender_id, recipient_id), " +
+//                "    LEAST(sender_id, recipient_id), " +
+//                "    content, id, status, sender_id, recipient_id " +
+//                "ORDER BY latest_date DESC";
 
+    	
+    	String sql = "SELECT " +
+                "    content, id, status, sender_id, recipient_id, latest_date " +
+                "FROM ( " +
+                "    SELECT " +
+                "        content, id, status, sender_id, recipient_id, " +
+                "        GREATEST(sender_id, recipient_id) AS user1, " +
+                "        LEAST(sender_id, recipient_id) AS user2, " +
+                "        sent_date AS latest_date, " +
+                "        ROW_NUMBER() OVER ( " +
+                "            PARTITION BY GREATEST(sender_id, recipient_id), LEAST(sender_id, recipient_id) " +
+                "            ORDER BY sent_date DESC " +
+                "        ) AS rn " +
+                "    FROM Message " +
+                "    WHERE sender_id = ? OR recipient_id = ? " +
+                ") subquery " +
+                "WHERE rn = 1 " +
+                "ORDER BY latest_date DESC";
+    	
         jdbcUtil.setSqlAndParameters(sql, new Object[] {userId, userId});
 
         ResultSet rs = null;
