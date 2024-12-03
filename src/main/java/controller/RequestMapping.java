@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import controller.user.*;
 import controller.comm.*;
-import controller.post.CreateProvidePostController;
 import controller.post.*;
-import controller.user.LoginController;
+import controller.message.*;
+import model.service.ProvidePostService;
 
 public class RequestMapping {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
@@ -19,31 +19,18 @@ public class RequestMapping {
 
     public void initMapping() {
     	// 각 uri에 대응되는 controller 객체를 생성 및 저장
-        mappings.put("/", new ForwardController("index.jsp"));
-        mappings.put("/User/login/form", new ForwardController("/User/loginForm.jsp"));
-        mappings.put("/User/login", new LoginController());
-        mappings.put("/User/logout", new LogoutController());
-        mappings.put("/User/list", new ListUserController());
-        mappings.put("/User/view", new ViewUserController());
+        mappings.put("/", new ForwardController("/onboarding/logoScreen.jsp"));
+        mappings.put("/user/login", new LoginController());
+        mappings.put("/user/register", new RegisterUserController());
+        mappings.put("/user/checkLoginId", new CheckUserIdController());
+        mappings.put("/user/checkNickname", new CheckNicknameController());
+       
         
-        // 회원 가입 폼 요청과 가입 요청 처리 병합 (폼에 커뮤니티 선택 메뉴 추가를 위함)
-//      mappings.put("/User/register/form", new ForwardController("/User/registerForm.jsp"));
-//      mappings.put("/User/register", new RegisterUserController());
-        mappings.put("/User/register", new RegisterUserController());
+     // chat
+        mappings.put("/message", new ListMessagesController()); 
+        mappings.put("/message/chat", new ChatController());
+        mappings.put("/message/send", new SendMessageController());
 
-        // 사용자 정보 수정 폼 요청과 수정 요청 처리 병합
-//      mappings.put("/User/update/form", new UpdateUserFormController());
-//      mappings.put("/User/update", new UpdateUserController());        
-        mappings.put("/User/update", new UpdateUserController());
-        
-        mappings.put("/User/delete", new DeleteUserController());
-        
-        // 커뮤니티 관련 request URI 추가
-        mappings.put("/community/list", new ListCommunityController());
-        mappings.put("/community/view", new ViewCommunityController());
-        mappings.put("/community/create/form", new ForwardController("/community/creationForm.jsp"));
-        mappings.put("/community/create", new CreateCommunityController());
-        mappings.put("/community/update", new UpdateCommunityController());
         
      // ProvidePost 관련 매핑 추가
         mappings.put("/providepost/list", new ListProvidePostController()); // 전체 대여글 조회
