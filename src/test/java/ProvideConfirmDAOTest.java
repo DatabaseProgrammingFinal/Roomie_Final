@@ -66,8 +66,8 @@ public class ProvideConfirmDAOTest {
                 "INSERT INTO Member (id, login_id, password, nickname, dormitory_name, room_number, profile_url, points) " +
                 "VALUES (2, 'provider01', 'password456', '김둘리', 'XX관', '202호', 'profile2.jpg', 200)";
             String insertProvidePostSQL = 
-                "INSERT INTO Rental_provide_post (id, title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, provider_id, image_url) " +
-                "VALUES (1, '노트북 대여', '노트북', '대여 가능', 50, TO_DATE('2024-11-01', 'YYYY-MM-DD'), TO_DATE('2024-11-02', 'YYYY-MM-DD'), 'XX관 1층', 1, 2, 'laptop.jpg')";
+                "INSERT INTO Rental_provide_post (id, title, rental_item, content, points, rental_start_date, rental_end_date, rental_location,return_location, status, provider_id, image_url) " +
+                "VALUES (1, '노트북 대여', '노트북', '대여 가능', 50, TO_DATE('2024-11-01', 'YYYY-MM-DD'), TO_DATE('2024-11-02', 'YYYY-MM-DD'), 'XX관 1층', 'OO관 2층',1, 2, 'laptop.jpg')";
             String insertProvideConfirmSQL = 
                 "INSERT INTO Rental_provide_confirm (id, actual_return_date, penalty_points, overdue_days, provide_post_id, requester_id) " +
                 "VALUES (1, TO_DATE('2024-11-02', 'YYYY-MM-DD'), 0, 0, 1, 1)";
@@ -167,4 +167,38 @@ public class ProvideConfirmDAOTest {
         assertEquals("XX관", provider.get("dormitory_name"));
         assertEquals("202호", provider.get("room_number"));
     }
+    
+    @Test
+    public void testGetRentalDecisionDetails() throws SQLException {
+        // 메서드 실행
+        Map<String, Object> rentalDetails = provideConfirmDAO.getRentalDecisionDetails(1);
+
+        // 결과 검증
+        assertNotNull("Rental decision details should not be null", rentalDetails);
+
+        // 물품명 확인
+        assertEquals("노트북", rentalDetails.get("itemnickname"));
+
+        // 요청자 정보 확인
+        Map<String, Object> requester = (Map<String, Object>) rentalDetails.get("requester");
+        assertNotNull("Requester information should not be null", requester);
+        assertEquals("홍길동", requester.get("nickname"));
+        assertEquals("OO관", requester.get("dormitory_name"));
+        assertEquals("101호", requester.get("room_number"));
+
+        // 제공자 정보 확인
+        Map<String, Object> provider = (Map<String, Object>) rentalDetails.get("provider");
+        assertNotNull("Provider information should not be null", provider);
+        assertEquals("김둘리", provider.get("nickname"));
+        assertEquals("XX관", provider.get("dormitory_name"));
+        assertEquals("202호", provider.get("room_number"));
+
+        // 대여 정보 확인
+        assertEquals(50, rentalDetails.get("store")); // 제공 금액
+        assertEquals("XX관 1층", rentalDetails.get("rental_place"));
+        assertEquals("OO관 2층", rentalDetails.get("return_place"));
+        assertEquals(java.sql.Date.valueOf("2024-11-01"), rentalDetails.get("rental_date"));
+        assertEquals(java.sql.Date.valueOf("2024-11-02"), rentalDetails.get("return_date"));
+    }
+
 }

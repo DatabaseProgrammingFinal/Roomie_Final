@@ -62,5 +62,27 @@ public class ProvideConfirmService {
             throw e;
         }
     }
-}
+    
+    /**
+     * 제공 글 ID로 대여 정보를 조회합니다.
+     * @param providePostId 제공 글 ID
+     * @return 대여 정보를 포함한 Map 객체
+     * @throws SQLException 데이터베이스 오류
+     */
 
+    public Map<String, Object> getRentalDecisionDetails(int providePostId)throws SQLException {
+        // TODO Auto-generated method stub
+        try {
+            Map<String, Object> rentalDetails = provideConfirmDAO.getRentalDecisionDetails(providePostId);
+            if (rentalDetails == null) {
+                throw new SQLException("ProvidePost ID " + providePostId + "에 대한 대여 정보를 찾을 수 없습니다.");
+            }
+            return rentalDetails;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+   
+}
