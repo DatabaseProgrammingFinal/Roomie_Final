@@ -158,37 +158,24 @@ public class JDBCUtil {
 
     // 자원 반환
     public void close() {
-        if (rs != null) {
-            try {
-                rs.close();
-                rs = null;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+        try {
+            if (rs != null) { rs.close(); }
+            if (pstmt != null) { pstmt.close(); }
+            if (cstmt != null) { cstmt.close(); }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
-        }
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-                pstmt = null;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (cstmt != null) {
-            try {
-                cstmt.close();
-                cstmt = null;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (conn != null) {
-            try {
-                conn.close();
-                conn = null;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            rs = null;
+            pstmt = null;
+            cstmt = null;
+            conn = null; // Connection을 명확하게 정리
         }
     }
 

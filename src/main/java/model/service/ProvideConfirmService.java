@@ -50,6 +50,34 @@ public class ProvideConfirmService {
         }
     }
     
+    /**
+     * ProvideConfirm 데이터를 수정합니다.
+     * @param pc 수정할 ProvideConfirm 객체
+     * @throws SQLException 데이터베이스 오류
+     */
+    public void updateProvideConfirm(ProvideConfirm pc) throws SQLException {
+        try {
+            provideConfirmDAO.update(pc);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("ProvideConfirm 업데이트 중 오류 발생", e);
+        }
+    }
+
+    /**
+     * ProvideConfirm 데이터를 삭제합니다.
+     * @param id 삭제할 ProvideConfirm의 ID
+     * @throws SQLException 데이터베이스 오류
+     */
+    public void deleteProvideConfirm(int id) throws SQLException {
+        try {
+            provideConfirmDAO.delete(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("ProvideConfirm 삭제 중 오류 발생", e);
+        }
+    }
+    
     public Map<String, Object> getRequesterAndProviderInfo(int requesterId, int providePostId) throws SQLException {
         try {
             Map<String, Object> info = provideConfirmDAO.getRequesterAndProviderInfo(requesterId, providePostId);

@@ -21,7 +21,7 @@ public class ProvideConfirmDAO {
     public ProvideConfirm create(ProvideConfirm pc) throws SQLException {
         String sql = "INSERT INTO Rental_provide_confirm " +
                      "(id, actual_return_date, penalty_points, overdue_days, provide_post_id, requester_id) " +
-                     "VALUES (Rental_request_confirm_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+                     "VALUES (Rental_provide_confirm_seq.NEXTVAL, ?, ?, ?, ?, ?)";
 
         Object[] param = new Object[] {
             new java.sql.Date(pc.getActual_return_date().getTime()), // Date 객체로 변환
@@ -50,7 +50,46 @@ public class ProvideConfirmDAO {
             jdbcUtil.close(); 
         }
     }
+    
+    public void update(ProvideConfirm pc) throws SQLException {
+        String sql = "UPDATE Rental_provide_confirm " +
+                     "SET penalty_points = ?, overdue_days = ? " +
+                     "WHERE id = ?";
 
+        Object[] param = new Object[] {
+            pc.getPenalty_points(),
+            pc.getOverdue_days(),
+            pc.getId()
+        };
+
+        jdbcUtil.setSqlAndParameters(sql, param);
+
+        try {
+            jdbcUtil.executeUpdate();
+            jdbcUtil.commit();
+        } catch (Exception ex) {
+            jdbcUtil.rollback();
+            ex.printStackTrace();
+        } finally {
+            jdbcUtil.close();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM Rental_provide_confirm WHERE id = ?";
+
+        jdbcUtil.setSqlAndParameters(sql, new Object[]{id});
+
+        try {
+            jdbcUtil.executeUpdate();
+            jdbcUtil.commit();
+        } catch (Exception ex) {
+            jdbcUtil.rollback();
+            ex.printStackTrace();
+        } finally {
+            jdbcUtil.close();
+        }
+    }
     
     public ProvideConfirm findById(int id) throws SQLException {
         String sql = "SELECT id, actual_return_date, penalty_points, overdue_days, provide_post_id, requester_id " +
