@@ -138,7 +138,7 @@ public class ProvideConfirmServiceTest {
 
     @Test
     public void testGetRequesterAndProviderInfo() throws SQLException {
-        Map<String, Object> result = provideConfirmService.getRequesterAndProviderInfo(1, 1);
+        Map<String, Object> result = provideConfirmService.getRequesterAndProviderInfo(2,1);
 
         assertNotNull("요청자와 제공자 정보가 null입니다.", result);
 

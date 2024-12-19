@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import controller.Controller;
+import model.domain.ProvideConfirm;
 import model.service.ProvideConfirmService;
 
 public class CreateConfirmController implements Controller {
@@ -16,11 +17,22 @@ public class CreateConfirmController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        int providePostId = 1; // 제공 글 ID (테스트용)
+        int requesterId = Integer.parseInt(request.getParameter("requesterId")); // 전달받은 요청자 ID
+        int providePostId = Integer.parseInt(request.getParameter("providePostId")); // 전달받은 제공 글 ID
 
         try {
-            // 서비스에서 대여 정보를 가져옴
-            Map<String, Object> rentalDetails = provideConfirmService.getRentalDecisionDetails(providePostId);
+            // DB에 새로운 ProvideConfirm 생성
+            ProvideConfirm provideConfirm = new ProvideConfirm();
+            provideConfirm.setRequester_id(requesterId);
+            provideConfirm.setProvide_post_id(providePostId);
+            provideConfirm.setActual_return_date(new java.sql.Date(System.currentTimeMillis())); // 기본값으로 현재 날짜 설정
+            provideConfirm.setPenalty_points(0); // 기본값 0
+            provideConfirm.setOverdue_days(0); // 기본값 0
+
+            provideConfirmService.createProvideConfirm(provideConfirm); // DB에 삽입
+
+            // 대여 정보를 가져옴
+            Map<String, Object> rentalDetails = provideConfirmService.getRentalDecisionDetails(provideConfirm.getId());
 
             if (rentalDetails == null) {
                 request.setAttribute("error", "대여 정보를 가져올 수 없습니다.");

@@ -11,6 +11,7 @@ public class RentalProvidePost {
     private Date rentalStartDate; // 대여 시작일
     private Date rentalEndDate; // 대여 종료일
     private String rentalLocation; // 대여 위치
+    private String returnLocation;
     private int status; // 상태 (0 : 진행 전, 1 : 완료)
     private int providerId; // 제공자 ID (외래키)
     private String imageUrl; // 이미지 URL (nullable)
@@ -20,7 +21,7 @@ public class RentalProvidePost {
 
     // 모든 필드를 포함한 생성자
     public RentalProvidePost(int id, String title, String rentalItem, String content, int points, Date rentalStartDate, 
-                             Date rentalEndDate, String rentalLocation, int status, int providerId, String imageUrl) {
+                             Date rentalEndDate, String rentalLocation,String returnLocation, int status, int providerId, String imageUrl) {
         this.id = id;
         this.title = title;
         this.rentalItem = rentalItem;
@@ -29,6 +30,7 @@ public class RentalProvidePost {
         this.rentalStartDate = rentalStartDate;
         this.rentalEndDate = rentalEndDate;
         this.rentalLocation = rentalLocation;
+        this.returnLocation=returnLocation;
         this.status = status;
         this.providerId = providerId;
         this.imageUrl = imageUrl;
@@ -98,6 +100,14 @@ public class RentalProvidePost {
     public void setRentalLocation(String rentalLocation) {
         this.rentalLocation = rentalLocation;
     }
+    
+    public String getReturnLocation() {
+        return returnLocation;
+    }
+
+    public void setReturnLocation(String returnLocation) {
+        this.returnLocation = returnLocation;
+    }
 
     public int getStatus() {
         return status;
@@ -134,9 +144,12 @@ public class RentalProvidePost {
                 ", rentalStartDate=" + rentalStartDate +
                 ", rentalEndDate=" + rentalEndDate +
                 ", rentalLocation='" + rentalLocation + '\'' +
+                ", renturnLocation='" + returnLocation + '\'' +
                 ", status=" + status +
                 ", providerId=" + providerId +
                 ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
+
+    
 }

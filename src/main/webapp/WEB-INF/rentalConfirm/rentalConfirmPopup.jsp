@@ -29,16 +29,17 @@
             </div>
             <p class="confirmation-text">대여를 진행하시겠습니까?</p>
             <div class="button-container">
-                <button class="yes-btn" onclick="redirectToCreateConfirm()">예</button>
-                <button class="no-btn" onclick="history.back();">아니요</button>
+               <button class="yes-btn" 
+        onclick="redirectToCreateConfirm(${requesterId}, ${providePostId})">예</button>
+<button class="no-btn" onclick="history.back();">아니요</button>
             </div>
         </div>
     </div>
 
     <script>
-        function redirectToCreateConfirm() {
-            window.location.href = '${pageContext.request.contextPath}/confirm/create';
-        }
-    </script>
+    function redirectToCreateConfirm(requesterId, providePostId) {
+        window.location.href = '${pageContext.request.contextPath}/confirm/create?requesterId=' + requesterId + '&providePostId=' + providePostId;
+    }
+</script>
 </body>
 </html>
