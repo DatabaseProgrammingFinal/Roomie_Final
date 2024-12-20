@@ -1,5 +1,6 @@
 package model.dao;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -304,35 +305,7 @@ public class ProvideConfirmDAO {
     
    
     
-//    public void updateRentalDecisionDetails(RentalProvidePost rentalProvidePost) throws SQLException {
-//        String sql = "UPDATE Rental_provide_post " +
-//                     "SET points = ?, rental_location = ?, return_location = ?, rental_start_date = ?, rental_end_date = ? " +
-//                     "WHERE id = ?";
-//
-//        Object[] param = new Object[] {
-//            rentalProvidePost.getPoints(),
-//            rentalProvidePost.getRentalLocation(),
-//            rentalProvidePost.getReturnLocation(),
-//            new java.sql.Date(rentalProvidePost.getRentalStartDate().getTime()),
-//            new java.sql.Date(rentalProvidePost.getRentalEndDate().getTime()),
-//            rentalProvidePost.getId()
-//        };
-//
-//        jdbcUtil.setSqlAndParameters(sql, param);
-//
-//        try {
-//            jdbcUtil.executeUpdate();
-//            jdbcUtil.commit();
-//        } catch (Exception ex) {
-//            jdbcUtil.rollback();
-//            ex.printStackTrace();
-//            throw new SQLException("Error updating rental decision details", ex);
-//        } finally {
-//            jdbcUtil.close();
-//        }
-//    }
-    
-    public void updateRentalDecisionDetails(int provideConfirmId) throws SQLException {
+    public void updateRentalDecisionDetails(int provideConfirmId, String store, String rentalPlace, String returnPlace, Date rentalDate, Date returnDate) throws SQLException {
         // Rental_provide_confirm 테이블에서 provide_post_id를 가져오는 쿼리
         String fetchProvidePostIdSql = "SELECT provide_post_id FROM Rental_provide_confirm WHERE id = ?";
 
@@ -360,11 +333,11 @@ public class ProvideConfirmDAO {
                            "WHERE id = ?";
 
         Object[] updateParams = new Object[] {
-            100, // 예: 포인트 값
-            "서울특별시 강남구", // 예: 대여 위치
-            "서울특별시 마포구", // 예: 반환 위치
-            new java.sql.Date(System.currentTimeMillis()), // 예: 대여 시작일
-            new java.sql.Date(System.currentTimeMillis() + 86400000), // 예: 대여 종료일
+            Integer.parseInt(store), // store 값을 정수로 변환하여 전달
+            rentalPlace,
+            returnPlace,
+            rentalDate,
+            returnDate,
             providePostId
         };
 
@@ -381,6 +354,7 @@ public class ProvideConfirmDAO {
             jdbcUtil.close();
         }
     }
+
     
     public RentalProvidePost findConfirmById(int id) throws SQLException {
         String sql = "SELECT id, title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, return_location, status, provider_id, image_url " +

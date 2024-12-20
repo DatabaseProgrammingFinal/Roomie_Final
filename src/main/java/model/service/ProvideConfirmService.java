@@ -137,9 +137,18 @@ public class ProvideConfirmService {
      * @param rentalProvidePost 수정할 RentalProvidePost 객체
      * @throws SQLException 데이터베이스 오류
      */
-    public void updateRentalDecisionDetails(int provideConfirmId) throws SQLException {
+//    public void updateRentalDecisionDetails(int provideConfirmId) throws SQLException {
+//        try {
+//            provideConfirmDAO.updateRentalDecisionDetails(provideConfirmId);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw new SQLException("RentalProvidePost 업데이트 중 오류 발생", e);
+//        }
+//    }
+
+    public void updateRentalDecisionDetails(int provideConfirmId, String store, String rentalPlace, String returnPlace, java.sql.Date rentalDate, java.sql.Date returnDate) throws SQLException {
         try {
-            provideConfirmDAO.updateRentalDecisionDetails(provideConfirmId);
+            provideConfirmDAO.updateRentalDecisionDetails(provideConfirmId, store, rentalPlace, returnPlace, rentalDate, returnDate);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException("RentalProvidePost 업데이트 중 오류 발생", e);
