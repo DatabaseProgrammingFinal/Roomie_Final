@@ -7,11 +7,20 @@ import org.slf4j.LoggerFactory;
 
 import controller.user.*;
 import controller.comm.*;
+import controller.confirm.ConfirmController;
+import controller.confirm.CreateConfirmController;
+import controller.confirm.StartConfirmController;
+import controller.confirm.ReturnConfirmController;
+import controller.confirm.ViewConfirmController;
+import controller.confirm.OutComeConfirmController;
+import controller.confirm.UpdateConfirmController;
+import controller.confirm.UpdateMemberPointsController;
 import controller.message.ChatController;
 import controller.message.ListMessagesController;
 import controller.message.SendMessageController;
 import controller.post.CreateProvidePostController;
 import controller.post.ListProvidePostController;
+
 import controller.user.LoginController;
 import model.service.ProvidePostService;
 
@@ -36,6 +45,18 @@ public class RequestMapping {
         mappings.put("/message/chat", new ChatController());
         mappings.put("/message/send", new SendMessageController());
         
+        
+        
+        //대여확정 confrim관련 기능
+        mappings.put("/confirm/create", new CreateConfirmController());
+        mappings.put("/confirm/start", new StartConfirmController());
+        mappings.put("/confirm/return", new ReturnConfirmController());
+        mappings.put("/confirm/view", new ViewConfirmController());
+        mappings.put("/confirm/outcome", new OutComeConfirmController());
+        mappings.put("/confirm/update", new UpdateConfirmController());
+        mappings.put("/confirm/updatePoints", new UpdateMemberPointsController());
+
+        mappings.put("/confirm", new ConfirmController());
         
         logger.info("Initialized Request Mapping!");
     }
