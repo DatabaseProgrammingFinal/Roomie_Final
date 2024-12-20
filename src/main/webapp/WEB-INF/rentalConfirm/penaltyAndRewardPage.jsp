@@ -105,8 +105,8 @@
 					</c:otherwise>
 				</c:choose>
 
-
-				<button class="start-rental-btn">상벌점 부과</button>
+					<button type="button" class="start-rental-btn" onclick="redirectToUpdatePoints()">상벌점 부과</button>
+				
 			</div>
 
 			<div class="nav">
@@ -126,5 +126,17 @@
 			</div>
 		</div>
 	</div>
+	
+	<script>
+		function redirectToUpdatePoints() {
+			const provideConfirmId = '${provideConfirmId}'; // 서버에서 전달된 provideConfirmId
+			if (provideConfirmId) {
+				window.location.href = '${pageContext.request.contextPath}/confirm/updatePoints?provideConfirmId=' + provideConfirmId;
+			} else {
+				alert('반납 정보가 없습니다. 다시 시도해주세요.');
+			}
+		}
+	</script>
+	
 </body>
 </html>

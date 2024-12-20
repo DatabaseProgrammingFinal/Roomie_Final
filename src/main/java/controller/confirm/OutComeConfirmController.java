@@ -90,7 +90,7 @@ public class OutComeConfirmController implements Controller {
 
             // JSP에 전달
             request.setAttribute("details", details);
-            
+            request.setAttribute("provideConfirmId", provideConfirmId);
             // 성공 시 결과 페이지로 리다이렉트
             return "/rentalConfirm/penaltyAndRewardPage.jsp";
         } catch (Exception e) {

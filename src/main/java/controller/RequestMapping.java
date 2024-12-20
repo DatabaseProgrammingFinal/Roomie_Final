@@ -14,6 +14,7 @@ import controller.confirm.ReturnConfirmController;
 import controller.confirm.ViewConfirmController;
 import controller.confirm.OutComeConfirmController;
 import controller.confirm.UpdateConfirmController;
+import controller.confirm.UpdateMemberPointsController;
 import controller.user.LoginController;
 
 public class RequestMapping {
@@ -58,6 +59,8 @@ public class RequestMapping {
         mappings.put("/confirm/view", new ViewConfirmController());
         mappings.put("/confirm/outcome", new OutComeConfirmController());
         mappings.put("/confirm/update", new UpdateConfirmController());
+        mappings.put("/confirm/updatePoints", new UpdateMemberPointsController());
+
         mappings.put("/confirm", new ConfirmController());
         
         logger.info("Initialized Request Mapping!");

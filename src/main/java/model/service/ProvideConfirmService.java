@@ -166,5 +166,16 @@ public class ProvideConfirmService {
     public Map<String, Integer> getOverdueAndPoints(int provideConfirmId) throws Exception {
         return provideConfirmDAO.getOverdueAndPoints(provideConfirmId);
     }
+    
+    /**
+     * Point 업데이트 (penalty_points 차감 및 points 추가)
+     */
+    public void updateMemberPoints(int provideConfirmId) throws Exception {
+        try {
+            provideConfirmDAO.updateMemberPoints(provideConfirmId);
+        } catch (SQLException ex) {
+            throw new Exception("Error updating member points", ex);
+        }
+    }
    
 }

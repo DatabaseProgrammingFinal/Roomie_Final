@@ -494,6 +494,60 @@ public class ProvideConfirmDAO {
         return null;
     }
 
+    /**
+     * Point 업데이트 (penalty_points 차감 및 points 추가)
+     */
+    public void updateMemberPoints(int provideConfirmId) throws SQLException {
+        // 요청자 ID, 제공자 ID, penalty_points, points 가져오기
+        String fetchSql = "SELECT rpc.requester_id, rp.provider_id, rpc.penalty_points, rp.points " +
+                          "FROM Rental_provide_confirm rpc " +
+                          "JOIN Rental_provide_post rp ON rpc.provide_post_id = rp.id " +
+                          "WHERE rpc.id = ?";
+
+        jdbcUtil.setSqlAndParameters(fetchSql, new Object[]{provideConfirmId});
+
+        int requesterId, providerId, penaltyPoints, points;
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            if (rs.next()) {
+                requesterId = rs.getInt("requester_id");
+                providerId = rs.getInt("provider_id");
+                penaltyPoints = rs.getInt("penalty_points");
+                points = rs.getInt("points");
+            } else {
+                throw new SQLException("ProvideConfirm not found with ID: " + provideConfirmId);
+            }
+        } finally {
+            jdbcUtil.close();
+        }
+
+        // Step 2: Update 요청자 포인트 차감
+        String updateRequesterSql = "UPDATE Member SET points = points - ? WHERE id = ?";
+        jdbcUtil.setSqlAndParameters(updateRequesterSql, new Object[]{penaltyPoints, requesterId});
+
+        try {
+            jdbcUtil.executeUpdate();
+        } catch (Exception ex) {
+            jdbcUtil.rollback();
+            throw new SQLException("Error updating requester points", ex);
+        }
+
+        // Step 3: Update 제공자 포인트 추가
+        String updateProviderSql = "UPDATE Member SET points = points + ? WHERE id = ?";
+        jdbcUtil.setSqlAndParameters(updateProviderSql, new Object[]{points, providerId});
+
+        try {
+            jdbcUtil.executeUpdate();
+            jdbcUtil.commit();
+        } catch (Exception ex) {
+            jdbcUtil.rollback();
+            throw new SQLException("Error updating provider points", ex);
+        } finally {
+            jdbcUtil.close();
+        }
+    }
+
 
     
 }
