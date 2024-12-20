@@ -6,19 +6,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RentalRequestPostDAO {
-    private final Connection connection;
+public class RequestPostDAO {
+	 private Connection connection;
 
     // 생성자
-    public RentalRequestPostDAO(Connection connection) {
+    public RequestPostDAO(Connection connection) {
         this.connection = connection;
     }
 
     // 1. 대여 요청글 등록
     public boolean createRentalRequestPost(RentalRequestPost post) {
-        String sql = "INSERT INTO rental_request_posts (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, requester_id)" +
-        			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        String sql = """
+            INSERT INTO rental_request_post 
+                (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, requester_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, post.getTitle());
             pstmt.setString(2, post.getRentalItem());
             pstmt.setString(3, post.getContent());
@@ -28,16 +32,19 @@ public class RentalRequestPostDAO {
             pstmt.setString(7, post.getRentalLocation());
             pstmt.setInt(8, post.getStatus());
             pstmt.setInt(9, post.getRequesterId());
-            return pstmt.executeUpdate() > 0;
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
+
     // 2. 대여 요청글 조회 (ID로)
     public RentalRequestPost getRentalRequestPostById(int id) {
-        String sql = "SELECT * FROM rental_request_posts WHERE id = ?";
+        String sql = "SELECT * FROM rental_request_post WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -53,7 +60,7 @@ public class RentalRequestPostDAO {
 
     // 3. 제목으로 대여 요청글 검색
     public List<RentalRequestPost> searchRentalRequestPostsByTitle(String title) {
-        String sql = "SELECT * FROM rental_request_posts WHERE title LIKE ?";
+        String sql = "SELECT * FROM rental_request_post WHERE title LIKE ?";
         List<RentalRequestPost> posts = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, "%" + title + "%");
@@ -70,7 +77,7 @@ public class RentalRequestPostDAO {
 
     // 4. 모든 대여 요청글 조회
     public List<RentalRequestPost> getAllRentalRequestPosts() {
-        String query = "SELECT * FROM rental_request_posts";
+        String query = "SELECT * FROM rental_request_post";
         List<RentalRequestPost> posts = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
@@ -82,8 +89,6 @@ public class RentalRequestPostDAO {
         }
         return posts;
     }
-
-
 
     // ResultSet을 RentalRequestPost 객체로 매핑하는 메서드
     private RentalRequestPost mapToRentalRequestPost(ResultSet rs) throws SQLException {

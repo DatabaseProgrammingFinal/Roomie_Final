@@ -19,13 +19,13 @@ public class UserManager {
 	private static UserManager UserMan = new UserManager();
 	private UserDAO UserDAO;
 	private CommunityDAO commDAO;
-	private UserAnalysis UserAanlysis;
+	private UserAnalysis UserAnalysis;
 
 	private UserManager() {
 		try {
 			UserDAO = new UserDAO();
 			commDAO = new CommunityDAO();
-			UserAanlysis = new UserAnalysis(UserDAO);
+			UserAnalysis = new UserAnalysis(UserDAO);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}			
@@ -87,20 +87,25 @@ public class UserManager {
 		return UserDAO.findUserList();
 	}
 
-	public boolean login(String login_id, String password)
+	public int login(String login_id, String password)
 		throws SQLException, UserNotFoundException, PasswordMismatchException {
 		User User = findUser(login_id);
 
 		if (!User.matchPassword(password)) {
 			throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
 		}
-		return true;
+		return User.getId();
 	}
 
 	public List<User> makeFriends(String login_id) throws Exception {
-		return UserAanlysis.recommendFriends(login_id);
+		return UserAnalysis.recommendFriends(login_id);
 	}
-	
+	public boolean isIdTaken(String loginId) throws SQLException {
+	    return UserDAO.existingUser(loginId); // 기존 메서드 호출
+	}
+	public boolean isNicknameTaken(String nickname) throws SQLException {
+	    return UserDAO.existingNickname(nickname); // UserDAO에서 닉네임 중복 여부 확인
+	}
 	public Community createCommunity(Community comm) throws SQLException {
 		return commDAO.create(comm);		
 	}
@@ -131,4 +136,5 @@ public class UserManager {
 	public UserDAO getUserDAO() {
 		return this.UserDAO;
 	}
+	
 }

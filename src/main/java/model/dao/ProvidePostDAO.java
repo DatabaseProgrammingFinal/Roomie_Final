@@ -6,11 +6,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RentalProvidePostDAO {
+public class ProvidePostDAO {
     private Connection connection;
 
     // 생성자
-    public RentalProvidePostDAO(Connection connection) {
+    public ProvidePostDAO(Connection connection) {
         this.connection = connection;
     }
 
@@ -18,6 +18,7 @@ public class RentalProvidePostDAO {
     public boolean createRentalProvidePost(RentalProvidePost post) {
         String query = "INSERT INTO rental_provide_posts (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, return_location,status, provider_id, image_url) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, post.getTitle());
             pstmt.setString(2, post.getRentalItem());
@@ -31,15 +32,16 @@ public class RentalProvidePostDAO {
             pstmt.setInt(10, post.getProviderId());
             pstmt.setString(1, post.getImageUrl());
             return pstmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     // 2. 특정 대여글 조회 (ID로)
     public RentalProvidePost getRentalProvidePostById(int id) {
-        String query = "SELECT * FROM rental_provide_posts WHERE id = ?";
+        String query = "SELECT * FROM rental_provide_post WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -55,7 +57,7 @@ public class RentalProvidePostDAO {
 
     // 3. 제목으로 대여글 검색
     public List<RentalProvidePost> searchRentalProvidePostsByTitle(String title) {
-        String query = "SELECT * FROM rental_provide_posts WHERE title LIKE ?";
+        String query = "SELECT * FROM rental_provide_post WHERE title LIKE ?";
         List<RentalProvidePost> posts = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, "%" + title + "%");
@@ -72,7 +74,7 @@ public class RentalProvidePostDAO {
 
     // 4. 모든 대여글 조회
     public List<RentalProvidePost> getAllRentalProvidePosts() {
-        String query = "SELECT * FROM rental_provide_posts";
+        String query = "SELECT * FROM rental_provide_post";
         List<RentalProvidePost> posts = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
