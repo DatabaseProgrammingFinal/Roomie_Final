@@ -137,9 +137,9 @@ public class ProvideConfirmService {
      * @param rentalProvidePost 수정할 RentalProvidePost 객체
      * @throws SQLException 데이터베이스 오류
      */
-    public void updateRentalDecisionDetails(RentalProvidePost rentalProvidePost) throws SQLException {
+    public void updateRentalDecisionDetails(int provideConfirmId) throws SQLException {
         try {
-            provideConfirmDAO.updateRentalDecisionDetails(rentalProvidePost);
+            provideConfirmDAO.updateRentalDecisionDetails(provideConfirmId);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException("RentalProvidePost 업데이트 중 오류 발생", e);
@@ -152,17 +152,8 @@ public class ProvideConfirmService {
      * @return 검색된 RentalProvidePost 객체
      * @throws SQLException 데이터베이스 오류
      */
-    public RentalProvidePost getRentalProvidePostById(int id) throws SQLException {
-        try {
-            RentalProvidePost rentalProvidePost = provideConfirmDAO.findConfirmById(id);
-            if (rentalProvidePost == null) {
-                throw new SQLException("RentalProvidePost ID " + id + "에 해당하는 데이터가 존재하지 않습니다.");
-            }
-            return rentalProvidePost;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
+    public RentalProvidePost getRentalProvidePostById(int provideConfirmId) throws SQLException {
+        return provideConfirmDAO.getRentalProvidePostById(provideConfirmId);
     }
 
    

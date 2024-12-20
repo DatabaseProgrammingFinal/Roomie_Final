@@ -23,7 +23,11 @@ public class ConfirmController implements Controller {
         }
           else if ("view".equals(action)) { 
             return "/rentalConfirm/rentalStatusView.jsp";
-        } else {
+        } else if ("update".equals(action)) {
+            // 업데이트 로직을 처리할 JSP 또는 컨트롤러 연결
+            return "/rentalConfirm/rentalStatusView.jsp"; // 성공 페이지
+        }
+          else {
             return "/rentalConfirm/penaltyAndRewardPage.jsp";
         }
     }

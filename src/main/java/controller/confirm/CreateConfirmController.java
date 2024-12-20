@@ -40,6 +40,8 @@ public class CreateConfirmController implements Controller {
             }
 
             // JSP로 전달할 데이터를 request attribute에 설정
+            request.setAttribute("provideConfirmId", provideConfirm.getId());
+            request.setAttribute("providePostId", providePostId);
             request.setAttribute("itemnickname", rentalDetails.get("itemnickname"));
 
             Map<String, Object> requester = (Map<String, Object>) rentalDetails.get("requester");

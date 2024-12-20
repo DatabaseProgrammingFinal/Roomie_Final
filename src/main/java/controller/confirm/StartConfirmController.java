@@ -16,12 +16,13 @@ public class StartConfirmController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 고정된 providerId와 requesterId를 사용 (임시 테스트용)
         int requesterId = 2; // 요청자 ID (테스트용)
         int providePostId = 1; // 제공 글 ID (테스트용)
 
+        System.out.println("Controller: Requester ID = " + requesterId);
+        System.out.println("Controller: Provide Post ID = " + providePostId);
+
         try {
-            // 서비스에서 요청자와 제공자 정보를 가져옴
             Map<String, Object> info = provideConfirmService.getRequesterAndProviderInfo(requesterId, providePostId);
 
             if (info == null) {
@@ -32,8 +33,8 @@ public class StartConfirmController implements Controller {
             // JSP에서 사용할 데이터 설정
             request.setAttribute("requester", info.get("requester"));
             request.setAttribute("provider", info.get("provider"));
-            request.setAttribute("requesterId", requesterId);
-            request.setAttribute("providePostId", providePostId);
+            request.setAttribute("requesterId", requesterId); // 이 부분 확인
+            request.setAttribute("providePostId", providePostId); // 이 부분 확인
 
             return "/rentalConfirm/rentalConfirmPopup.jsp"; // JSP로 이동
         } catch (Exception e) {
@@ -41,4 +42,5 @@ public class StartConfirmController implements Controller {
             return "/error.jsp";
         }
     }
+
 }

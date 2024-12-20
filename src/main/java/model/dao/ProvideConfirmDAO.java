@@ -122,44 +122,62 @@ public class ProvideConfirmDAO {
         return null; 
     }
 
+
     
     public Map<String, Object> getRequesterAndProviderInfo(int requesterId, int providePostId) throws SQLException {
-        String sql = "SELECT " +
-                     "m1.nickname AS requester_nickname, m1.dormitory_name AS requester_dormitory, m1.room_number AS requester_room, " +
-                     "m2.nickname AS provider_nickname, m2.dormitory_name AS provider_dormitory, m2.room_number AS provider_room " +
-                     "FROM Member m1 " +
-                     "JOIN Rental_provide_confirm rpc ON rpc.requester_id = m1.id " +
-                     "JOIN Rental_provide_post rp ON rp.id = rpc.provide_post_id " +
-                     "JOIN Member m2 ON rp.provider_id = m2.id " +
-                     "WHERE m1.id = ? AND rp.id = ?";
-        jdbcUtil.setSqlAndParameters(sql, new Object[]{requesterId, providePostId});
+        String requesterSql = "SELECT nickname, dormitory_name, room_number " +
+                              "FROM Member " +
+                              "WHERE id = ?";
+        jdbcUtil.setSqlAndParameters(requesterSql, new Object[]{requesterId});
+
+        System.out.println("Executing SQL: " + requesterSql + " with ID: " + requesterId);
+
+        Map<String, Object> result = new HashMap<>();
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            if (rs.next()) {
+                System.out.println("Requester found: " + rs.getString("nickname"));
+                Map<String, Object> requester = new HashMap<>();
+                requester.put("nickname", rs.getString("nickname"));
+                requester.put("dormitory_name", rs.getString("dormitory_name"));
+                requester.put("room_number", rs.getString("room_number"));
+                result.put("requester", requester);
+            } else {
+                throw new SQLException("Requester not found with ID: " + requesterId);
+            }
+        } finally {
+            jdbcUtil.close();
+        }
+
+        // 제공자 정보 가져오기
+        String providerSql = "SELECT m.nickname, m.dormitory_name, m.room_number " +
+                             "FROM Rental_provide_post rp " +
+                             "JOIN Member m ON rp.provider_id = m.id " +
+                             "WHERE rp.id = ?";
+        jdbcUtil.setSqlAndParameters(providerSql, new Object[]{providePostId});
+
+        System.out.println("Executing SQL: " + providerSql + " with Provide Post ID: " + providePostId);
 
         try {
             ResultSet rs = jdbcUtil.executeQuery();
             if (rs.next()) {
-                Map<String, Object> result = new HashMap<>();
-                Map<String, Object> requester = new HashMap<>();
-                requester.put("nickname", rs.getString("requester_nickname"));
-                requester.put("dormitory_name", rs.getString("requester_dormitory"));
-                requester.put("room_number", rs.getString("requester_room"));
-                result.put("requester", requester);
-
+                System.out.println("Provider found: " + rs.getString("nickname"));
                 Map<String, Object> provider = new HashMap<>();
-                provider.put("nickname", rs.getString("provider_nickname"));
-                provider.put("dormitory_name", rs.getString("provider_dormitory"));
-                provider.put("room_number", rs.getString("provider_room"));
+                provider.put("nickname", rs.getString("nickname"));
+                provider.put("dormitory_name", rs.getString("dormitory_name"));
+                provider.put("room_number", rs.getString("room_number"));
                 result.put("provider", provider);
-
-                return result;
+            } else {
+                throw new SQLException("Provider not found for providePostId: " + providePostId);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
         } finally {
             jdbcUtil.close();
         }
-        return null;
+
+        return result;
     }
+
+
     /**
      * 대여 정보를 상세 조회하여 반환합니다.
      * @param provideConfirmId 제공 대여 ID
@@ -256,25 +274,101 @@ public class ProvideConfirmDAO {
             jdbcUtil.close();
         }
     }
-   
+    
+    public RentalProvidePost getRentalProvidePostById(int provideConfirmId) throws SQLException {
+        // SQL 작성: provide_post_id를 기반으로 RentalProvidePost를 조회
+        String sql = "SELECT * FROM RentalProvidePost WHERE id = " +
+                     "(SELECT provide_post_id FROM Rental_provide_confirm WHERE id = ?)";
+        
+        jdbcUtil.setSqlAndParameters(sql, new Object[]{provideConfirmId});
+        
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            if (rs.next()) {
+                // RentalProvidePost 객체 생성 및 데이터 설정
+                RentalProvidePost rentalProvidePost = new RentalProvidePost();
+                rentalProvidePost.setId(rs.getInt("id"));
+                rentalProvidePost.setPoints(rs.getInt("points"));
+                rentalProvidePost.setRentalLocation(rs.getString("rental_location"));
+                rentalProvidePost.setReturnLocation(rs.getString("return_location"));
+                rentalProvidePost.setRentalStartDate(rs.getDate("rental_start_date"));
+                rentalProvidePost.setRentalEndDate(rs.getDate("rental_end_date"));
+                return rentalProvidePost;
+            } else {
+                throw new SQLException("RentalProvidePost ID " + provideConfirmId + "에 해당하는 데이터가 존재하지 않습니다.");
+            }
+        } finally {
+            jdbcUtil.close();
+        }
+    }
     
    
     
-    public void updateRentalDecisionDetails(RentalProvidePost rentalProvidePost) throws SQLException {
-        String sql = "UPDATE Rental_provide_post " +
-                     "SET points = ?, rental_location = ?, return_location = ?, rental_start_date = ?, rental_end_date = ? " +
-                     "WHERE id = ?";
+//    public void updateRentalDecisionDetails(RentalProvidePost rentalProvidePost) throws SQLException {
+//        String sql = "UPDATE Rental_provide_post " +
+//                     "SET points = ?, rental_location = ?, return_location = ?, rental_start_date = ?, rental_end_date = ? " +
+//                     "WHERE id = ?";
+//
+//        Object[] param = new Object[] {
+//            rentalProvidePost.getPoints(),
+//            rentalProvidePost.getRentalLocation(),
+//            rentalProvidePost.getReturnLocation(),
+//            new java.sql.Date(rentalProvidePost.getRentalStartDate().getTime()),
+//            new java.sql.Date(rentalProvidePost.getRentalEndDate().getTime()),
+//            rentalProvidePost.getId()
+//        };
+//
+//        jdbcUtil.setSqlAndParameters(sql, param);
+//
+//        try {
+//            jdbcUtil.executeUpdate();
+//            jdbcUtil.commit();
+//        } catch (Exception ex) {
+//            jdbcUtil.rollback();
+//            ex.printStackTrace();
+//            throw new SQLException("Error updating rental decision details", ex);
+//        } finally {
+//            jdbcUtil.close();
+//        }
+//    }
+    
+    public void updateRentalDecisionDetails(int provideConfirmId) throws SQLException {
+        // Rental_provide_confirm 테이블에서 provide_post_id를 가져오는 쿼리
+        String fetchProvidePostIdSql = "SELECT provide_post_id FROM Rental_provide_confirm WHERE id = ?";
 
-        Object[] param = new Object[] {
-            rentalProvidePost.getPoints(),
-            rentalProvidePost.getRentalLocation(),
-            rentalProvidePost.getReturnLocation(),
-            new java.sql.Date(rentalProvidePost.getRentalStartDate().getTime()),
-            new java.sql.Date(rentalProvidePost.getRentalEndDate().getTime()),
-            rentalProvidePost.getId()
+        jdbcUtil.setSqlAndParameters(fetchProvidePostIdSql, new Object[] { provideConfirmId });
+
+        int providePostId;
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            if (rs.next()) {
+                providePostId = rs.getInt("provide_post_id");
+            } else {
+                throw new SQLException("해당 provideConfirmId에 대한 레코드가 존재하지 않습니다: " + provideConfirmId);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new SQLException("provide_post_id 조회 중 오류 발생", ex);
+        } finally {
+            jdbcUtil.close();
+        }
+
+        // Rental_provide_post 테이블의 데이터를 업데이트하는 쿼리
+        String updateSql = "UPDATE Rental_provide_post " +
+                           "SET points = ?, rental_location = ?, return_location = ?, rental_start_date = ?, rental_end_date = ? " +
+                           "WHERE id = ?";
+
+        Object[] updateParams = new Object[] {
+            100, // 예: 포인트 값
+            "서울특별시 강남구", // 예: 대여 위치
+            "서울특별시 마포구", // 예: 반환 위치
+            new java.sql.Date(System.currentTimeMillis()), // 예: 대여 시작일
+            new java.sql.Date(System.currentTimeMillis() + 86400000), // 예: 대여 종료일
+            providePostId
         };
 
-        jdbcUtil.setSqlAndParameters(sql, param);
+        jdbcUtil.setSqlAndParameters(updateSql, updateParams);
 
         try {
             jdbcUtil.executeUpdate();
@@ -282,7 +376,7 @@ public class ProvideConfirmDAO {
         } catch (Exception ex) {
             jdbcUtil.rollback();
             ex.printStackTrace();
-            throw new SQLException("Error updating rental decision details", ex);
+            throw new SQLException("대여 결정 세부정보 업데이트 중 오류 발생", ex);
         } finally {
             jdbcUtil.close();
         }
