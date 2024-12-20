@@ -54,7 +54,8 @@ public class ViewConfirmController implements Controller {
             request.setAttribute("return_place", rentalDetails.get("return_place"));
             request.setAttribute("rental_date", rentalDetails.get("rental_date"));
             request.setAttribute("return_date", rentalDetails.get("return_date"));
-
+            
+            request.setAttribute("provideConfirmId", provideConfirmId);
             return "/rentalConfirm/rentalStatusView.jsp"; // JSP로 이동
         } catch (Exception e) {
             e.printStackTrace();

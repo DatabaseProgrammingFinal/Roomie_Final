@@ -2,7 +2,7 @@ package model.service;
 
 import java.sql.SQLException;
 import java.util.Map;
-
+import java.sql.Date;
 import model.dao.ProvideConfirmDAO;
 import model.domain.ProvideConfirm;
 import model.domain.RentalProvidePost;
@@ -117,34 +117,6 @@ public class ProvideConfirmService {
         }
     }
 
-    /**
-     * 대여 제공 글 데이터를 생성합니다.
-     * @param rentalProvidePost RentalProvidePost 객체
-     * @return 생성된 RentalProvidePost 객체
-     * @throws SQLException 데이터베이스 오류
-//     */
-//    public RentalProvidePost createRentalProvidePost(RentalProvidePost rentalProvidePost) throws SQLException {
-//        try {
-//            return provideConfirmDAO.createRentalProvidePost(rentalProvidePost);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            throw new SQLException("RentalProvidePost 생성 중 오류 발생", e);
-//        }
-//    }
-
-    /**
-     * RentalProvidePost 데이터를 수정합니다.
-     * @param rentalProvidePost 수정할 RentalProvidePost 객체
-     * @throws SQLException 데이터베이스 오류
-     */
-//    public void updateRentalDecisionDetails(int provideConfirmId) throws SQLException {
-//        try {
-//            provideConfirmDAO.updateRentalDecisionDetails(provideConfirmId);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            throw new SQLException("RentalProvidePost 업데이트 중 오류 발생", e);
-//        }
-//    }
 
     public void updateRentalDecisionDetails(int provideConfirmId, String store, String rentalPlace, String returnPlace, java.sql.Date rentalDate, java.sql.Date returnDate) throws SQLException {
         try {
@@ -164,6 +136,35 @@ public class ProvideConfirmService {
     public RentalProvidePost getRentalProvidePostById(int provideConfirmId) throws SQLException {
         return provideConfirmDAO.getRentalProvidePostById(provideConfirmId);
     }
+    
+ // 반납 날짜 업데이트
+    public void confirmReturn(int provideConfirmId) throws SQLException {
+        Date currentDate = new Date(System.currentTimeMillis()); // 현재 날짜
+        provideConfirmDAO.updateActualReturnDate(provideConfirmId, currentDate);
+    }
+    
+    public void updateActualReturnDate(int provideConfirmId, Date actualReturnDate) throws Exception {
+        provideConfirmDAO.updateActualReturnDate(provideConfirmId, actualReturnDate);
+    }
 
+    /**
+     * ProvideConfirm의 actual_return_date 조회
+     */
+    public Date getActualReturnDate(int provideConfirmId) throws Exception {
+        return provideConfirmDAO.getActualReturnDate(provideConfirmId); // DAO 호출
+    }
+ 
+
+    public void updateOverdueDays(int provideConfirmId) throws Exception{
+        // TODO Auto-generated method stub
+        provideConfirmDAO.updateOverdueDays(provideConfirmId);
+    }
+    
+    /**
+     * Confirm ID로 overdue_days, penalty_points, points 조회
+     */
+    public Map<String, Integer> getOverdueAndPoints(int provideConfirmId) throws Exception {
+        return provideConfirmDAO.getOverdueAndPoints(provideConfirmId);
+    }
    
 }

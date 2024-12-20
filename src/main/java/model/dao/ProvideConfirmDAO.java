@@ -77,6 +77,30 @@ public class ProvideConfirmDAO {
         }
     }
     
+    
+    public void updateActualReturnDate(int provideConfirmId, Date actualReturnDate) throws SQLException {
+        String sql = "UPDATE Rental_provide_confirm " +
+                     "SET actual_return_date = ? " +
+                     "WHERE id = ?";
+
+        Object[] params = new Object[] {
+            new java.sql.Date(actualReturnDate.getTime()),
+            provideConfirmId
+        };
+
+        jdbcUtil.setSqlAndParameters(sql, params);
+
+        try {
+            jdbcUtil.executeUpdate();
+            jdbcUtil.commit();
+        } catch (Exception ex) {
+            jdbcUtil.rollback();
+            throw new SQLException("Error updating actual return date", ex);
+        } finally {
+            jdbcUtil.close();
+        }
+    }
+    
 
 
 
@@ -387,6 +411,87 @@ public class ProvideConfirmDAO {
             jdbcUtil.close(); 
         }
         return null; 
+    }
+
+    
+    /**
+     * ProvideConfirm의 actual_return_date 조회
+     */
+    public Date getActualReturnDate(int provideConfirmId) throws SQLException {
+        String sql = "SELECT actual_return_date FROM Rental_provide_confirm WHERE id = ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[]{provideConfirmId}); // SQL과 매개변수 설정
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
+            if (rs.next()) {
+                return rs.getDate("actual_return_date"); // actual_return_date 반환
+            }
+        } catch (Exception ex) {
+            throw new SQLException("ProvideConfirm ID로 actual_return_date를 가져오는 중 오류 발생: " + provideConfirmId, ex);
+        } finally {
+            jdbcUtil.close(); // 리소스 정리
+        }
+        return null; // 데이터가 없을 경우 null 반환
+    }
+    
+    /**
+     * 연체 일수(overdue_days) 및 패널티 점수(penalty_points) 계산 및 업데이트
+     */
+    public void updateOverdueDays(int provideConfirmId) throws SQLException {
+        String sqlOverdueDays = "UPDATE Rental_provide_confirm rpc " +
+                                "SET overdue_days = (SELECT CASE WHEN actual_return_date > rp.rental_end_date THEN " +
+                                "CAST(actual_return_date - rp.rental_end_date AS INTEGER) ELSE 0 END " +
+                                "FROM Rental_provide_post rp WHERE rp.id = rpc.provide_post_id) " +
+                                "WHERE rpc.id = ?";
+
+        String sqlPenaltyPoints = "UPDATE Rental_provide_confirm " +
+                                  "SET penalty_points = overdue_days * 50 " +
+                                  "WHERE id = ?";
+
+        try {
+            // 연체 일수 업데이트
+            jdbcUtil.setSqlAndParameters(sqlOverdueDays, new Object[]{provideConfirmId});
+            jdbcUtil.executeUpdate();
+
+            // 패널티 점수 업데이트
+            jdbcUtil.setSqlAndParameters(sqlPenaltyPoints, new Object[]{provideConfirmId});
+            jdbcUtil.executeUpdate();
+
+            jdbcUtil.commit();
+        } catch (Exception ex) {
+            jdbcUtil.rollback();
+            throw new SQLException("Error updating overdue days and penalty points", ex);
+        } finally {
+            jdbcUtil.close();
+        }
+    }
+    
+    /**
+     * overdueDays, penalty_points, points 조회
+     */
+    public Map<String, Integer> getOverdueAndPoints(int provideConfirmId) throws SQLException {
+        String sql = "SELECT rpc.overdue_days, rpc.penalty_points, rp.points " +
+                     "FROM Rental_provide_confirm rpc " +
+                     "JOIN Rental_provide_post rp ON rpc.provide_post_id = rp.id " +
+                     "WHERE rpc.id = ?";
+
+        jdbcUtil.setSqlAndParameters(sql, new Object[]{provideConfirmId});
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            if (rs.next()) {
+                Map<String, Integer> result = new HashMap<>();
+                result.put("overdue_days", rs.getInt("overdue_days"));
+                result.put("penalty_points", rs.getInt("penalty_points"));
+                result.put("points", rs.getInt("points"));
+                return result;
+            }
+        } catch (Exception ex) {
+            throw new SQLException("Error fetching overdue days, penalty points, and points for ProvideConfirm ID: " + provideConfirmId, ex);
+        } finally {
+            jdbcUtil.close();
+        }
+        return null;
     }
 
 

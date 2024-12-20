@@ -2,6 +2,8 @@ package controller.confirm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.sql.Date;
 import java.util.Map;
 
 import controller.Controller;
@@ -25,7 +27,7 @@ public class CreateConfirmController implements Controller {
             ProvideConfirm provideConfirm = new ProvideConfirm();
             provideConfirm.setRequester_id(requesterId);
             provideConfirm.setProvide_post_id(providePostId);
-            provideConfirm.setActual_return_date(new java.sql.Date(System.currentTimeMillis())); // 기본값으로 현재 날짜 설정
+            provideConfirm.setActual_return_date(Date.valueOf("2024-11-27"));
             provideConfirm.setPenalty_points(0); // 기본값 0
             provideConfirm.setOverdue_days(0); // 기본값 0
 

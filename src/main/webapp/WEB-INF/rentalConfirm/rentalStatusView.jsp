@@ -97,8 +97,13 @@
     </div>
     <script>
     function redirectToReturnConfirm() {
-    	window.location.href = '${pageContext.request.contextPath}/confirm/return'
+        const provideConfirmId = '${provideConfirmId}'; // ViewConfirmController에서 전달된 provideConfirmId
+        if (provideConfirmId) {
+            window.location.href = '${pageContext.request.contextPath}/confirm/return?provideConfirmId=' + provideConfirmId;
+        } else {
+            alert('반납 정보가 없습니다. 다시 시도해주세요.');
+        }
     }
-    </script>
+</script>
 </body>
 </html>

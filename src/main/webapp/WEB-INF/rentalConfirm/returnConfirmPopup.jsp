@@ -18,7 +18,6 @@
 			<div class="button-container">
 					<button type="button" class="yes-btn" onclick="redirectToOutComeConfirm()">예</button>
 					<button type="button" class="no-btn" onclick="history.back();">아니오</button>
-				
 			</div>
 			<p class="info-text">예 버튼을 누르면 실제 반납이 자동 등록됩니다.</p>
 		</div>
@@ -26,9 +25,13 @@
 	
 	<script>
     function redirectToOutComeConfirm(){
-    	window.location.href = '${pageContext.request.contextPath}/confirm/outcome';
+        const provideConfirmId = '${provideConfirmId}'; // 서버에서 전달된 provideConfirmId
+        if (provideConfirmId) {
+            window.location.href = '${pageContext.request.contextPath}/confirm/outcome?provideConfirmId=' + provideConfirmId;
+        } else {
+            alert('반납 정보가 없습니다. 다시 시도해주세요.');
+        }
     }
-    
     </script>
 </body>
 </html>
