@@ -11,19 +11,18 @@
 	href="${pageContext.request.contextPath}/css/rentalConfirm/${penaltyExists ? 'yesPenaltyAndRewardPage.css' : 'noPenaltyAndRewardPage.css'}">
 </head>
 <script>
-        function goBack() {
-            window.history.back();
-        }
+	function goBack() {
+		window.history.back();
+	}
 </script>
 <body>
 	<div class="container">
 		<!-- 상단 (Header) -->
 		<div class="header">
-			<a href="javascript:void(0);" class="back-btn" onclick="goBack()"> <img
-				src="${pageContext.request.contextPath}/images/back.png" alt="Back"
-				class="back-img">
+			<a href="javascript:void(0);" class="back-btn" onclick="goBack()">
+				<img src="${pageContext.request.contextPath}/images/back.png"
+				alt="Back" class="back-img">
 			</a>
-			<!-- 뒤로 가기 버튼 이미지 -->
 		</div>
 
 		<div class="content">
@@ -110,14 +109,16 @@
 					</c:otherwise>
 				</c:choose>
 
-					<button type="button" class="start-rental-btn" onclick="redirectToUpdatePoints()">상벌점 부과</button>
-				
+				<button type="button" class="start-rental-btn"
+					onclick="redirectToUpdatePoints()">상벌점 부과</button>
+
 			</div>
 
 			<div class="nav">
 				<!-- 하단 (네비게이션바) -->
 				<nav class="navbar">
-					<a href="${pageContext.request.contextPath}/message" class="nav-item"> <img
+					<a href="${pageContext.request.contextPath}/message"
+						class="nav-item"> <img
 						src="${pageContext.request.contextPath}/images/message.png"
 						alt="Mail">
 					</a> <a href="#" class="nav-item"> <img
@@ -131,17 +132,18 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<script>
 		function redirectToUpdatePoints() {
 			const provideConfirmId = '${provideConfirmId}'; // 서버에서 전달된 provideConfirmId
 			if (provideConfirmId) {
-				window.location.href = '${pageContext.request.contextPath}/confirm/updatePoints?provideConfirmId=' + provideConfirmId;
+				window.location.href = '${pageContext.request.contextPath}/confirm/updatePoints?provideConfirmId='
+						+ provideConfirmId;
 			} else {
 				alert('반납 정보가 없습니다. 다시 시도해주세요.');
 			}
 		}
 	</script>
-	
+
 </body>
 </html>
