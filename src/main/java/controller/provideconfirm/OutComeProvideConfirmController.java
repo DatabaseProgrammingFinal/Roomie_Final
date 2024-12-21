@@ -14,9 +14,7 @@
 //    }
 //}
 
-
-
-package controller.confirm;
+package controller.provideconfirm;
 
 import java.sql.Date;
 import java.util.Calendar;
@@ -46,10 +44,10 @@ public class OutComeProvideConfirmController implements Controller {
         try {
             // Service를 통해 실제 반납 날짜 업데이트
             provideConfirmService.updateActualReturnDate(provideConfirmId, currentDate);
-            
-            //연체일 계산
+
+            // 연체일 계산
             provideConfirmService.updateOverdueDays(provideConfirmId);
-            
+
             Map<String, Object> rentalDetails = provideConfirmService.getRentalDecisionDetails(provideConfirmId);
 
             if (rentalDetails == null) {
@@ -81,10 +79,9 @@ public class OutComeProvideConfirmController implements Controller {
             request.setAttribute("return_place", rentalDetails.get("return_place"));
             request.setAttribute("rental_date", rentalDetails.get("rental_date"));
             request.setAttribute("return_date", rentalDetails.get("return_date"));
-            
+
             Date actualReturnDate = provideConfirmService.getActualReturnDate(provideConfirmId);
             request.setAttribute("actualReturnDate", actualReturnDate);
-            
 
             Map<String, Integer> details = provideConfirmService.getOverdueAndPoints(provideConfirmId);
 

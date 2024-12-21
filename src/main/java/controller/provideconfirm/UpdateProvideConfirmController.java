@@ -1,4 +1,4 @@
-package controller.confirm;
+package controller.provideconfirm;
 
 import java.sql.Date;
 
@@ -31,7 +31,8 @@ public class UpdateProvideConfirmController implements Controller {
             provideConfirmService.updateRentalDecisionDetails(provideConfirmId, store, rentalPlace, returnPlace,
                     rentalDate, returnDate);
 
-            response.sendRedirect(request.getContextPath() + "/provideConfirm/view?provideConfirmId=" + provideConfirmId);
+            response.sendRedirect(
+                    request.getContextPath() + "/provideConfirm/view?provideConfirmId=" + provideConfirmId);
             return null; // 리다이렉트 후 JSP 경로 반환 불필요
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package controller.confirm;
+package controller.provideconfirm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
