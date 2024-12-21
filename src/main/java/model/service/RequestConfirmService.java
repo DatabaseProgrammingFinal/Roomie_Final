@@ -11,14 +11,14 @@ import java.util.List;
 /**
  * RentalRequestPost 비즈니스 로직을 담당하는 서비스 클래스
  */
-public class RequestPostService {
+public class RequestConfirmService {
     private RequestPostDAO requestPostDAO;
 
     /**
      * 생성자: DAO 객체 초기화
      * @param connection 데이터베이스 연결 객체
      */
-    public RequestPostService() {
+    public RequestConfirmService() {
         this.requestPostDAO = new RequestPostDAO();
     }
 

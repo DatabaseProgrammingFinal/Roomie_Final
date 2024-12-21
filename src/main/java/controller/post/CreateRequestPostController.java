@@ -23,7 +23,7 @@ public class CreateRequestPostController implements Controller {
         }
 
         try (Connection connection = JDBCUtil.getConnection()) {
-            RequestPostService requestPostService = new RequestPostService();
+        	RequestPostService requestPostService = new RequestPostService();
             StringBuilder errorMsg = new StringBuilder();
             request.setCharacterEncoding("UTF-8");
 

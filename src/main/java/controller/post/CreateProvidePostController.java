@@ -1,62 +1,125 @@
 package controller.post;
 
+import model.domain.RentalProvidePost;
+import model.service.ProvidePostService;
+import model.dao.JDBCUtil;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+
+import controller.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import controller.Controller;
-import model.domain.RentalProvidePost;
-import model.service.ProvidePostService;
-
 public class CreateProvidePostController implements Controller {
-    private static final Logger log = LoggerFactory.getLogger(CreateProvidePostController.class);
-    private ProvidePostService providePostService;
-
-    // 기본 생성자
-    public CreateProvidePostController() {
-    }
-
-    // 매개변수 생성자
-    public CreateProvidePostController(ProvidePostService providePostService) {
-        this.providePostService = providePostService;
-    }
+    private static final Logger logger = LoggerFactory.getLogger(CreateProvidePostController.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 입력값을 기반으로 RentalProvidePost 객체 생성
-        RentalProvidePost post = new RentalProvidePost(
-            Integer.parseInt(request.getParameter("id")), // ID
-            request.getParameter("title"),               // 제목
-            request.getParameter("rentalItem"),          // 대여 물품
-            request.getParameter("content"),             // 내용
-            Integer.parseInt(request.getParameter("points")), // 포인트
-            java.sql.Date.valueOf(request.getParameter("startDate")), // 대여 시작일
-            java.sql.Date.valueOf(request.getParameter("endDate")),   // 대여 종료일
-            request.getParameter("location"),            // 위치
-            Integer.parseInt(request.getParameter("status")),         // 상태
-            Integer.parseInt(request.getParameter("providerId")),     // 제공자 ID
-            request.getParameter("imageUrl")             // 이미지 URL
-        );
-
-        try {
-            // 서비스 호출하여 대여글 등록
-            providePostService.createRentalProvidePost(post);
-
-            // 성공 로그 기록
-            log.debug("RentalProvidePost created successfully: {}", post);
-
-            // 성공 시 대여글 목록 페이지로 리디렉트
-            return "redirect:/providepost/list";
-        } catch (Exception e) {
-            // 실패 시 입력 폼으로 포워딩하며, 에러 정보를 전달
-            log.error("Failed to create RentalProvidePost", e);
-
-            request.setAttribute("creationFailed", true);
-            request.setAttribute("exception", e);
-            request.setAttribute("post", post); // 사용자가 입력한 정보 유지
-
-            return "/providepost/createForm.jsp"; // 입력 폼으로 포워딩
+        if (request.getMethod().equals("GET")) {
+            // GET 요청인 경우, 폼을 보여줍니다.
+            return "/providepost/createForm.jsp";
         }
+
+        try (Connection connection = JDBCUtil.getConnection()) {
+            ProvidePostService providePostService = new ProvidePostService();
+            StringBuilder errorMsg = new StringBuilder();
+            request.setCharacterEncoding("UTF-8");
+
+            if (request.getMethod().equals("POST")) {
+                try {
+                    // 폼 데이터 가져오기
+                    String title = request.getParameter("title");
+                    String rentalItem = request.getParameter("rentalItem");
+                    String content = request.getParameter("content");
+                    String pointsStr = request.getParameter("points");
+                    String startDateStr = request.getParameter("startDate");
+                    String endDateStr = request.getParameter("endDate");
+                    String rentalLocation = request.getParameter("rentalLocation");
+                    String returnLocation = request.getParameter("returnLocation");
+
+                    // 디버깅 로그
+                    logger.debug("Title: {}", title);
+                    logger.debug("RentalItem: {}", rentalItem);
+                    logger.debug("Points: {}", pointsStr);
+                    logger.debug("StartDate: {}", startDateStr);
+                    logger.debug("EndDate: {}", endDateStr);
+                    logger.debug("RentalLocation: {}", rentalLocation);
+                    logger.debug("ReturnLocation: {}", returnLocation);
+                    logger.debug("Content: {}", content);
+
+                    // 유효성 검사
+                    if (isInvalidInput(title)) errorMsg.append("제목을 입력해주세요. ");
+                    if (isInvalidInput(rentalItem)) errorMsg.append("물품명을 입력해주세요. ");
+                    if (isInvalidInput(pointsStr)) errorMsg.append("가격을 선택해주세요. ");
+                    if (isInvalidInput(rentalLocation)) errorMsg.append("대여 장소를 입력해주세요. ");
+                    if (isInvalidInput(returnLocation)) errorMsg.append("반납 장소를 입력해주세요. ");
+                    if (isInvalidInput(startDateStr)) errorMsg.append("대여 시작일을 입력해주세요. ");
+                    if (isInvalidInput(endDateStr)) errorMsg.append("반납 날짜를 입력해주세요. ");
+                    if (isInvalidInput(content)) errorMsg.append("설명을 입력해주세요. ");
+
+                    int points = 0;
+                    try {
+                        points = Integer.parseInt(pointsStr);
+                    } catch (NumberFormatException e) {
+                        errorMsg.append("가격은 숫자 형식이어야 합니다. ");
+                    }
+
+                    try {
+                        java.sql.Date.valueOf(startDateStr);
+                        java.sql.Date.valueOf(endDateStr);
+                    } catch (IllegalArgumentException e) {
+                        errorMsg.append("날짜 형식이 잘못되었습니다. (예: YYYY-MM-DD) ");
+                    }
+
+                    if (errorMsg.length() > 0) {
+                        request.setAttribute("creationFailed", true);
+                        request.setAttribute("errorMsg", errorMsg.toString().trim());
+                        return "/providepost/createForm.jsp";
+                    }
+
+                    // RentalProvidePost 객체 설정
+                    RentalProvidePost post = new RentalProvidePost();
+                    post.setTitle(title);
+                    post.setRentalItem(rentalItem);
+                    post.setPoints(points);
+                    post.setRentalLocation(rentalLocation);
+                    post.setReturnLocation(returnLocation);
+                    post.setRentalStartDate(java.sql.Date.valueOf(startDateStr));
+                    post.setRentalEndDate(java.sql.Date.valueOf(endDateStr));
+                    post.setContent(content);
+                    post.setImageUrl("예시");
+                    post.setStatus(1);
+                    post.setProviderId(1);
+
+                    // 데이터베이스에 저장
+                    int isCreated = providePostService.createRentalProvidePost(post);
+
+                    if (isCreated > 0) {
+                        logger.debug("Rental Provide Post created: {}", post);
+                        return "redirect:/providepost/list";
+                    } else {
+                        request.setAttribute("creationFailed", true);
+                        request.setAttribute("errorMessage", "물건 제공 게시글 생성 중 오류가 발생했습니다.");
+                        return "/providepost/createForm.jsp";
+                    }
+                } catch (Exception e) {
+                    logger.error("Error occurred while creating Rental Provide Post", e);
+                    request.setAttribute("errorMessage", "게시글 생성 중 오류가 발생했습니다.");
+                    return "/error/errorPage.jsp";
+                }
+            }
+        }
+
+        // 기본적으로 폼 페이지를 반환
+        return "/providepost/createForm.jsp";
+    }
+
+
+
+    // 유효성 검사 메서드
+    private boolean isInvalidInput(String input) {
+        return input == null || input.trim().isEmpty();
     }
 }
