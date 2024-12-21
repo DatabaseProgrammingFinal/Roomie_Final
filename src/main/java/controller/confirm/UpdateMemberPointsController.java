@@ -29,7 +29,7 @@ public class UpdateMemberPointsController implements Controller {
 
             // 성공 메시지를 설정하고 성공 페이지로 이동
             request.setAttribute("success", "상벌점 부과가 성공적으로 완료되었습니다.");
-            return "/success.jsp"; // 성공 페이지로 이동
+            return "redirect:/providepost/list";
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             request.setAttribute("error", "ProvideConfirm ID가 유효하지 않습니다.");

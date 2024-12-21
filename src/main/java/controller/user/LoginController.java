@@ -28,6 +28,7 @@ public class LoginController implements Controller {
 
 	        return "redirect:/requestpost/list";
 
+
 		} catch (UserNotFoundException e) {
 			// 실패 시 경고 메시지 설정
 			request.setAttribute("exception", "아이디/비번이 틀렸습니다. 다시 입력하세요.");
