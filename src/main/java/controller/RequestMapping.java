@@ -25,6 +25,14 @@ import controller.post.SearchProvidePostController;
 import controller.post.SearchRequestPostController;
 import controller.post.ViewProvidePostController;
 import controller.post.ViewRequestPostController;
+import controller.requestconfirm.CreateRequestConfirmController;
+import controller.requestconfirm.OutComeRequestConfirmController;
+import controller.requestconfirm.RequestConfirmController;
+import controller.requestconfirm.ReturnRequestConfirmController;
+import controller.requestconfirm.StartRequestConfirmController;
+import controller.requestconfirm.UpdateRequestConfirmController;
+import controller.requestconfirm.UpdateRequestMemberPointsController;
+import controller.requestconfirm.ViewRequestConfirmController;
 import controller.user.CheckNicknameController;
 import controller.user.CheckUserIdController;
 import controller.user.LoginController;
@@ -62,7 +70,7 @@ public class RequestMapping {
         mappings.put("/requestpost/create", new CreateRequestPostController()); // 대여글 등록
         mappings.put("/requestpost/search", new SearchRequestPostController()); // 제목으로 대여글 검색
 
-        // 대여확정 confrim관련 기능
+        // 대여확정 provideconfrim관련 기능
         mappings.put("/provideConfirm/create", new CreateProvideConfirmController());
         mappings.put("/provideConfirm/start", new StartProvideConfirmController());
         mappings.put("/provideConfirm/return", new ReturnProvideConfirmController());
@@ -72,6 +80,16 @@ public class RequestMapping {
         mappings.put("/provideConfirm/updatePoints", new UpdateProvideMemberPointsController());
 
         mappings.put("/provideconfirm", new ProvideConfirmController());
+
+        mappings.put("/requestConfirm/create", new CreateRequestConfirmController());
+        mappings.put("/requestConfirm/start", new StartRequestConfirmController());
+        mappings.put("/requestConfirm/return", new ReturnRequestConfirmController());
+        mappings.put("/requestConfirm/view", new ViewRequestConfirmController());
+        mappings.put("/requestConfirm/outcome", new OutComeRequestConfirmController());
+        mappings.put("/requestConfirm/update", new UpdateRequestConfirmController());
+        mappings.put("/requestConfirm/updatePoints", new UpdateRequestMemberPointsController());
+
+        mappings.put("/requestConfirm", new RequestConfirmController());
 
         logger.info("Initialized Request Mapping!");
     }

@@ -1,4 +1,4 @@
-package controller.confirm;
+package controller.requestconfirm;
 
 import java.util.Map;
 
@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controller.Controller;
-import model.service.ProvideConfirmService;
+import model.service.RequestConfirmService;
 
-public class StartProvideConfirmController implements Controller {
-    private ProvideConfirmService provideConfirmService;
+public class StartRequestConfirmController implements Controller {
+    private RequestConfirmService requestConfirmService;
 
-    public StartProvideConfirmController() {
-        this.provideConfirmService = new ProvideConfirmService();
+    public StartRequestConfirmController() {
+        this.requestConfirmService = new RequestConfirmService();
     }
 
     @Override
@@ -29,19 +29,21 @@ public class StartProvideConfirmController implements Controller {
             }
             Integer userId = (Integer) session.getAttribute("userId");
 
-            String providePostIdParam = request.getParameter("providePostId");
-            if (providePostIdParam == null || providePostIdParam.isEmpty()) {
+            String requestPostIdParam = request.getParameter("requestPostId");
+            if (requestPostIdParam == null || requestPostIdParam.isEmpty()) {
                 request.setAttribute("error", "대여 글 ID가 필요합니다.");
                 return "/error.jsp";
             }
-            int providePostId = Integer.parseInt(providePostIdParam);
-            int requesterId = userId; // 요청자 ID (테스트용)
-//            int providePostId = 1; // 제공 글 ID (테스트용)
+            int requestPostId2 = Integer.parseInt(requestPostIdParam);
+            System.out.println("넘어온 postID확인 Controller: Provide Post ID = " + requestPostId2);
 
-            System.out.println("Controller: Requester ID = " + requesterId);
-            System.out.println("Controller: Provide Post ID = " + providePostId);
+            int providerId = userId; // 요청자 ID (테스트용)
+            int requestPostId = 1; // 제공 글 ID (테스트용)
 
-            Map<String, Object> info = provideConfirmService.getRequesterAndProviderInfo(requesterId, providePostId);
+            System.out.println("Controller: Requester ID = " + providerId);
+            System.out.println("Controller: Provide Post ID = " + requestPostId);
+
+            Map<String, Object> info = requestConfirmService.getRequesterAndProviderInfo(providerId, requestPostId);
 
             if (info == null) {
                 request.setAttribute("error", "요청자 또는 제공자 정보가 없습니다.");
@@ -51,10 +53,10 @@ public class StartProvideConfirmController implements Controller {
             // JSP에서 사용할 데이터 설정
             request.setAttribute("requester", info.get("requester"));
             request.setAttribute("provider", info.get("provider"));
-            request.setAttribute("requesterId", requesterId); // 이 부분 확인
-            request.setAttribute("providePostId", providePostId); // 이 부분 확인
+            request.setAttribute("providerId", providerId); // 이 부분 확인
+            request.setAttribute("requestPostId", requestPostId); // 이 부분 확인
 
-            return "/provideConfirm/rentalConfirmPopup.jsp"; // JSP로 이동
+            return "/requestConfirm/rentalConfirmPopup.jsp"; // JSP로 이동
         } catch (Exception e) {
             request.setAttribute("error", "대여 정보를 가져오는 중 오류가 발생했습니다.");
             return "/error.jsp";
