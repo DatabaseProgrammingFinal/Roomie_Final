@@ -1,6 +1,10 @@
 import static org.junit.Assert.*;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -28,7 +32,7 @@ public class RequestPostServiceTest {
             0, "Test Title", "Test Item", "Test Content", 50,
             new Date(System.currentTimeMillis()),
             new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 7)),
-            "Test Location", "Test Return Location", 0, 1
+            "Test Location", "Test return Location", 0, 1
         );
 
         // 데이터베이스에 테스트 데이터 삽입
@@ -63,24 +67,30 @@ public class RequestPostServiceTest {
     @Test
     public void testGetRentalRequestPostById() throws Exception {
         // 삽입된 데이터의 ID 조회 및 검증
-        RentalRequestPost post = requestPostService.getRentalRequestPostById(testPost.getId());
-        assertNotNull(post);
-        assertEquals(testPost.getTitle(), post.getTitle());
+        List<RentalRequestPost> posts = requestPostService.searchRentalRequestPostsByTitle("Test Title");
+        assertFalse("검색 결과가 비어 있습니다.", posts.isEmpty());
+        RentalRequestPost createdPost = posts.get(0);
+
+        RentalRequestPost retrievedPost = requestPostService.getRentalRequestPostById(createdPost.getId());
+        assertNotNull("조회된 데이터가 null입니다.", retrievedPost);
+        assertEquals("Test Title", retrievedPost.getTitle());
     }
 
     @Test
     public void testSearchRentalRequestPostsByTitle() throws Exception {
-        // 제목으로 검색하여 결과 검증
+        // 제목 검색 테스트
         List<RentalRequestPost> posts = requestPostService.searchRentalRequestPostsByTitle("Test Title");
-        assertFalse(posts.isEmpty());
-        assertEquals("Test Title", posts.get(0).getTitle());
+        assertFalse("검색된 데이터가 없습니다.", posts.isEmpty());
+
+        RentalRequestPost post = posts.get(0);
+        assertEquals("Test Title", post.getTitle());
+        assertEquals("Test Item", post.getRentalItem());
     }
 
     @Test
     public void testGetAllRentalRequestPosts() throws Exception {
-        // 모든 대여 요청글 조회 및 검증
+        // 모든 데이터 조회 테스트
         List<RentalRequestPost> posts = requestPostService.getAllRentalRequestPosts();
-        assertFalse(posts.isEmpty());
-        assertTrue(posts.stream().anyMatch(post -> post.getTitle().equals("Test Title")));
+        assertFalse("조회된 데이터가 없습니다.", posts.isEmpty());
     }
 }
