@@ -2,60 +2,57 @@ package controller.post;
 
 import model.domain.RentalProvidePost;
 import model.service.ProvidePostService;
+import model.dao.JDBCUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+
 import controller.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ViewProvidePostController implements Controller {
-    private ProvidePostService providePostService;
-
-    // 기본 생성자
-    public ViewProvidePostController() {
-    }
-
-    // 매개변수 생성자
-    public ViewProvidePostController(ProvidePostService providePostService) {
-        this.providePostService = providePostService;
-    }
+    private static final Logger logger = LoggerFactory.getLogger(ViewProvidePostController.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        try {
-            // URL 파라미터에서 id를 가져옴
-            String idParam = request.getParameter("id");
+        // URL에서 ID 추출
+        String uri = request.getRequestURI();
+        String[] segments = uri.split("/");
+        String idParam = segments[segments.length - 1];
+
+        try (Connection connection = JDBCUtil.getConnection()) {
+            ProvidePostService providePostService = new ProvidePostService();
+
             if (idParam == null || idParam.isEmpty()) {
-                // id가 없는 경우 오류 페이지로 이동
                 request.setAttribute("errorMessage", "게시글 ID가 없습니다.");
-                return "/error.jsp";
+                logger.error("No post ID provided in request");
+                return "/error/errorPage.jsp";
             }
 
-            // id를 정수로 파싱
             int id = Integer.parseInt(idParam);
 
-            // 해당 게시글 조회
             RentalProvidePost post = providePostService.getRentalProvidePostById(id);
             if (post == null) {
-                // 게시글이 없는 경우 오류 페이지로 이동
                 request.setAttribute("errorMessage", "해당 게시글을 찾을 수 없습니다.");
-                return "/error.jsp";
+                logger.error("Post with ID {} not found", id);
+                return "/error/errorPage.jsp";
             }
 
-            // 조회한 게시글을 request에 저장
             request.setAttribute("post", post);
+            logger.debug("Retrieved post: {}", post);
 
-            // 상세 조회 페이지로 이동
-            return "/providepost/view.jsp";
         } catch (NumberFormatException e) {
-            // id 파싱 오류 처리
-            e.printStackTrace();
+            logger.error("Invalid post ID format", e);
             request.setAttribute("errorMessage", "잘못된 게시글 ID 형식입니다.");
-            return "/error.jsp";
+            return "/error/errorPage.jsp";
         } catch (Exception e) {
-            // 다른 예외 처리
-            e.printStackTrace();
-            request.setAttribute("exception", e);
-            return "/error.jsp";
+            logger.error("Error occurred while retrieving the post", e);
+            request.setAttribute("errorMessage", "게시글 조회 중 오류가 발생했습니다.");
+            return "/error/errorPage.jsp";
         }
+
+        return "/providepost/view.jsp";
     }
 }
