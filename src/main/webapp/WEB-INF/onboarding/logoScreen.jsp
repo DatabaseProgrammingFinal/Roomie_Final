@@ -7,7 +7,13 @@
     <title>Roomie</title>
     <!-- CSS 경로를 동적으로 처리 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/onboarding/logoScreen.css">
-</head>
+	<script>
+        // 3초 후 페이지 이동
+        setTimeout(function() {
+            window.location.href = "${pageContext.request.contextPath}/providepost/list";
+        }, 1500);
+    </script>
+	</head>
 <body>
     <div class="container">
         <div class="logo-box">
