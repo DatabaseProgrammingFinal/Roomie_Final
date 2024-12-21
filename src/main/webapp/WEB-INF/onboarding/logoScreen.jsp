@@ -10,7 +10,7 @@
 	<script>
         // 3초 후 페이지 이동
         setTimeout(function() {
-            window.location.href = "${pageContext.request.contextPath}/providepost/list";
+        	   window.location.href = '/user/login';
         }, 1500);
     </script>
 	</head>
