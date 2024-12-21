@@ -117,7 +117,7 @@
 			<div class="nav">
 				<!-- 하단 (네비게이션바) -->
 				<nav class="navbar">
-					<a href="#" class="nav-item"> <img
+					<a href="${pageContext.request.contextPath}/message" class="nav-item"> <img
 						src="${pageContext.request.contextPath}/images/message.png"
 						alt="Mail">
 					</a> <a href="#" class="nav-item"> <img

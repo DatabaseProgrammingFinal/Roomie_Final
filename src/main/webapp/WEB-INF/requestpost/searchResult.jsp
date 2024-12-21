@@ -77,9 +77,9 @@
             <!-- 하단 (네비게이션바) -->
             <div class="nav">
                 <nav class="navbar">
-                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/message.png" alt="Mail"></a>
-                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/home.png" alt="Home"></a>
-                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/search.png" alt="Search"></a>
+                    <a href="${pageContext.request.contextPath}/message" class="nav-item"><img src="${pageContext.request.contextPath}/images/message.png" alt="Mail"></a>
+                    <a href="${pageContext.request.contextPath}/providepost/list" class="nav-item"><img src="${pageContext.request.contextPath}/images/home.png" alt="Home"></a>
+                    <a href="${pageContext.request.contextPath}/message" class="nav-item"><img src="${pageContext.request.contextPath}/images/search.png" alt="Search"></a>
                 </nav>
             </div>
         </div>
