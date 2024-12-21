@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roomie</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/provide/view_provide.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/request/view_request.css">
 </head>
 <body>
     <div class="container">
@@ -24,7 +24,7 @@
                 <div class="profile">
                     <img src="${pageContext.request.contextPath}/images/user.png" alt="User Profile" class="profile-img" width="44px" height="44px">
                     <div class="profile-info">
-                        <h3 class="nicknickname">${post.providerId}</h3>
+                        <h3 class="nicknickname">${post.requesterId}</h3>
                         <p class="room_number">${post.rentalLocation}</p>
                     </div>
                 </div>

@@ -7,102 +7,112 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestPostDAO {
-	 private Connection connection;
-
-    // 생성자
-    public RequestPostDAO(Connection connection) {
-        this.connection = connection;
+private JDBCUtil jdbcUtil = null;
+   
+   public RequestPostDAO() {         
+        jdbcUtil = new JDBCUtil();   // JDBCUtil 객체 생성
     }
 
     // 1. 대여 요청글 등록
-    public boolean createRentalRequestPost(RentalRequestPost post) {
-        String sql = """
-            INSERT INTO rental_request_post 
-                (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, requester_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setString(1, post.getTitle());
-            pstmt.setString(2, post.getRentalItem());
-            pstmt.setString(3, post.getContent());
-            pstmt.setInt(4, post.getPoints());
-            pstmt.setDate(5, new java.sql.Date(post.getRentalStartDate().getTime()));
-            pstmt.setDate(6, new java.sql.Date(post.getRentalEndDate().getTime()));
-            pstmt.setString(7, post.getRentalLocation());
-            pstmt.setInt(8, post.getStatus());
-            pstmt.setInt(9, post.getRequesterId());
-
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+    public int createRentalRequestPost(RentalRequestPost post) throws Exception {
+        String sql = "INSERT INTO rental_request_post (id, title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, return_location, status, requester_id)" +
+            "VALUES (rental_request_post_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Object[] param = new Object[] {
+              post.getTitle(), post.getRentalItem(),
+              post.getContent(), post.getPoints(), post.getRentalStartDate(), post.getRentalEndDate(),
+              post.getRentalLocation(), post.getReturnLocation(), post.getStatus(), post.getRequesterId()
+        };
+        jdbcUtil.setSqlAndParameters(sql, param);
+        
+        try {
+           int result = jdbcUtil.executeUpdate();   // insert 문 실행
+            System.out.println("INSERT 실행 결과: " + result); // 디버깅 로그
+            return result;
+       } catch (SQLException e) {
+          jdbcUtil.rollback();
+           e.printStackTrace();
+       }finally {      
+           jdbcUtil.commit();
+           jdbcUtil.close();   // resource 반환
+       }      
+       return 0;
+   }
 
 
     // 2. 대여 요청글 조회 (ID로)
-    public RentalRequestPost getRentalRequestPostById(int id) {
+    public RentalRequestPost getRentalRequestPostById(int id) throws Exception {
         String sql = "SELECT * FROM rental_request_post WHERE id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return mapToRentalRequestPost(rs);
-                }
+        jdbcUtil.setSqlAndParameters(sql, new Object[] { id });
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
+            if (rs.next()) {
+                return mapToRentalRequestPost(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
+        } finally {
+            jdbcUtil.close(); // resource 반환
         }
         return null;
     }
 
     // 3. 제목으로 대여 요청글 검색
-    public List<RentalRequestPost> searchRentalRequestPostsByTitle(String title) {
-        String sql = "SELECT * FROM rental_request_post WHERE title LIKE ?";
+    public List<RentalRequestPost> searchRentalRequestPostsByTitle(String title) throws Exception {
+        String sql = "SELECT * FROM rental_request_post WHERE LOWER(title) LIKE ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[] { "%" + title.toLowerCase() + "%" });
         List<RentalRequestPost> posts = new ArrayList<>();
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, "%" + title + "%");
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    posts.add(mapToRentalRequestPost(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return posts;
-    }
 
-    // 4. 모든 대여 요청글 조회
-    public List<RentalRequestPost> getAllRentalRequestPosts() {
-        String query = "SELECT * FROM rental_request_post";
-        List<RentalRequestPost> posts = new ArrayList<>();
-        try (PreparedStatement pstmt = connection.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
             while (rs.next()) {
                 posts.add(mapToRentalRequestPost(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
+        } finally {
+            jdbcUtil.close(); // resource 반환
         }
         return posts;
     }
 
-    // ResultSet을 RentalRequestPost 객체로 매핑하는 메서드
-    private RentalRequestPost mapToRentalRequestPost(ResultSet rs) throws SQLException {
-        return new RentalRequestPost(
-                rs.getInt("id"),
-                rs.getString("title"),
-                rs.getString("rental_item"),
-                rs.getString("content"),
-                rs.getInt("points"),
-                rs.getDate("rental_start_date"),
-                rs.getDate("rental_end_date"),
-                rs.getString("rental_location"),
-                rs.getInt("status"),
-                rs.getInt("requester_id")
-        );
+    // 4. 모든 대여 요청글 조회
+    public List<RentalRequestPost> getAllRentalRequestPosts() throws Exception {
+        String query = "SELECT * FROM rental_request_post";
+        jdbcUtil.setSqlAndParameters(query, null); // 파라미터 없음
+        List<RentalRequestPost> posts = new ArrayList<>();
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
+            while (rs.next()) {
+                posts.add(mapToRentalRequestPost(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            jdbcUtil.close(); // resource 반환
+        }
+        return posts;
     }
+    
+ // ResultSet을 RentalRequestPost 객체로 매핑하는 메서드
+    private RentalRequestPost mapToRentalRequestPost(ResultSet rs) throws SQLException {
+        RentalRequestPost post = new RentalRequestPost();
+        post.setId(rs.getInt("id"));
+        post.setTitle(rs.getString("title"));
+        post.setRentalItem(rs.getString("rental_item"));
+        post.setContent(rs.getString("content"));
+        post.setPoints(rs.getInt("points"));
+        post.setRentalStartDate(rs.getDate("rental_start_date"));
+        post.setRentalEndDate(rs.getDate("rental_end_date"));
+        post.setRentalLocation(rs.getString("rental_location"));
+        post.setReturnLocation(rs.getString("return_location"));
+        post.setStatus(rs.getInt("status"));
+        post.setRequesterId(rs.getInt("requester_id"));
+        return post;
+    }
+
 }

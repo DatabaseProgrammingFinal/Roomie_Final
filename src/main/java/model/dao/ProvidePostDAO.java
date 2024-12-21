@@ -7,82 +7,93 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProvidePostDAO {
-    private Connection connection;
-
-    // 생성자
-    public ProvidePostDAO(Connection connection) {
-        this.connection = connection;
+   private JDBCUtil jdbcUtil = null;
+   
+   public ProvidePostDAO() {         
+        jdbcUtil = new JDBCUtil();   // JDBCUtil 객체 생성
     }
 
     // 1. 대여글 등록
-    public boolean createRentalProvidePost(RentalProvidePost post) {
-        String query = "INSERT INTO rental_provide_post (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, provider_id, image_url) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, post.getTitle());
-            pstmt.setString(2, post.getRentalItem());
-            pstmt.setString(3, post.getContent());
-            pstmt.setInt(4, post.getPoints());
-            pstmt.setDate(5, new java.sql.Date(post.getRentalStartDate().getTime()));
-            pstmt.setDate(6, new java.sql.Date(post.getRentalEndDate().getTime()));
-            pstmt.setString(7, post.getRentalLocation());
-            pstmt.setInt(8, post.getStatus());
-            pstmt.setInt(9, post.getProviderId());
-            pstmt.setString(10, post.getImageUrl());
-
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
+    public int createRentalProvidePost(RentalProvidePost post) throws Exception {
+        String sql = "INSERT INTO rental_provide_post (id, title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, return_location, status, provider_id, image_url) " +
+                "VALUES (rental_provide_post_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        Object[] param = new Object[] {
+              post.getTitle(), post.getRentalItem(),
+              post.getContent(), post.getPoints(), post.getRentalStartDate(), post.getRentalEndDate(),
+              post.getRentalLocation(), post.getReturnLocation(), post.getStatus(), post.getProviderId(), post.getImageUrl()
+        };
+        jdbcUtil.setSqlAndParameters(sql, param);
+        
+        try {
+            int result = jdbcUtil.executeUpdate();   // insert 문 실행
+             System.out.println("INSERT 실행 결과: " + result); // 디버깅 로그
+             return result;
         } catch (SQLException e) {
+           jdbcUtil.rollback();
             e.printStackTrace();
-        }
-        return false;
+        }finally {      
+            jdbcUtil.commit();
+            jdbcUtil.close();   // resource 반환
+        }      
+        return 0;
     }
 
-    // 2. 특정 대여글 조회 (ID로)
-    public RentalProvidePost getRentalProvidePostById(int id) {
+ // 2. 특정 대여글 조회 (ID로)
+    public RentalProvidePost getRentalProvidePostById(int id) throws Exception {
         String query = "SELECT * FROM rental_provide_post WHERE id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, id);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToRentalProvidePost(rs);
-                }
+        jdbcUtil.setSqlAndParameters(query, new Object[] { id });
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
+            if (rs.next()) {
+                return mapResultSetToRentalProvidePost(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
+        } finally {
+            jdbcUtil.close(); // resource 반환
         }
         return null;
     }
 
     // 3. 제목으로 대여글 검색
-    public List<RentalProvidePost> searchRentalProvidePostsByTitle(String title) {
-        String query = "SELECT * FROM rental_provide_post WHERE title LIKE ?";
+    public List<RentalProvidePost> searchRentalProvidePostsByTitle(String title) throws Exception {
+        String query = "SELECT * FROM rental_provide_post WHERE LOWER(title) LIKE ?";
+        jdbcUtil.setSqlAndParameters(query, new Object[] { "%" + title.toLowerCase() + "%" });
         List<RentalProvidePost> posts = new ArrayList<>();
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, "%" + title + "%");
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    posts.add(mapResultSetToRentalProvidePost(rs));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return posts;
-    }
 
-    // 4. 모든 대여글 조회
-    public List<RentalProvidePost> getAllRentalProvidePosts() {
-        String query = "SELECT * FROM rental_provide_post";
-        List<RentalProvidePost> posts = new ArrayList<>();
-        try (PreparedStatement pstmt = connection.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
             while (rs.next()) {
                 posts.add(mapResultSetToRentalProvidePost(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
+        } finally {
+            jdbcUtil.close(); // resource 반환
+        }
+        return posts;
+    }
+
+    // 4. 모든 대여글 조회
+    public List<RentalProvidePost> getAllRentalProvidePosts() throws Exception {
+        String query = "SELECT * FROM rental_provide_post";
+        jdbcUtil.setSqlAndParameters(query, null); // 파라미터 없음
+        List<RentalProvidePost> posts = new ArrayList<>();
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery(); // 쿼리 실행
+            while (rs.next()) {
+                posts.add(mapResultSetToRentalProvidePost(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            jdbcUtil.close(); // resource 반환
         }
         return posts;
     }
@@ -98,6 +109,7 @@ public class ProvidePostDAO {
         post.setRentalStartDate(rs.getDate("rental_start_date"));
         post.setRentalEndDate(rs.getDate("rental_end_date"));
         post.setRentalLocation(rs.getString("rental_location"));
+        post.setReturnLocation(rs.getString("return_location"));
         post.setStatus(rs.getInt("status"));
         post.setProviderId(rs.getInt("provider_id"));
         post.setImageUrl(rs.getString("image_url"));

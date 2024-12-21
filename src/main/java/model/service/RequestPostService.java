@@ -1,6 +1,7 @@
 package model.service;
 
 import model.dao.RequestPostDAO;
+import model.domain.RentalProvidePost;
 import model.domain.RentalRequestPost;
 
 import java.sql.Connection;
@@ -17,8 +18,8 @@ public class RequestPostService {
      * 생성자: DAO 객체 초기화
      * @param connection 데이터베이스 연결 객체
      */
-    public RequestPostService(Connection connection) {
-        this.requestPostDAO = new RequestPostDAO(connection);
+    public RequestPostService() {
+        this.requestPostDAO = new RequestPostDAO();
     }
 
     /**
@@ -27,8 +28,13 @@ public class RequestPostService {
      * @return 성공 여부
      * @throws SQLException 데이터베이스 오류
      */
-    public boolean createRentalRequestPost(RentalRequestPost post) throws SQLException {
-        return requestPostDAO.createRentalRequestPost(post);
+    public int createRentalRequestPost(RentalRequestPost post) throws Exception {
+        try {
+            return requestPostDAO.createRentalRequestPost(post);
+        } catch (SQLException e) {
+            System.err.println("[ERROR] 대여글 등록 중 오류 발생: " + e.getMessage());
+            throw e;
+        }
     }
 
     /**
@@ -37,7 +43,7 @@ public class RequestPostService {
      * @return RentalRequestPost 객체
      * @throws SQLException 데이터베이스 오류
      */
-    public RentalRequestPost getRentalRequestPostById(int id) throws SQLException {
+    public RentalRequestPost getRentalRequestPostById(int id)  throws Exception {
         try {
             RentalRequestPost post = requestPostDAO.getRentalRequestPostById(id);
             if (post == null) {
@@ -45,7 +51,7 @@ public class RequestPostService {
             }
             return post;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[ERROR] 대여글 조회 중 오류 발생: " + e.getMessage());
             throw e;
         }
     }
@@ -56,8 +62,12 @@ public class RequestPostService {
      * @return RentalRequestPost 객체 목록
      * @throws SQLException 데이터베이스 오류
      */
-    public List<RentalRequestPost> searchRentalRequestPostsByTitle(String title) throws SQLException {
-        return requestPostDAO.searchRentalRequestPostsByTitle(title);
+    public List<RentalRequestPost> searchRentalRequestPostsByTitle(String title) throws Exception {
+        List<RentalRequestPost> posts = requestPostDAO.searchRentalRequestPostsByTitle(title);
+        if (posts.isEmpty()) {
+            System.out.println("[INFO] 검색어 '" + title + "'에 해당하는 대여글이 없습니다.");
+        }
+        return posts;
     }
 
     /**
@@ -65,7 +75,7 @@ public class RequestPostService {
      * @return RentalRequestPost 객체 목록
      * @throws SQLException 데이터베이스 오류
      */
-    public List<RentalRequestPost> getAllRentalRequestPosts() throws SQLException {
+    public List<RentalRequestPost> getAllRentalRequestPosts() throws Exception {
         return requestPostDAO.getAllRentalRequestPosts();
     }
 }

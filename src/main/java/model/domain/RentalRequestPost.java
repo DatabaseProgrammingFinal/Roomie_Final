@@ -11,6 +11,7 @@ public class RentalRequestPost {
     private Date rentalStartDate; // 대여 시작일
     private Date rentalEndDate; // 대여 종료일
     private String rentalLocation; // 대여 위치
+    private String returnLocation; // 반납 위치
     private int status; // 상태 (0 : 진행 전, 1 : 완료)
     private int requesterId; // 요청자 ID (외래키)
 
@@ -19,7 +20,7 @@ public class RentalRequestPost {
 
     // 모든 필드를 포함한 생성자
     public RentalRequestPost(int id, String title, String rentalItem, String content, int points, Date rentalStartDate, 
-                             Date rentalEndDate, String rentalLocation, int status, int requesterId) {
+                             Date rentalEndDate, String rentalLocation, String returnLocation, int status, int requesterId) {
         this.id = id;
         this.title = title;
         this.rentalItem = rentalItem;
@@ -28,6 +29,7 @@ public class RentalRequestPost {
         this.rentalStartDate = rentalStartDate;
         this.rentalEndDate = rentalEndDate;
         this.rentalLocation = rentalLocation;
+        this.returnLocation = returnLocation;
         this.status = status;
         this.requesterId = requesterId;
     }
@@ -96,6 +98,14 @@ public class RentalRequestPost {
     public void setRentalLocation(String rentalLocation) {
         this.rentalLocation = rentalLocation;
     }
+    
+    public String getReturnLocation() {
+        return returnLocation;
+    }
+
+    public void setReturnLocation(String returnLocation) {
+        this.returnLocation = returnLocation;
+    }
 
     public int getStatus() {
         return status;
@@ -124,6 +134,7 @@ public class RentalRequestPost {
                 ", rentalStartDate=" + rentalStartDate +
                 ", rentalEndDate=" + rentalEndDate +
                 ", rentalLocation='" + rentalLocation + '\'' +
+                 ", returnLocation='" + returnLocation + '\'' +
                 ", status=" + status +
                 ", requesterId=" + requesterId +
                 '}';

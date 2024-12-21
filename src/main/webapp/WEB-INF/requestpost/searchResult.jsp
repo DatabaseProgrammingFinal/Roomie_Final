@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roomie</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/require_list.css">
 </head>
 <body>
     <div class="container">
@@ -35,10 +35,10 @@
                 </div>
 
                 <div class="list-container">
-                    <!-- providePosts 리스트를 하나씩 출력 -->
+                    <!-- requestPosts 리스트를 하나씩 출력 -->
                     <c:choose>
-                        <c:when test="${not empty providePosts}">
-                            <c:forEach var="post" items="${providePosts}">
+                        <c:when test="${not empty requestPosts}">
+                            <c:forEach var="post" items="${requestPosts}">
                                 <div class="list-item">
                                     <!-- 이미지 (기본 이미지를 사용) -->
                                     <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">

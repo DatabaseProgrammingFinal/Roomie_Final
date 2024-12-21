@@ -6,16 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roomie</title>
-    <link rel="stylesheet" href="../css/provide/write_provide.css">
-   <script>
+    <link rel="stylesheet" href="../css/request/write_request.css">
+    <script>
         // 뒤로 가기 버튼 클릭 시
         function goBack() {
             window.history.back();
         }
 
         // 제공 게시글 작성 페이지로 이동
-        function goToRequestPostCreate() {
-            window.location.href = "${pageContext.request.contextPath}/requestpost/create";
+        function goToProvidePostCreate() {
+            window.location.href = "${pageContext.request.contextPath}/providepost/create";
         }
     </script>
 </head>
@@ -24,18 +24,18 @@
         <div class="content"> 
             <!-- 상단 (Header) -->
             <div class="header">
-                <a href="javascript:void(0);" class="back-btn" onclick="goBack()"><img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
+                 <a href="javascript:void(0);" class="back-btn" onclick="goBack()"><img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
             </div>
 
             <!-- 본문 (Body) -->
             <div class="body">
                 <div class="button-container">
-                    <button class="button-req"  onclick="goToRequestPostCreate()">물건 필요해요</button>
-                    <button class="button-prov">물건 제공해요</button>
+                    <button class="button-req">물건 필요해요</button>
+                    <button class="button-prov" onclick="goToProvidePostCreate()">물건 제공해요</button>
                 </div>
 
                 <div class="form-container">
-                   <form action="${pageContext.request.contextPath}/providepost/create" method="post">
+                   <form action="${pageContext.request.contextPath}/requestpost/create" method="post">
 
                         <input type="hidden" name="action" value="create">
                         
@@ -99,12 +99,6 @@
                             <textarea id="content" name="content" rows="4" required></textarea>
                         </div>
         
-                        <!-- File Upload
-                        <div class="input-group">
-                            <label for="file-upload">사진</label>
-                            <input type="file" id="file-upload" name="imageUrl">
-                        </div>
-                        -->
         
                         <button type="submit" class="save-btn">저장하기</button>
                     </form>
