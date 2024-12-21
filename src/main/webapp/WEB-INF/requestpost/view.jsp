@@ -35,7 +35,9 @@
                 <div class="title-container">
                     <p class="title">${post.title}</p>
                     <img src="${pageContext.request.contextPath}/images/menu.png" alt="Menu" class="menu-img" width="24px" height="24px" onclick="toggleRentButton()">
+                	 <div id="rentToggle" style="display: none;">
                 	<button class="rent-btn">대여하기</button>
+                	</div>	
                 </div>
                 <div class="profile">
                     <img src="${pageContext.request.contextPath}/images/user.png" alt="User Profile" class="profile-img" width="44px" height="44px">
