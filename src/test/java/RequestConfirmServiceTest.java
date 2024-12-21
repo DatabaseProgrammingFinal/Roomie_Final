@@ -1,18 +1,18 @@
-import static org.junit.Assert.*;
-
-import model.service.RequestConfirmService;
-import model.domain.RequestConfirm;
-
-import java.sql.Date;
-import java.sql.SQLException;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-public class RequestConfirmServiceTest {
-    //private RequestConfirmService requestConfirmService;
-    private RequestConfirm testRequestConfirm;
+//import static org.junit.Assert.*;
+//
+//import model.service.RequestConfirmService;
+//import model.domain.RequestConfirm;
+//
+//import java.sql.Date;
+//import java.sql.SQLException;
+//
+//import org.junit.After;
+//import org.junit.Before;
+//import org.junit.Test;
+//
+//public class RequestConfirmServiceTest {
+//    //private RequestConfirmService requestConfirmService;
+//    private RequestConfirm testRequestConfirm;
 /*
     @Before
     public void setUp() throws Exception {
