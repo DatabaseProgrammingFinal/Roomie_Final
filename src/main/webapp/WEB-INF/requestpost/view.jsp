@@ -1,34 +1,40 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomie</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/request/view_request.css">
-	<script>
-     function toggleRentButton() {
-         var rentButton = document.getElementById("rentToggle");
-         if (rentButton.style.display === "none" || rentButton.style.display === "") {
-             rentButton.style.display = "block"; // 버튼 보이기
-         } else {
-             rentButton.style.display = "none"; // 버튼 숨기기
-         }
-     }
-     function goBack() {
-         window.history.back();
-     }
-    </script>
+<meta charset="UTF-8">
+<meta nickname="viewport"
+	content="width=device-width, initial-scale=1.0">
+<title>Roomie</title>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/request/view_request.css">
+<script>
+	function toggleRentButton() {
+		var rentButton = document.getElementById("rentToggle");
+		if (rentButton.style.display === "none"
+				|| rentButton.style.display === "") {
+			rentButton.style.display = "block"; // 버튼 보이기
+		} else {
+			rentButton.style.display = "none"; // 버튼 숨기기
+		}
+	}
+	function goBack() {
+		window.history.back();
+	}
+</script>
 </head>
 <body>
-    <div class="container">
-        <div class="content"> 
-            <!-- 상단 (Header) -->
-            <div class="header">
-                
-<a href="javascript:void(0);" class="back-btn" onclick="goBack()">
-<img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
-            </div>
+	<div class="container">
+		<div class="content">
+			<!-- 상단 (Header) -->
+			<div class="header">
+				<a href="javascript:void(0);" class="back-btn" onclick="goBack()">
+					<img src="${pageContext.request.contextPath}/images/back.png"
+					alt="Back" class="back-img">
+				</a>
+				<!-- 뒤로 가기 버튼 이미지 -->
+			</div>
 
             <!-- 본문 (Body) -->
             <div class="body">

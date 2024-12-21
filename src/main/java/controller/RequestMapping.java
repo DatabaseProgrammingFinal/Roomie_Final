@@ -64,7 +64,6 @@ public class RequestMapping {
         mappings.put("/providepost/search", new SearchProvidePostController()); // 제목으로 대여글 검색
 
         // mappings.put("/message/search", new SearchMessageController());
-
         mappings.put("/requestpost/list", new ListRequestPostController()); // 전체 대여글 조회
         mappings.put("/requestpost/view", new ViewRequestPostController()); // 특정 대여글 조회
         mappings.put("/requestpost/create", new CreateRequestPostController()); // 대여글 등록

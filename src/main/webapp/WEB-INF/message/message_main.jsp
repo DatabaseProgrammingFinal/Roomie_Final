@@ -14,7 +14,7 @@
 	href="${pageContext.request.contextPath}/css/message/message_main.css">
 </head>
 <body>
-<!-- 
+	<!-- 
 	<form method="GET" action="${pageContext.request.contextPath}/message">
 		<input type="hidden" name="userId" value="${sessionScope.userId}">
 		<input type="hidden" name="filter" value="all">
@@ -37,10 +37,12 @@
 			<div class="body">
 				<h1>쪽지함</h1>
 				<div class="search-bar">
-					<form method="GET" action="${pageContext.request.contextPath}/message">
+					<form method="GET"
+						action="${pageContext.request.contextPath}/message">
 						<input type="hidden" name="userId" value="${sessionScope.userId}">
-    					<input type="hidden" name="filter" value="all">
-						<input type="text" name="search" placeholder="검색어를 입력해주세요." value="${param.search}">
+						<input type="hidden" name="filter" value="all"> <input
+							type="text" name="search" placeholder="검색어를 입력해주세요."
+							value="${param.search}">
 						<button type="submit">
 							<img src="${pageContext.request.contextPath}/images/search.png"
 								alt="Search">
@@ -65,14 +67,16 @@
 				<ul class="message-list" id="messageList">
 					<!-- DB에서 가져온 메시지 데이터 출력 -->
 					<c:forEach var="message" items="${messages}">
-						<li class="message-item">
-						<a href="${pageContext.request.contextPath}/message/chat?sender=${message.sender.id}&recipientId=${message.receiver.id}&postId=${message.id}">
-							<div class="avatar"></div>
-							<div class="message-info">
-								<span class="nickname">${message.sender.nickname}</span> <span
-									class="message-preview">${message.content}</span>
-							</div> <span class="time"><fmt:formatDate
-									value="${message.sentDate}" pattern="yyyy-MM-dd HH:mm" /></span>
+						<li class="message-item"><a
+							href="${pageContext.request.contextPath}/message/chat?sender=${message.sender.id}&recipientId=${message.receiver.id}&postId=${message.id}">
+								<div class="avatar"></div>
+								<div class="message-info">
+									<span class="nickname">${message.sender.nickname}</span> <span
+										class="message-preview">${message.content}</span>
+								</div> 
+								
+								<fmt:formatDate value="${message.sentDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="formattedDate" />
+<span class="time" data-sent-time="${formattedDate}"></span>
 						</a></li>
 					</c:forEach>
 				</ul>
@@ -86,9 +90,13 @@
 			<!-- 하단 (네비게이션바) -->
 			<div class="nav">
 				<nav class="navbar">
-					<a href="${pageContext.request.contextPath}/message?userId=${sessionScope.userId}&filter=all" class="nav-item"><img
+					<a
+						href="${pageContext.request.contextPath}/message?userId=${sessionScope.userId}&filter=all"
+						class="nav-item"><img
 						src="${pageContext.request.contextPath}/images/message.png"
-						alt="Mail"></a> <a href="#" class="nav-item"><img
+						alt="Mail"></a> <a
+						href="${pageContext.request.contextPath}/requestpost/list"
+						class="nav-item"><img
 						src="${pageContext.request.contextPath}/images/home.png"
 						alt="Home"></a> <a href="#" class="nav-item"><img
 						src="${pageContext.request.contextPath}/images/search.png"
@@ -97,5 +105,7 @@
 			</div>
 		</div>
 	</div>
+	<script
+		src="${pageContext.request.contextPath}/js/message/message_main.js"></script>
 </body>
 </html>

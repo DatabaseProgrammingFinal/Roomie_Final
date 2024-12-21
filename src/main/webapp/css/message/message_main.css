@@ -164,6 +164,10 @@ h1 {
 	margin-top: 0.25rem;
 	margin-left: 0.9375rem;
 }
+.message-content p {
+    margin: 0;
+    flex-grow: 1; /* 메시지가 길어질 경우 차지할 공간 */
+}
 
 .time {
 	font-size: 0.875rem;
@@ -177,6 +181,17 @@ h1 {
 	text-align: center;
 	font-weight: bold;
 }
+
+a {
+    text-decoration: none;
+    color: inherit; /* 기존 텍스트 색상 유지 */
+}
+
+a:hover {
+    text-decoration: none; /* 호버 시에도 밑줄 제거 */
+    color: #007bff; /* 필요하면 호버 시 색상 변경 */
+}
+
 
 /* 검색창 및 필터 버튼 */
 .search-bar {

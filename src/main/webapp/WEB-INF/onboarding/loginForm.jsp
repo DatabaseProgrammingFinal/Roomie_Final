@@ -33,17 +33,15 @@
 					<label for="Usernickname">아이디</label> <input type="text"
 						id="Usernickname" name="login_id" placeholder="아이디 입력">
 				</div>
-
 				<div class="input-group">
 					<label for="password">비밀번호</label> <input type="password"
 						id="password" name="password" placeholder="비밀번호 입력">
 				</div>
-				<c:if test="${not empty exception}">
+				<c:if test="${not empty exception and not empty param.login_id}">
     				<span class="validation-msg" style="color: red;">
         				${exception}
     				</span>
 				</c:if>
-
 				<button type="submit" class="login-btn">로그인</button>
 			</form>
 			<!-- 회원가입 링크 -->

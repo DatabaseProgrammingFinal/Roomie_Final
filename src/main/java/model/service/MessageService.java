@@ -36,7 +36,6 @@ public class MessageService {
 
         return messageDAO.create(message); // DAO를 통해 DB에 저장
     }
-
     /**
      * 필터에 따라 메시지 조회 (전체, 보낸 메시지, 받은 메시지)
      */
@@ -59,7 +58,11 @@ public class MessageService {
         populateUserDetails(messages);
         return messages;
     }
-
+    
+    public User getUserById(int userId) throws SQLException {
+        return userDAO.findUserById(userId);
+    }
+    
     /**
      * 메시지 리스트에 Sender와 Receiver 정보를 채워줌
      */
@@ -81,10 +84,11 @@ public class MessageService {
         List<Message> messages = messageDAO.getMessages(senderId, recipientId);
         populateUserDetails(messages);
         return messages;
-    } 
+    }
     public List<Message> getLatestMessages(int userId) throws SQLException {
         return messageDAO.findLatestMessagesByUserId(userId);
     }
+
     public List<Message> searchMessages(String query) throws SQLException {
         return messageDAO.searchMessages(query);
     }

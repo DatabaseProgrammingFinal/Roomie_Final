@@ -47,7 +47,7 @@ public class SendMessageController implements Controller {
             // 사용자 및 메세지 객체 생성
             User sender = userDAO.findUserById(senderId);
             //User recipient = userDAO.findUserById(recipientId);
-            User recipient = userDAO.findUserById(4);
+            User recipient = userDAO.findUserById(1);
             
             Message message = new Message();
             message.setSender(sender);
