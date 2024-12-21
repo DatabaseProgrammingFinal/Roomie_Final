@@ -28,7 +28,7 @@ public class ProvidePostServiceTest {
 
         // 테스트에 사용할 데이터 생성
 
-        providePostService = new ProvidePostService(connection);
+        providePostService = new ProvidePostService();
 
         // 테스트에 사용할 데이터 생성 (단 한번만)
         testPost = new RentalProvidePost(
