@@ -16,7 +16,7 @@ public class ProvidePostDAO {
 
     // 1. 대여글 등록
     public boolean createRentalProvidePost(RentalProvidePost post) {
-        String query = "INSERT INTO rental_provide_post (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, status, provider_id, image_url) " +
+        String query = "INSERT INTO rental_provide_posts (title, rental_item, content, points, rental_start_date, rental_end_date, rental_location, return_location,status, provider_id, image_url) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -26,13 +26,13 @@ public class ProvidePostDAO {
             pstmt.setInt(4, post.getPoints());
             pstmt.setDate(5, new java.sql.Date(post.getRentalStartDate().getTime()));
             pstmt.setDate(6, new java.sql.Date(post.getRentalEndDate().getTime()));
-            pstmt.setString(7, post.getRentalLocation());
-            pstmt.setInt(8, post.getStatus());
-            pstmt.setInt(9, post.getProviderId());
-            pstmt.setString(10, post.getImageUrl());
+            pstmt.setString(7, post.getRentalLocation());           
+            pstmt.setString(8, post.getReturnLocation());
+            pstmt.setInt(9, post.getStatus());
+            pstmt.setInt(10, post.getProviderId());
+            pstmt.setString(1, post.getImageUrl());
+            return pstmt.executeUpdate() > 0;
 
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

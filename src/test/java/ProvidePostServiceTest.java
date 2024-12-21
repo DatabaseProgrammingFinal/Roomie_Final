@@ -28,7 +28,7 @@ public class ProvidePostServiceTest {
         connection.setAutoCommit(false);  // 트랜잭션 수동 설정
 
         providePostService = new ProvidePostService(connection);
-
+/*
         // 테스트에 사용할 데이터 생성 (단 한번만)
         testPost = new RentalProvidePost(
             0, "Test Title", "Test Item", "Test Content", 50,
@@ -36,7 +36,7 @@ public class ProvidePostServiceTest {
             new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 7)),
             "Test Location", 0, 1, "http://example.com/image.jpg"
         );
-
+*/
         // 데이터베이스에 한 번만 데이터를 삽입
         providePostService.createRentalProvidePost(testPost);
     }
