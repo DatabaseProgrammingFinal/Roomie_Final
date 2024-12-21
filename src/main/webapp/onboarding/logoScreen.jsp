@@ -16,4 +16,10 @@
         </div>
     </div>
 </body>
+<script>
+        // 3초 뒤에 user/login으로 이동
+        setTimeout(function() {
+            window.location.href = '/user/login';
+        }, 3000); // 3000ms = 3초
+    </script>
 </html>
