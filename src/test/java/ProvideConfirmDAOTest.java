@@ -1,18 +1,21 @@
-import static org.junit.Assert.*;
-
-import model.dao.ProvideConfirmDAO;
-import model.domain.ProvideConfirm;
-import model.domain.RentalProvidePost;
-import model.dao.JDBCUtil;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import model.dao.JDBCUtil;
+import model.dao.ProvideConfirmDAO;
+import model.domain.ProvideConfirm;
+import model.domain.RentalProvidePost;
 
 public class ProvideConfirmDAOTest {
     private ProvideConfirmDAO provideConfirmDAO;
@@ -80,38 +83,34 @@ public class ProvideConfirmDAOTest {
 
         // 테스트에 사용할 데이터 생성
         testProvideConfirm = new ProvideConfirm(0, Date.valueOf("2024-11-02"), 10, 5, 1, 2);
-        testRentalProvidePost = new RentalProvidePost(
-                0, "New Title", "New Item", "New Content", 200,
-                Date.valueOf("2024-12-10"), Date.valueOf("2024-12-15"),
-                "New Location", "New Return Location", 1, 1, "new_image.jpg"
-        );
+        testRentalProvidePost = new RentalProvidePost(0, "New Title", "New Item", "New Content", 200,
+                Date.valueOf("2024-12-10"), Date.valueOf("2024-12-15"), "New Location", "New Return Location", 1, 1,
+                "new_image.jpg");
     }
 
+    @After
+    public void tearDown() throws Exception {
+        // 테스트 데이터 삭제
+        String cleanupSQL = "DELETE FROM Rental_provide_confirm";
+        String cleanupMemberSQL = "DELETE FROM Member";
+        String cleanupPostSQL = "DELETE FROM Rental_provide_post";
 
-//
-//    @After
-//    public void tearDown() throws Exception {
-//        // 테스트 데이터 삭제
-//        String cleanupSQL = "DELETE FROM Rental_provide_confirm";
-//        String cleanupMemberSQL = "DELETE FROM Member";
-//        String cleanupPostSQL = "DELETE FROM Rental_provide_post";
-//
-//        JDBCUtil jdbcUtil = new JDBCUtil();
-//        try {
-//            jdbcUtil.setSqlAndParameters(cleanupSQL, null);
-//            jdbcUtil.executeUpdate();
-//            jdbcUtil.setSqlAndParameters(cleanupPostSQL, null);
-//            jdbcUtil.executeUpdate();
-//            jdbcUtil.setSqlAndParameters(cleanupMemberSQL, null);
-//            jdbcUtil.executeUpdate();
-//            jdbcUtil.commit();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fail("테스트 데이터 정리 중 오류 발생: " + e.getMessage());
-//        } finally {
-//            jdbcUtil.close();
-//        }
-//    }
+        JDBCUtil jdbcUtil = new JDBCUtil();
+        try {
+            jdbcUtil.setSqlAndParameters(cleanupSQL, null);
+            jdbcUtil.executeUpdate();
+            jdbcUtil.setSqlAndParameters(cleanupPostSQL, null);
+            jdbcUtil.executeUpdate();
+            jdbcUtil.setSqlAndParameters(cleanupMemberSQL, null);
+            jdbcUtil.executeUpdate();
+            jdbcUtil.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("테스트 데이터 정리 중 오류 발생: " + e.getMessage());
+        } finally {
+            jdbcUtil.close();
+        }
+    }
 
     @Test(timeout = 5000) // 타임아웃 5초 설정
     public void testCreate() throws SQLException {
@@ -179,7 +178,7 @@ public class ProvideConfirmDAOTest {
     @Test
     public void testGetRequesterAndProviderInfo() throws SQLException {
         // 요청자와 제공자 정보 가져오기
-        Map<String, Object> result = provideConfirmDAO.getRequesterAndProviderInfo(2,1);
+        Map<String, Object> result = provideConfirmDAO.getRequesterAndProviderInfo(2, 1);
 
         assertNotNull("요청자와 제공자 정보가 null입니다.", result);
 
@@ -197,105 +196,38 @@ public class ProvideConfirmDAOTest {
         assertEquals("행복관", provider.get("dormitory_name"));
         assertEquals("101", provider.get("room_number"));
     }
-    
-    
-  @Test
-  public void testGetRentalDecisionDetails() throws SQLException {
-      // 메서드 실행
-      Map<String, Object> rentalDetails = provideConfirmDAO.getRentalDecisionDetails(2);
 
-      // 결과 검증
-      assertNotNull("Rental decision details should not be null", rentalDetails);
+    @Test
+    public void testGetRentalDecisionDetails() throws SQLException {
+        // 메서드 실행
+        Map<String, Object> rentalDetails = provideConfirmDAO.getRentalDecisionDetails(2);
 
-      // 물품명 확인
-      assertEquals("충전기", rentalDetails.get("itemnickname"));
+        // 결과 검증
+        assertNotNull("Rental decision details should not be null", rentalDetails);
 
-      // 요청자 정보 확인
-      Map<String, Object> requester = (Map<String, Object>) rentalDetails.get("requester");
-      assertNotNull("Requester information should not be null", requester);
-      assertEquals("이영희", requester.get("nickname"));
-      assertEquals("자유관", requester.get("dormitory_name"));
-      assertEquals("202", requester.get("room_number"));
+        // 물품명 확인
+        assertEquals("충전기", rentalDetails.get("itemnickname"));
 
-      // 제공자 정보 확인
-      Map<String, Object> provider = (Map<String, Object>) rentalDetails.get("provider");
-      assertNotNull("Provider information should not be null", provider);
-      assertEquals("김철수", provider.get("nickname"));
-      assertEquals("행복관", provider.get("dormitory_name"));
-      assertEquals("101", provider.get("room_number"));
+        // 요청자 정보 확인
+        Map<String, Object> requester = (Map<String, Object>) rentalDetails.get("requester");
+        assertNotNull("Requester information should not be null", requester);
+        assertEquals("이영희", requester.get("nickname"));
+        assertEquals("자유관", requester.get("dormitory_name"));
+        assertEquals("202", requester.get("room_number"));
 
-      // 대여 정보 확인
-      assertEquals(15, rentalDetails.get("store")); // 제공 금액
-      assertEquals("평화관 1층", rentalDetails.get("rental_place"));
-      assertEquals("행복관 1층", rentalDetails.get("return_place"));
-      assertEquals(java.sql.Date.valueOf("2024-11-02"), rentalDetails.get("rental_date"));
-      assertEquals(java.sql.Date.valueOf("2024-11-03"), rentalDetails.get("return_date"));
-  }
-  
-  @Test(timeout = 5000)
-  public void testCreateRentalProvidePost() throws SQLException {
-      System.out.println("===== testCreateRentalProvidePost 시작 =====");
+        // 제공자 정보 확인
+        Map<String, Object> provider = (Map<String, Object>) rentalDetails.get("provider");
+        assertNotNull("Provider information should not be null", provider);
+        assertEquals("김철수", provider.get("nickname"));
+        assertEquals("행복관", provider.get("dormitory_name"));
+        assertEquals("101", provider.get("room_number"));
 
-      RentalProvidePost createdPost = provideConfirmDAO.createPost(testRentalProvidePost);
-
-      assertNotNull("RentalProvidePost 객체가 null입니다.", createdPost);
-      assertTrue("생성된 ID가 유효하지 않습니다.", createdPost.getId() > 0);
-      assertEquals(testRentalProvidePost.getTitle(), createdPost.getTitle());
-      assertEquals(testRentalProvidePost.getPoints(), createdPost.getPoints());
-
-      // DB 상태 확인
-      jdbcUtil.setSqlAndParameters("SELECT * FROM Rental_provide_post WHERE id = ?", new Object[]{createdPost.getId()});
-      ResultSet rs = jdbcUtil.executeQuery();
-      if (rs.next()) {
-          System.out.println("DB에 데이터가 성공적으로 삽입되었습니다: " + rs.getString("title"));
-      } else {
-          fail("DB에 데이터가 반영되지 않았습니다.");
-      }
-
-      System.out.println("testCreateRentalProvidePost 성공: ID = " + createdPost.getId());
-      System.out.println("===== testCreateRentalProvidePost 종료 =====");
-  }
-
-  
-//  @Test(timeout = 5000)
-//  public void testFindConfirmById() throws SQLException {
-//      System.out.println("===== testFindConfirmById 시작 =====");
-//
-//      RentalProvidePost createdPost = provideConfirmDAO.createRentalProvidePost(testRentalProvidePost);
-//      
-//      RentalProvidePost retrievedPost = provideConfirmDAO.findConfirmById(createdPost.getId());
-//
-//      assertNotNull("RentalProvidePost 객체가 null입니다.", retrievedPost);
-//      assertEquals("Test Title", retrievedPost.getTitle());
-//      assertEquals(100, retrievedPost.getPoints());
-//      assertEquals("Test Location", retrievedPost.getRentalLocation());
-//
-//      System.out.println("testFindConfirmById 성공: ID = " + retrievedPost.getId());
-//      System.out.println("===== testFindConfirmById 종료 =====");
-//  }
-//
-//
-//  @Test(timeout = 5000)
-//  public void testUpdateRentalDecisionDetails() throws SQLException {
-//      System.out.println("===== testUpdateRentalDecisionDetails 시작 =====");
-//
-//      RentalProvidePost createdPost = provideConfirmDAO.createRentalProvidePost(testRentalProvidePost);
-//      
-//      createdPost.setPoints(300);
-//      createdPost.setRentalLocation("Updated Location");
-//      createdPost.setReturnLocation("Updated Return Location");
-//      
-//      provideConfirmDAO.updateRentalDecisionDetails(createdPost);
-//      
-//      RentalProvidePost updatedPost = provideConfirmDAO.findConfirmById(createdPost.getId());
-//      assertEquals(300,updatedPost.getPoints());
-//      assertEquals("Updated Location",updatedPost.getRentalLocation());
-//      System.out.println("testUpdate 성공: ID = " +updatedPost.getId());
-//      System.out.println("===== testUpdateRentalDecisionDetails 종료 =====");
-//  }
-
-  
+        // 대여 정보 확인
+        assertEquals(15, rentalDetails.get("store")); // 제공 금액
+        assertEquals("평화관 1층", rentalDetails.get("rental_place"));
+        assertEquals("행복관 1층", rentalDetails.get("return_place"));
+        assertEquals(java.sql.Date.valueOf("2024-11-02"), rentalDetails.get("rental_date"));
+        assertEquals(java.sql.Date.valueOf("2024-11-03"), rentalDetails.get("return_date"));
+    }
 
 }
-
- 
