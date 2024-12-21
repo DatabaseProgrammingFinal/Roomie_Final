@@ -15,6 +15,9 @@
              rentButton.style.display = "none"; // 버튼 숨기기
          }
      }
+     function goBack() {
+         window.history.back();
+     }
     </script>
 </head>
 <body>
@@ -22,7 +25,9 @@
         <div class="content"> 
             <!-- 상단 (Header) -->
             <div class="header">
-                <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
+                
+<a href="javascript:void(0);" class="back-btn" onclick="goBack()">
+<img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
             </div>
 
             <!-- 본문 (Body) -->
