@@ -20,6 +20,7 @@ public class JDBCUtil {
     public static Connection getConnection() throws SQLException {
         if (conn == null || conn.isClosed()) {
             conn = connMan.getConnection();
+            System.out.println("DEBUG: Reconnected to DB");
             conn.setAutoCommit(false);
         }
         return conn;
@@ -89,15 +90,27 @@ public class JDBCUtil {
     public int executeUpdate() throws SQLException, Exception {
         pstmt = getPreparedStatement();
         int parameterSize = getParameterSize();
+        System.out.println("Executing SQL: " + sql); // SQL 쿼리 출력
+        System.out.println("Parameters:"); // 매개변수 출력 시작
+        int expectedParams = sql.split("\\?").length - 1; // 예상되는 ?의 개수 계산
+        System.out.println("Expected parameters count: " + expectedParams);
+
+        
         for (int i = 0; i < parameterSize; i++) {
-            if (getParameter(i) == null) { // 매개변수 값이 널이 부분이 있을 경우
-                pstmt.setString(i + 1, null);
+            Object param = getParameter(i);
+            if (param == null) { // 매개변수 값이 null인 경우
+                pstmt.setNull(i + 1, java.sql.Types.NULL); // 적절한 SQL 타입 지정
+                System.out.println("  [" + (i + 1) + "]: NULL");
             } else {
-                pstmt.setObject(i + 1, getParameter(i));
+                pstmt.setObject(i + 1, param);
+                System.out.println("  [" + (i + 1) + "]: " + param + " (" + param.getClass().getSimpleName() + ")");
             }
         }
+
+        System.out.println("SQL execution started...");
         return pstmt.executeUpdate();
     }
+
 
     // 현재의 CallableStatement를 반환
     private CallableStatement getCallableStatement() throws SQLException {
@@ -158,37 +171,24 @@ public class JDBCUtil {
 
     // 자원 반환
     public void close() {
-        if (rs != null) {
-            try {
-                rs.close();
-                rs = null;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+        try {
+            if (rs != null) { rs.close(); }
+            if (pstmt != null) { pstmt.close(); }
+            if (cstmt != null) { cstmt.close(); }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
-        }
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-                pstmt = null;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (cstmt != null) {
-            try {
-                cstmt.close();
-                cstmt = null;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        if (conn != null) {
-            try {
-                conn.close();
-                conn = null;
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            rs = null;
+            pstmt = null;
+            cstmt = null;
+            conn = null; // Connection을 명확하게 정리
         }
     }
 

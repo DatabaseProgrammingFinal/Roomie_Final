@@ -2,6 +2,7 @@ package model.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import model.domain.RequestConfirm;
 
 /**
@@ -10,34 +11,33 @@ import model.domain.RequestConfirm;
  */
 public class RequestConfirmDAO {
     private JDBCUtil jdbcUtil = null;
-    
+
     public RequestConfirmDAO() {
         jdbcUtil = new JDBCUtil();
     }
-    
+
+    /* 테이블에 새로운 행 생성, pk 값은 sequence를 이용해 자동 생성 */
     public RequestConfirm create(RequestConfirm rc) throws SQLException {
         String sql = "INSERT INTO Rental_request_confirm " +
                      "(id, actual_return_date, penalty_points, overdue_days, request_post_id, provider_id) " +
                      "VALUES (Rental_request_confirm_seq.NEXTVAL, ?, ?, ?, ?, ?)";
-        
-        // 각 ?에 맞는 값을 설정합니다.
-        Object[] param = new Object[] {
-            rc.getActual_return_date(),  // 2번째: actual_return_date
-            rc.getPenalty_points(),      // 3번째: penalty_points
-            rc.getOverdue_days(),        // 4번째: overdue_days
-            rc.getRequest_post_id(),     // 5번째: request_post_id
-            rc.getProvider_id()          // 6번째: provider_id
-        };
 
+        Object[] param = new Object[] {
+            new java.sql.Date(rc.getActual_return_date().getTime()), // Date 객체로 변환
+            rc.getPenalty_points(),
+            rc.getOverdue_days(),
+            rc.getRequest_post_id(),
+            rc.getProvider_id()
+        };
         jdbcUtil.setSqlAndParameters(sql, param);
-        String key[] = {"id"}; // PK 컬럼 이름
-        
+
+        String[] key = {"id"}; // PK 컬럼 이름
         try {
             jdbcUtil.executeUpdate(key); // insert 문 실행
             ResultSet rs = jdbcUtil.getGeneratedKeys();
             if (rs.next()) {
-                int generatedKey = rs.getInt(1); 
-                rc.setId(generatedKey);          
+                int generatedKey = rs.getInt(1);
+                rc.setId(generatedKey);
             }
             return rc;
         } catch (Exception ex) {
@@ -46,43 +46,35 @@ public class RequestConfirmDAO {
             return null;
         } finally {
             jdbcUtil.commit();
-            jdbcUtil.close(); 
+            jdbcUtil.close();
         }
     }
 
-
-
+    /* 특정 ID로 데이터를 조회 */
     public RequestConfirm findById(int id) throws SQLException {
         String sql = "SELECT id, actual_return_date, penalty_points, overdue_days, request_post_id, provider_id " +
                      "FROM Rental_request_confirm " +
                      "WHERE id = ?";
-        
-        jdbcUtil.setSqlAndParameters(sql, new Object[]{id});
-        
-        try {
-        	ResultSet rs = jdbcUtil.executeQuery(); 
-        	if (rs.next()) {
-        	    System.out.println("Data found for ID 9999");
-        	    // 정상적으로 데이터를 읽는지 확인
-        	} else {
-        	    System.out.println("No data found for ID 9999");
-        	}
 
+        jdbcUtil.setSqlAndParameters(sql, new Object[]{id});
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
             if (rs.next()) {
-                RequestConfirm pc = new RequestConfirm();
-                pc.setId(rs.getInt("id"));
-                pc.setActual_return_date(rs.getDate("actual_return_date"));
-                pc.setPenalty_points(rs.getInt("penalty_points"));
-                pc.setOverdue_days(rs.getInt("overdue_days"));
-                pc.setRequest_post_id(rs.getInt("request_post_id"));
-                pc.setProvider_id(rs.getInt("provider_id"));
-                return pc; 
+                RequestConfirm rc = new RequestConfirm();
+                rc.setId(rs.getInt("id"));
+                rc.setActual_return_date(rs.getDate("actual_return_date"));
+                rc.setPenalty_points(rs.getInt("penalty_points"));
+                rc.setOverdue_days(rs.getInt("overdue_days"));
+                rc.setRequest_post_id(rs.getInt("request_post_id"));
+                rc.setProvider_id(rs.getInt("provider_id"));
+                return rc;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            jdbcUtil.close(); 
+            jdbcUtil.close();
         }
-        return null; 
+        return null;
     }
 }
