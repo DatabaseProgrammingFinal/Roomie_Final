@@ -6,12 +6,7 @@ import model.domain.Message;
 import model.domain.User;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import dto.MessageDto;
 
 public class MessageService {
     private MessageDAO messageDAO;
