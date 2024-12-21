@@ -21,5 +21,5 @@
         setTimeout(function() {
             window.location.href = '/user/login';
         }, 3000); // 3000ms = 3초
-    </script>
+</script>
 </html>
