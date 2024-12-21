@@ -7,13 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roomie</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/require_list.css">
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+</script>
+    
 </head>
 <body>
     <div class="container">
         <div class="content">
             <!-- 상단 (Header) -->
             <div class="header">
-                <a href="#" class="back-btn">
+               <a href="javascript:void(0);" class="back-btn" onclick="goBack()">
                     <img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"> <!-- 뒤로 가기 버튼 이미지 -->
                 </a>
                 <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" class="header-img"> <!-- 헤더 이미지 -->
@@ -72,8 +78,8 @@
             <div class="nav">
                 <nav class="navbar">
                     <a href="${pageContext.request.contextPath}/message" class="nav-item"><img src="${pageContext.request.contextPath}/images/message.png" alt="Mail"></a>
-                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/home.png" alt="Home"></a>
-                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/search.png" alt="Search"></a>
+                    <a href="${pageContext.request.contextPath}/providepost/list" class="nav-item"><img src="${pageContext.request.contextPath}/images/home.png" alt="Home"></a>
+                    <a href="${pageContext.request.contextPath}/message" class="nav-item"><img src="${pageContext.request.contextPath}/images/search.png" alt="Search"></a>
                 </nav>
             </div>
         </div>

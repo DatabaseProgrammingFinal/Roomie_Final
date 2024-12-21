@@ -6,12 +6,19 @@
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roomie</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/rentalConfirm/rentalDecisionForm.css">
+<script>
+        function goBack() {
+            window.history.back();
+        }
+</script>
+
 </head>
 <body>
     <div class="container">
         <!-- 상단 (Header) -->
         <div class="header">
-            <a href="#" class="back-btn"><img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
+           <a href="javascript:void(0);" class="back-btn" onclick="goBack()">
+           <img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"></a> <!-- 뒤로 가기 버튼 이미지 -->
         </div>
 
         <div class="content">
