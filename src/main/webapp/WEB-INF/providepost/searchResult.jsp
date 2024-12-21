@@ -39,6 +39,7 @@
                     <c:choose>
                         <c:when test="${not empty providePosts}">
                             <c:forEach var="post" items="${providePosts}">
+                              <a href="${pageContext.request.contextPath}/providepost/view/${post.id}">
                                 <div class="list-item">
                                     <!-- 이미지 (기본 이미지를 사용) -->
                                     <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
@@ -56,9 +57,8 @@
                                     <!-- 대여 기간 출력 -->
                                     <span class="date">${post.rentalStartDate} ~ ${post.rentalEndDate}</span>
 
-                                    <!-- 대여 항목 정보 출력 -->
-                                    <p class="item-content">${post.content}</p>
                                 </div>
+                                </a>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>

@@ -158,13 +158,6 @@ body {
    align-items: center;
 }
 
-img.roomie-img {
-   position: absolute;
-   left: 8px;
-   width: 24px;
-   height: 24px;
-   z-index: 1;
-}
 
 
 #price {
