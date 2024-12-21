@@ -18,7 +18,7 @@
            window.location.href = "${pageContext.request.contextPath}/providepost/list";
         }
 
-        // 제공 게시글 작성 페이지로 이동
+        // 게시글 페이지로 이동
         function goToRequestPost() {
             window.location.href = "${pageContext.request.contextPath}/requestpost/list";
         }
@@ -32,8 +32,8 @@
                <a href="javascript:void(0);" class="back-btn" onclick="goBack()">
                     <img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img"> <!-- 뒤로 가기 버튼 이미지 -->
                 </a>
-                <img src="${pageContext.request.contextPath}/images/logo.png" alt="Profile" class="header-img"> <!-- 헤더 이미지 -->
-                <hr>
+                <img onclick="goMain()" src="${pageContext.request.contextPath}/images/logo.png" alt="Profile" class="header-img"> <!-- 헤더 이미지 -->
+				<hr>
             </div>
 
             <!-- 본문 (Body) -->
@@ -45,7 +45,7 @@
 
                 <!-- Search Bar Form -->
                 <div class="search-bar">
-                    <form action="${pageContext.request.contextPath}/providepost/search" method="get">
+                    <form action="${pageContext.request.contextPath}/providepost/search" method="get" id="searchform">
                         <input type="text" name="title" placeholder="검색어를 입력해주세요.">
                         <button type="submit">
                             <img src="${pageContext.request.contextPath}/images/search.png" alt="Search">
@@ -56,6 +56,7 @@
                 <div class="list-container">
                     <!-- providePosts 리스트를 하나씩 출력 -->
                     <c:forEach var="post" items="${providePosts}">
+                    <a href="${pageContext.request.contextPath}/providepost/view/${post.id}">
                         <div class="list-item">
                             <!-- 이미지 (기본 이미지를 사용) -->
                             <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
@@ -72,15 +73,16 @@
 
                             <!-- 대여 기간 출력 -->
                             <span class="date">${post.rentalStartDate} ~ ${post.rentalEndDate}</span>
-
-                            <!-- 대여 항목 정보 출력 -->
-                            <p class="item-content">${post.content}</p>
                         </div>
+                        </a>
                     </c:forEach>
                 </div>
-            </div>
-
-            <!-- 하단 (네비게이션바) -->
+                 <div class="floating-button">
+                    <a href="${pageContext.request.contextPath}/providepost/create">
+                        <img src="${pageContext.request.contextPath}/images/write.png" alt="Write">
+                    </a>
+                </div>
+                <!-- 하단 (네비게이션바) -->
             <div class="nav">
                 <nav class="navbar">
                     <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/message.png" alt="Mail"></a>
@@ -88,6 +90,9 @@
                     <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/search.png" alt="Search"></a>
                 </nav>
             </div>
+            </div>
+
+            
         </div>
     </div>
 </body>
