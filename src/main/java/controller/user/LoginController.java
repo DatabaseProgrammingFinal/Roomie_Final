@@ -26,7 +26,8 @@ public class LoginController implements Controller {
 	        HttpSession session = request.getSession();
 	        session.setAttribute("userId", userId);
 
-	        return "redirect:/providepost/list";
+	        return "redirect:/requestpost/list";
+
 
 		} catch (UserNotFoundException e) {
 			// 실패 시 경고 메시지 설정

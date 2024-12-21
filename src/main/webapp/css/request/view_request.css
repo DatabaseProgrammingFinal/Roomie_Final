@@ -9,6 +9,9 @@ body {
    align-items: center;
    background-color: #d6d6d6;
 }
+.body {
+    padding-bottom: 10px;
+}
 
 .container {
    width: 100%;
@@ -34,7 +37,6 @@ body {
    height: 56px;
    border-bottom: 0.5px solid #898989;
    position: relative;
-   margin-top: 50px;
 }
 
 .header-content {
@@ -65,14 +67,28 @@ body {
    align-items: center;
    justify-content: space-between;
    margin: 46px 18px 0px 33px;
+   position: relative;
 }
 
 .title {
    text-align: left;
-   font-size: 24px;
+   font-size: 20px;
    margin: 0
 }
 
+button.rent-btn {
+    position: absolute;
+    top: 46px;
+    right: 0;
+    height: 37px;
+    width: 80px;
+    line-height: 24px;
+    margin-top: 10px;
+    background: #6997e5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
 /* Profile 스타일 */
 .profile {
    display: flex;
@@ -116,7 +132,6 @@ body {
 .item-info {
    padding: 0 50px;
    font-size: 15px;
-   margin-bottom: 177px;
 }
 
 .info-row {
