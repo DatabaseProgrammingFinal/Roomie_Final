@@ -357,5 +357,85 @@ public class MessageDAO {
     }
 
 
+    public List<Message> findLatestMessagesByUserId(int userId) throws SQLException {
+        // SQL: 각 채팅방의 최신 메시지를 가져오는 쿼리
+//        String sql = "SELECT " +
+//                "    GREATEST(sender_id, recipient_id) AS user1, " +
+//                "    LEAST(sender_id, recipient_id) AS user2, " +
+//                "    MAX(sent_date) AS latest_date, " +
+//                "    content, id, status, sender_id, recipient_id " +
+//                "FROM Message " +
+//                "WHERE sender_id = ? OR recipient_id = ? " +
+//                "GROUP BY " +
+//                "    GREATEST(sender_id, recipient_id), " +
+//                "    LEAST(sender_id, recipient_id), " +
+//                "    content, id, status, sender_id, recipient_id " +
+//                "ORDER BY latest_date DESC";
+
+    	
+    	String sql = "SELECT " +
+                "    content, id, status, sender_id, recipient_id, latest_date " +
+                "FROM ( " +
+                "    SELECT " +
+                "        content, id, status, sender_id, recipient_id, " +
+                "        GREATEST(sender_id, recipient_id) AS user1, " +
+                "        LEAST(sender_id, recipient_id) AS user2, " +
+                "        sent_date AS latest_date, " +
+                "        ROW_NUMBER() OVER ( " +
+                "            PARTITION BY GREATEST(sender_id, recipient_id), LEAST(sender_id, recipient_id) " +
+                "            ORDER BY sent_date DESC " +
+                "        ) AS rn " +
+                "    FROM Message " +
+                "    WHERE sender_id = ? OR recipient_id = ? " +
+                ") subquery " +
+                "WHERE rn = 1 " +
+                "ORDER BY latest_date DESC";
+    	
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {userId, userId});
+
+        ResultSet rs = null;
+        try {
+            rs = jdbcUtil.executeQuery();
+            List<Message> messages = new ArrayList<>();
+
+            while (rs.next()) {
+                // 메시지 생성 및 설정
+                Message message = new Message();
+                message.setId(rs.getInt("id"));
+                message.setContent(rs.getString("content"));
+                message.setSentDate(rs.getTimestamp("latest_date"));
+                message.setStatus(rs.getInt("status"));
+
+                // Sender와 Receiver 설정
+                int senderId = rs.getInt("sender_id");
+                int recipientId = rs.getInt("recipient_id");
+
+                User sender = new User();
+                sender.setId(senderId);
+                message.setSender(sender);
+
+                User receiver = new User();
+                receiver.setId(recipientId);
+                message.setReceiver(receiver);
+
+                // 메시지를 리스트에 추가
+                messages.add(message);
+            }
+            return messages;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("채팅방별 최신 메시지를 가져오는 중 오류 발생", e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("DEBUG: ResultSet close error: " + e.getMessage());
+                }
+            }
+            jdbcUtil.close();
+        }
+    }
+
 
 }

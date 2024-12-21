@@ -17,6 +17,14 @@ import controller.confirm.ViewConfirmController;
 import controller.confirm.OutComeConfirmController;
 import controller.confirm.UpdateConfirmController;
 import controller.confirm.UpdateMemberPointsController;
+import controller.message.ChatController;
+import controller.message.ListMessagesController;
+import controller.message.SearchMessageController;
+import controller.message.SendMessageController;
+import controller.post.CreateProvidePostController;
+import controller.post.ListProvidePostController;
+
+import controller.user.LoginController;
 import model.service.ProvidePostService;
 
 public class RequestMapping {
@@ -45,6 +53,9 @@ public class RequestMapping {
         mappings.put("/providepost/view", new ViewProvidePostController()); // 특정 대여글 조회
         mappings.put("/providepost/create", new CreateProvidePostController()); // 대여글 등록
         mappings.put("/providepost/search", new SearchProvidePostController()); // 제목으로 대여글 검색
+
+        // mappings.put("/message/search", new SearchMessageController());
+
         
         mappings.put("/requestpost/list", new ListRequestPostController()); // 전체 대여글 조회
         mappings.put("/requestpost/view", new ViewRequestPostController()); // 특정 대여글 조회

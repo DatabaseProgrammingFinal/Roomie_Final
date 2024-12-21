@@ -24,10 +24,13 @@ public class ProvidePostServiceTest {
         // 데이터베이스 연결 설정
         connection = DriverManager.getConnection("jdbc:oracle:thin:@//dblab.dongduk.ac.kr:1521/orclpdb", "dbp240210", "21703");
         connection.setAutoCommit(false); // 트랜잭션 수동 설정
-
         providePostService = new ProvidePostService();
 
         // 테스트에 사용할 데이터 생성
+
+        providePostService = new ProvidePostService(connection);
+
+        // 테스트에 사용할 데이터 생성 (단 한번만)
         testPost = new RentalProvidePost(
             0, "Test Title", "Test Item", "Test Content", 50,
             new Date(System.currentTimeMillis()),
@@ -35,7 +38,6 @@ public class ProvidePostServiceTest {
             "Test Location", "Test return Location", 0, 1, "http://example.com/image.jpg"
         );
 
-        // 데이터베이스에 테스트 데이터 삽입
         providePostService.createRentalProvidePost(testPost);
     }
 
@@ -94,3 +96,4 @@ public class ProvidePostServiceTest {
         assertFalse("조회된 데이터가 없습니다.", posts.isEmpty());
     }
 }
+
