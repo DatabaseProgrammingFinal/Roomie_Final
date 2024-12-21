@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0">
-    <title>roomie App</title>
+    <title>Roomie</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/request/view_request.css">
 </head>
 <body>
@@ -18,36 +18,38 @@
             <!-- 본문 (Body) -->
             <div class="body">
                 <div class="title-container">
-                    <p class="title">계산기 빌려주세요제발</p>
+                    <p class="title">${post.title}</p>
                     <img src="${pageContext.request.contextPath}/images/menu.png" alt="Menu" class="menu-img" width="24px" height="24px">
                 </div>
                 <div class="profile">
                     <img src="${pageContext.request.contextPath}/images/user.png" alt="User Profile" class="profile-img" width="44px" height="44px">
                     <div class="profile-info">
-                        <h3 class="nicknickname">닉네임~~</h3>
-                        <p class="room_number">○○기숙사 301호실</p>
+                        <h3 class="nicknickname">${post.requesterId}</h3>
+                        <p class="room_number">${post.rentalLocation}</p>
                     </div>
                 </div>
-
-                <p class="description">계산기 빌려주세요제발</p>
+                <div class="img-container">
+                    <img src="${pageContext.request.contextPath}/images/sample.png" width="328px" height="218px"/>
+                </div>
+                <p class="description">${post.content}</p>
 
                 <!-- 물품 정보 -->
                 <div class="item-info">
                     <div class="info-row">
                         <span class="label">물품명</span>
-                        <span class="value">계산기</span>
+                        <span class="value">${post.rentalItem}</span>
                     </div>
                     <div class="info-row">
                         <span class="label">대여 장소</span>
-                        <span class="value">○○관 ○○</span>
+                        <span class="value">${post.rentalLocation}</span>
                     </div>
                     <div class="info-row">
                         <span class="label">반납 장소</span>
-                        <span class="value">○○관 ○○</span>
+                        <span class="value">${post.rentalLocation}</span>
                     </div>
                     <div class="info-row">
                         <span class="label">대여 날짜</span>
-                        <span class="value">0000.00.00 ~ 0000.00.00</span>
+                        <span class="value">${post.rentalStartDate} ~ ${post.rentalEndDate}</span>
                     </div>
                 </div>
             </div>
@@ -55,7 +57,7 @@
             <!-- 하단 버튼 -->
             <div class="footer">
                 <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="24px" height="24px">
-                <span class="points">300 루미</span>
+                <span class="points">${post.points} 루미</span>
                 <button class="send-msg-btn">쪽지 보내기</button>
             </div>
         </div>

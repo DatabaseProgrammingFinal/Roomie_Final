@@ -13,6 +13,11 @@ public class CreateProvidePostController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(CreateProvidePostController.class);
     private ProvidePostService providePostService;
 
+    // 기본 생성자
+    public CreateProvidePostController() {
+    }
+
+    // 매개변수 생성자
     public CreateProvidePostController(ProvidePostService providePostService) {
         this.providePostService = providePostService;
     }

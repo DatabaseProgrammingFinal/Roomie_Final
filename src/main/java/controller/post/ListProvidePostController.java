@@ -11,6 +11,11 @@ import model.service.ProvidePostService;
 public class ListProvidePostController implements Controller {
     private ProvidePostService providePostService;
 
+    // 기본 생성자
+    public ListProvidePostController() {
+    }
+
+    // 매개변수 생성자
     public ListProvidePostController(ProvidePostService providePostService) {
         this.providePostService = providePostService;
     }
