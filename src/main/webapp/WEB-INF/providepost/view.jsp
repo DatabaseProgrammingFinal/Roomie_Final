@@ -78,7 +78,6 @@
     <script>
     function openConfirmPopup(postId) {
         const url = `/provideConfirm/start?providePostId=` + postId;
-        const popupOptions = "width=600,height=400,scrollbars=no,resizable=no";
         window.open(url);
     }
 </script>

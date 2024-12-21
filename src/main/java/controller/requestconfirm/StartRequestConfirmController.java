@@ -34,11 +34,8 @@ public class StartRequestConfirmController implements Controller {
                 request.setAttribute("error", "대여 글 ID가 필요합니다.");
                 return "/error.jsp";
             }
-            int requestPostId2 = Integer.parseInt(requestPostIdParam);
-            System.out.println("넘어온 postID확인 Controller: Provide Post ID = " + requestPostId2);
-
+            int requestPostId = Integer.parseInt(requestPostIdParam);
             int providerId = userId; // 요청자 ID (테스트용)
-            int requestPostId = 1; // 제공 글 ID (테스트용)
 
             System.out.println("Controller: Requester ID = " + providerId);
             System.out.println("Controller: Provide Post ID = " + requestPostId);
