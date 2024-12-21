@@ -5,13 +5,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>대여 성공</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/rentalConfirm/success.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/provideConfirm/success.css">
 </head>
 <body>
     <div class="container">
         <!-- 상단 (Header) -->
         <div class="header">
-            <a href="${pageContext.request.contextPath}/confirm/view?providePostId=${providePostId}" class="back-btn">
+            <a href="${pageContext.request.contextPath}/provideConfirm/view?providePostId=${providePostId}" class="back-btn">
                 <img src="${pageContext.request.contextPath}/images/back.png" alt="Back" class="back-img">
             </a>
         </div>
@@ -23,7 +23,7 @@
 
             <!-- 대여 상태 보기 버튼 -->
             <div class="button-container">
-                <a href="${pageContext.request.contextPath}/confirm/view?providePostId=${providePostId}" class="btn">대여 상태 보기</a>
+                <a href="${pageContext.request.contextPath}/provideConfirm/view?providePostId=${providePostId}" class="btn">대여 상태 보기</a>
             </div>
         </div>
 

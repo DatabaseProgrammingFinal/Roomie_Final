@@ -99,7 +99,7 @@
     function redirectToReturnConfirm() {
         const provideConfirmId = '${provideConfirmId}'; // ViewConfirmController에서 전달된 provideConfirmId
         if (provideConfirmId) {
-            window.location.href = '${pageContext.request.contextPath}/confirm/return?provideConfirmId=' + provideConfirmId;
+            window.location.href = '${pageContext.request.contextPath}/provideConfirm/return?provideConfirmId=' + provideConfirmId;
         } else {
             alert('반납 정보가 없습니다. 다시 시도해주세요.');
         }

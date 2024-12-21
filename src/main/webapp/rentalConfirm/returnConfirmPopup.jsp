@@ -5,7 +5,7 @@
     <meta charset="UTF-8"> 
     <meta nickname="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Roomie</title> 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/rentalConfirm/returnConfirmPopup.css"> 
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/provideConfirm/returnConfirmPopup.css"> 
 </head> 
 <body> 
     <div class="popup-container"> 

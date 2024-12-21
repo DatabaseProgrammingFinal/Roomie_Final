@@ -39,7 +39,7 @@
 
 			<!-- Editable Fields -->
 			<!-- 추가된 form 태그 -->
-			<form action="${pageContext.request.contextPath}/confirm/update"
+			<form action="${pageContext.request.contextPath}/provideConfirm/update"
 				method="post">
 				<input type="hidden" name="providePostId" value="${providePostId}">
 				<input type="hidden" name="provideConfirmId"

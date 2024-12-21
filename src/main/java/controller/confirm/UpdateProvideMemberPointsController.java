@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 import controller.Controller;
 import model.service.ProvideConfirmService;
 
-public class UpdateMemberPointsController implements Controller {
+public class UpdateProvideMemberPointsController implements Controller {
     private ProvideConfirmService provideConfirmService;
 
-    public UpdateMemberPointsController() {
+    public UpdateProvideMemberPointsController() {
         this.provideConfirmService = new ProvideConfirmService();
     }
 

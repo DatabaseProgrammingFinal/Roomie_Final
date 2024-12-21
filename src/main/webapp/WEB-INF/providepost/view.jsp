@@ -31,7 +31,7 @@
                     <p class="title">${post.title}</p>
                     <img src="${pageContext.request.contextPath}/images/menu.png" alt="Menu" class="menu-img" width="24px" height="24px" onclick="toggleRentButton()">
                     <div id="rentToggle" style="display: none;">
-                    <button class="rent-btn">대여하기</button>
+                    <button class="rent-btn" onclick="openConfirmPopup(${post.id})">대여하기</button>
                 </div>
                 </div>
                 <div class="profile">
@@ -75,5 +75,13 @@
             </div>
         </div>
     </div>
+    <script>
+    function openConfirmPopup(postId) {
+        const url = `/provideConfirm/start?providePostId=` + postId;
+        const popupOptions = "width=600,height=400,scrollbars=no,resizable=no";
+        window.open(url);
+    }
+</script>
+    
 </body>
 </html>

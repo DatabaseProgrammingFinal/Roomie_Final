@@ -38,7 +38,7 @@
 
     <script>
     function redirectToCreateConfirm(requesterId, providePostId) {
-        window.location.href = '${pageContext.request.contextPath}/confirm/create?requesterId=' + requesterId + '&providePostId=' + providePostId;
+        window.location.href = '${pageContext.request.contextPath}/provideConfirm/create?requesterId=' + requesterId + '&providePostId=' + providePostId;
     }
 </script>
 </body>

@@ -1,19 +1,19 @@
 package controller.confirm;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import java.sql.Date;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import controller.Controller;
 import model.domain.ProvideConfirm;
 import model.service.ProvideConfirmService;
 
-public class CreateConfirmController implements Controller {
+public class CreateProvideConfirmController implements Controller {
     private ProvideConfirmService provideConfirmService;
 
-    public CreateConfirmController() {
+    public CreateProvideConfirmController() {
         this.provideConfirmService = new ProvideConfirmService();
     }
 
@@ -58,7 +58,7 @@ public class CreateConfirmController implements Controller {
             request.setAttribute("rental_date", rentalDetails.get("rental_date"));
             request.setAttribute("return_date", rentalDetails.get("return_date"));
 
-            return "/rentalConfirm/rentalDecisionForm.jsp"; // JSP로 이동
+            return "/provideConfirm/rentalDecisionForm.jsp"; // JSP로 이동
         } catch (Exception e) {
             request.setAttribute("error", "대여 정보를 가져오는 중 오류가 발생했습니다.");
             return "/error.jsp";

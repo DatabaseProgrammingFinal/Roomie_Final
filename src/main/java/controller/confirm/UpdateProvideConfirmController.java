@@ -1,16 +1,17 @@
 package controller.confirm;
 
+import java.sql.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.Controller;
 import model.service.ProvideConfirmService;
-import java.sql.Date;
 
-public class UpdateConfirmController implements Controller {
+public class UpdateProvideConfirmController implements Controller {
     private ProvideConfirmService provideConfirmService;
 
-    public UpdateConfirmController() {
+    public UpdateProvideConfirmController() {
         this.provideConfirmService = new ProvideConfirmService();
     }
 
@@ -27,9 +28,10 @@ public class UpdateConfirmController implements Controller {
 
             System.out.println("Debug - Store Value: " + store);
             // 업데이트 서비스 호출
-            provideConfirmService.updateRentalDecisionDetails(provideConfirmId, store, rentalPlace, returnPlace, rentalDate, returnDate);
+            provideConfirmService.updateRentalDecisionDetails(provideConfirmId, store, rentalPlace, returnPlace,
+                    rentalDate, returnDate);
 
-            response.sendRedirect(request.getContextPath() + "/confirm/view?provideConfirmId=" + provideConfirmId);
+            response.sendRedirect(request.getContextPath() + "/provideConfirm/view?provideConfirmId=" + provideConfirmId);
             return null; // 리다이렉트 후 JSP 경로 반환 불필요
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,4 +40,3 @@ public class UpdateConfirmController implements Controller {
         }
     }
 }
-

@@ -1,28 +1,55 @@
+//package controller.confirm;
+//
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
+//
+//import controller.Controller;
+//
+// 
+//public class OutComeConfirmController implements Controller {
+//
+//    @Override
+//    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        return "/provideConfirm/penaltyAndRewardPage.jsp"; // 연체 여부 확인 페이지로 연결
+//    }
+//}
+
+
+
 package controller.confirm;
+
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 import controller.Controller;
 import model.service.ProvideConfirmService;
 
-public class ViewConfirmController implements Controller {
+public class OutComeProvideConfirmController implements Controller {
     private ProvideConfirmService provideConfirmService;
 
-    public ViewConfirmController() {
+    public OutComeProvideConfirmController() {
         this.provideConfirmService = new ProvideConfirmService();
     }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        int provideConfirmId = Integer.parseInt(request.getParameter("provideConfirmId")); // ProvideConfirm ID로 조회
+        // ProvideConfirm ID 가져오기
+        int provideConfirmId = Integer.parseInt(request.getParameter("provideConfirmId"));
+
+        // 현재 날짜 가져오기
+        Date currentDate = new Date(Calendar.getInstance().getTimeInMillis());
 
         try {
-            // 디버깅: ProvideConfirm ID 확인
-            System.out.println("Debug - ProvideConfirm ID: " + provideConfirmId);
-
-            // ProvideConfirm ID로 대여 정보 조회
+            // Service를 통해 실제 반납 날짜 업데이트
+            provideConfirmService.updateActualReturnDate(provideConfirmId, currentDate);
+            
+            //연체일 계산
+            provideConfirmService.updateOverdueDays(provideConfirmId);
+            
             Map<String, Object> rentalDetails = provideConfirmService.getRentalDecisionDetails(provideConfirmId);
 
             if (rentalDetails == null) {
@@ -55,11 +82,21 @@ public class ViewConfirmController implements Controller {
             request.setAttribute("rental_date", rentalDetails.get("rental_date"));
             request.setAttribute("return_date", rentalDetails.get("return_date"));
             
+            Date actualReturnDate = provideConfirmService.getActualReturnDate(provideConfirmId);
+            request.setAttribute("actualReturnDate", actualReturnDate);
+            
+
+            Map<String, Integer> details = provideConfirmService.getOverdueAndPoints(provideConfirmId);
+
+            // JSP에 전달
+            request.setAttribute("details", details);
             request.setAttribute("provideConfirmId", provideConfirmId);
-            return "/rentalConfirm/rentalStatusView.jsp"; // JSP로 이동
+            // 성공 시 결과 페이지로 리다이렉트
+            return "/provideConfirm/penaltyAndRewardPage.jsp";
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "대여 정보를 가져오는 중 오류가 발생했습니다.");
+            // 실패 시 에러 페이지로 이동
+            request.setAttribute("error", "반납 처리 중 오류가 발생했습니다.");
             return "/error.jsp";
         }
     }
