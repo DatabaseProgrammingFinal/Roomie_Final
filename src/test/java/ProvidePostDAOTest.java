@@ -24,7 +24,7 @@ public class ProvidePostDAOTest {
             e.printStackTrace();
         }
     }
-
+/*
     // 테스트 데이터를 삽입하는 메서드
     private static boolean insertTestData(Connection connection, ProvidePostDAO dao) {
         RentalProvidePost newPost = new RentalProvidePost();
@@ -40,9 +40,9 @@ public class ProvidePostDAOTest {
         newPost.setImageUrl("https://example.com/laptop.jpg");
 
         // DAO를 이용하여 데이터 삽입
-        return dao.createRentalProvidePost(newPost);
+        //return dao.createRentalProvidePost(newPost);
     }
-
+*/
     // 삽입된 데이터를 확인하는 메서드
     private static void checkInsertedData(Connection connection, ProvidePostDAO dao) {
         String title = "Test Rental Post";

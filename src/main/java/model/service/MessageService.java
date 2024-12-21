@@ -79,10 +79,15 @@ public class MessageService {
     public List<Message> getMessagesWithDetails(Integer senderId, Integer recipientId) throws SQLException {
         // 메시지 조회
         List<Message> messages = messageDAO.getMessages(senderId, recipientId);
-        
-        // Sender와 Receiver의 정보 채우기
         populateUserDetails(messages);
-
         return messages;
     } 
+    public List<Message> getLatestMessages(int userId) throws SQLException {
+        return messageDAO.findLatestMessagesByUserId(userId);
+    }
+    public List<Message> searchMessages(String query) throws SQLException {
+        return messageDAO.searchMessages(query);
+    }
+
+
 }

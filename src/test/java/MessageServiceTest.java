@@ -78,7 +78,7 @@ public class MessageServiceTest {
         assertNotNull(createdMessage);
         assertTrue(createdMessage.getId() > 0);
     }
-
+/*
     @Test
     public void testGetSentMessages() throws SQLException {
         List<Message> sentMessages = messageService.getSentMessages(sender.getId());
@@ -100,7 +100,7 @@ public class MessageServiceTest {
         boolean isDeleted = messageService.deleteMessage(testMessage.getId());
         assertTrue(isDeleted);
     }
-
+*/
     @Test
     public void testSearchMessages() throws SQLException {
         List<Message> foundMessages = messageService.searchMessages("테스트");

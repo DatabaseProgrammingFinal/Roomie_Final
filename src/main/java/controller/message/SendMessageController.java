@@ -5,6 +5,8 @@ import model.domain.Message;
 import model.domain.User;
 import model.service.MessageService;
 
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,7 @@ public class SendMessageController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        response.setContentType("application/json");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         
         try {
@@ -34,12 +36,15 @@ public class SendMessageController implements Controller {
             if (userId == null) {
                 throw new IllegalArgumentException("로그인된 사용자 ID가 세션에 없습니다.");
             }
+            
             System.out.println("DEBUG: 세션에서 가져온 userId = " + userId);
 
+            // 요청 데이터 파싱
             int senderId = userId;
             int recipientId = Integer.parseInt(request.getParameter("recipientId"));
             String content = request.getParameter("content");
 
+            // 사용자 및 메세지 객체 생성
             User sender = userDAO.findUserById(senderId);
             //User recipient = userDAO.findUserById(recipientId);
             User recipient = userDAO.findUserById(4);
@@ -53,11 +58,10 @@ public class SendMessageController implements Controller {
 
             messageService.createMessage(message);
 
-            // JSON 형식으로 응답 반환
-            String jsonResponse = "{ \"senderId\": " + senderId + 
-                                  ", \"recipientId\": " + recipientId + 
-                                  ", \"content\": \"" + content + "\" }";
-            response.getWriter().write(jsonResponse);
+            // 메세지 내용만 반환
+            PrintWriter out = response.getWriter();
+            out.println(content); 
+            
             return null;
         } catch (Exception e) {
             e.printStackTrace();

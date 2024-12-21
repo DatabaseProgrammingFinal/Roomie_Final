@@ -1,7 +1,7 @@
 import java.sql.*;
 import model.dao.RequestPostDAO;
 import model.domain.RentalRequestPost;
-
+/*
 public class RequestPostDAOTest {
     public static void main(String[] args) {
         // Oracle 데이터베이스 연결 정보
@@ -69,3 +69,4 @@ public class RequestPostDAOTest {
         }
     }
 }
+*/

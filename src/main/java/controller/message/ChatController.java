@@ -26,11 +26,6 @@ public class ChatController implements Controller {
             // URL에서 sender와 recipientId 파라미터 읽기
             senderId = Integer.parseInt(request.getParameter("sender"));
             recipientId = Integer.parseInt(request.getParameter("recipientId"));
-
-            System.out.println("ChatController - Sender ID: " + senderId);
-            System.out.println("ChatController - Recipient ID: " + recipientId);
-
-            
             
             if (senderId == null || recipientId == null) {
                 throw new IllegalArgumentException("sender 또는 recipient 값이 없습니다.");
@@ -41,14 +36,14 @@ public class ChatController implements Controller {
         }
 
         // 메시지 필터링
-        List<Message> messages = messageService.getMessagesWithDetails(senderId, recipientId);
+        List<Message> latestMessages = messageService.getLatestMessages(senderId);
+
 
         // JSP로 데이터 전달
-        request.setAttribute("messages", messages);
+        request.setAttribute("messages", latestMessages);
         request.setAttribute("recipientId", recipientId);
 
         return "/message/chat.jsp";
     }
-
 
 }
