@@ -6,6 +6,7 @@ import model.dao.JDBCUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 
 import controller.Controller;
@@ -26,6 +27,16 @@ public class CreateRequestPostController implements Controller {
         	RequestPostService requestPostService = new RequestPostService();
             StringBuilder errorMsg = new StringBuilder();
             request.setCharacterEncoding("UTF-8");
+            
+         // 세션에서 userId 가져오기
+            HttpSession session = request.getSession(false);  // 이미 세션이 있으면 가져오고 없으면 null을 반환
+            if (session == null || session.getAttribute("userId") == null) {
+                // 세션이 없거나 userId가 없으면 로그인되지 않은 상태이므로 로그인 페이지로 리다이렉트
+                request.setAttribute("error", "로그인이 필요합니다. 다시 로그인하세요.");
+                return "/onboarding/loginForm.jsp";  // 로그인 폼 페이지로 이동
+            }
+
+            Integer userId = (Integer) session.getAttribute("userId");  // 세션에서 userId 가져오기
 
             if (request.getMethod().equals("POST")) {
                 try {
@@ -90,7 +101,7 @@ public class CreateRequestPostController implements Controller {
                     post.setRentalEndDate(java.sql.Date.valueOf(endDateStr));
                     post.setContent(content);
                     post.setStatus(1);
-                    post.setRequesterId(1);
+                    post.setRequesterId(userId);
 
                     // 데이터베이스에 저장
                     int isCreated = requestPostService.createRentalRequestPost(post);
