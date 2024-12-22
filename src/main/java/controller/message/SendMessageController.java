@@ -1,10 +1,7 @@
 package controller.message;
 
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import controller.Controller;
 import model.dao.UserDAO;
@@ -14,67 +11,106 @@ import model.service.MessageService;
 
 public class SendMessageController implements Controller {
 
-    private MessageService messageService;
-    private UserDAO userDAO; // UserDAO 추가
+	private MessageService messageService;
+	private UserDAO userDAO;
 
-    public SendMessageController() {
-        this.messageService = new MessageService(); // MessageService 초기화
-        this.userDAO = new UserDAO(); // UserDAO 초기화
-    }
+	public SendMessageController() {
+		this.messageService = new MessageService(); // MessageService 초기화
+		this.userDAO = new UserDAO(); // UserDAO 초기화
+	}
 
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
+	@Override
+	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 
-        try {
-            HttpSession session = request.getSession();
-            Integer userId = (Integer) session.getAttribute("userId");
+		try {
+			// 세션에서 userId 가져오기
+			Integer userId = (Integer) request.getSession().getAttribute("userId");
+			if (userId == null) {
+				throw new IllegalArgumentException("로그인된 사용자 정보가 없습니다. 다시 로그인해주세요.");
+			}
 
-            String providePostIdParam = request.getParameter("providePostId");
-            if (providePostIdParam == null || providePostIdParam.isEmpty()) {
-                request.setAttribute("error", "대여 글 ID가 필요합니다.");
-                return "/error.jsp";
-            }
+			// 요청 데이터 읽기
+			String type = request.getParameter("postType"); // 요청 파라미터에서 type 가져오기
+			String postIdParam = request.getParameter("postId");
+			String recipientIdParam = request.getParameter("recipientId");
+			String content = request.getParameter("content");
 
-            int providePostId = Integer.parseInt(providePostIdParam);
+			// 필수 파라미터 검증
+			if (type == null || (!type.equals("provide") && !type.equals("request"))) {
+				throw new IllegalArgumentException("잘못된 type 값입니다. 'provide' 또는 'request'를 전달해주세요.");
+			}
+			if (postIdParam == null || postIdParam.isEmpty()) {
+				throw new IllegalArgumentException("postId 값이 누락되었습니다.");
+			}
+			if (recipientIdParam == null || recipientIdParam.isEmpty()) {
+				throw new IllegalArgumentException("recipientId 값이 누락되었습니다.");
+			}
+			if (content == null || content.trim().isEmpty()) {
+				throw new IllegalArgumentException("메시지 내용(content)을 입력해주세요.");
+			}
 
-            if (userId == null) {
-                throw new IllegalArgumentException("로그인된 사용자 ID가 세션에 없습니다.");
-            }
+			// 파라미터 파싱
+			int postId = Integer.parseInt(postIdParam);
+			int recipientId = Integer.parseInt(recipientIdParam);
 
-            System.out.println("DEBUG: 세션에서 가져온 userId = " + userId);
+			// type에 따라 postId 설정
+			Integer providePostId = null;
+			Integer requestPostId = null;
+			
+			if ("provide".equals(type)) {
+				providePostId = postId;
+			} else if ("request".equals(type)) {
+				requestPostId = postId;
+			}
 
-            // 요청 데이터 파싱
-            int senderId = userId;
-            int recipientId = Integer.parseInt(request.getParameter("recipientId"));
-            String content = request.getParameter("content");
+			// Sender와 Receiver 정보 가져오기
+			User sender = userDAO.findUserById(userId);
+			User recipient = userDAO.findUserById(recipientId);
 
-            // 사용자 및 메세지 객체 생성
-            User sender = userDAO.findUserById(senderId);
-            User recipient = userDAO.findUserById(recipientId);
-//            User recipient = userDAO.findUserById(1);
+			if (sender == null || recipient == null) {
+				throw new IllegalArgumentException("발신자 또는 수신자 정보를 찾을 수 없습니다.");
+			}
 
-            Message message = new Message();
-            message.setSender(sender);
-            message.setReceiver(recipient);
-            message.setContent(content);
-            message.setSentDate(new java.util.Date());
-            message.setProvidePostId(providePostId); // 기본값 설정
+			// Message 객체 생성 및 설정
+			Message message = new Message();
+			message.setSender(sender);
+			message.setReceiver(recipient);
+			message.setContent(content);
+			message.setSentDate(new java.util.Date());
+			message.setProvidePostId(providePostId);
+			message.setRequestPostId(requestPostId);
 
-            messageService.createMessage(message);
+			// Message 저장
+			messageService.createMessage(message);
 
-            // 메세지 내용만 반환
-            PrintWriter out = response.getWriter();
-            out.println(content);
+			System.out.println("DEBUG: postType = " + type);
+			System.out.println("DEBUG: postId = " + postIdParam);
+			System.out.println("DEBUG: recipientId = " + recipientIdParam);
+			System.out.println("DEBUG: content = " + content);
 
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{ \"error\": \"메시지 전송 중 오류가 발생했습니다.\" }");
-            return null;
-        }
-    }
+			
+			// 성공 응답 반환
+			String jsonResponse = String.format("{\"message\": \"메시지가 성공적으로 전송되었습니다.\", \"content\": \"%s\"}", content);
+			response.getWriter().write(jsonResponse);
+			return null;
+			
+		
 
+		} catch (IllegalArgumentException e) {
+			// 클라이언트 오류 처리
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
+			return null;
+		} catch (Exception e) {
+			// 서버 오류 처리
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().write("{\"error\": \"메시지 전송 중 서버 오류가 발생했습니다.\"}");
+			return null;
+		}
+
+	}
+	
 }

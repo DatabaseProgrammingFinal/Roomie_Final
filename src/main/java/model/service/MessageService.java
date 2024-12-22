@@ -6,6 +6,7 @@ import model.domain.Message;
 import model.domain.User;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageService {
@@ -59,6 +60,7 @@ public class MessageService {
         return messages;
     }
     
+    
     public User getUserById(int userId) throws SQLException {
         return userDAO.findUserById(userId);
     }
@@ -91,6 +93,41 @@ public class MessageService {
 
     public List<Message> searchMessages(String query) throws SQLException {
         return messageDAO.searchMessages(query);
+    }
+
+    public List<Message> getChatMessagesBetween(int senderId, int recipientId, int postId) throws SQLException {
+        // 기본 type 설정
+        String type = null;
+
+        // 메시지의 타입 결정 로직
+        if (messageDAO.hasRequestPostId(postId)) {
+            type = "request";
+        } else if (messageDAO.hasProvidePostId(postId)) {
+            type = "provide";
+        } 
+        if (type == null) {
+            // postId에 해당하는 메시지가 없는 경우에도 빈 리스트 반환
+            System.out.println("DEBUG: postId가 유효하지 않지만 새로운 대화를 시작합니다.");
+            return new ArrayList<>(); // 빈 리스트 반환
+        }
+
+        // 메시지 조회 (sender, recipient, postId 기반)
+        List<Message> messages = messageDAO.findMessagesBySenderRecipientAndPostId(senderId, recipientId, postId, type);
+
+        // 메시지의 Sender와 Receiver 정보를 채워줌
+        populateUserDetails(messages);
+
+        return messages;
+    }
+
+    public List<Message> getMessagesByPostType(int senderId, int recipientId, int postId, String postType) throws SQLException {
+        if (postType.equals("request")) {
+            return messageDAO.findMessagesByRequestPostId(senderId, recipientId, postId);
+        } else if (postType.equals("provide")) {
+            return messageDAO.findMessagesByProvidePostId(senderId, recipientId, postId);
+        } else {
+            throw new IllegalArgumentException("Invalid postType: " + postType);
+        }
     }
 
 

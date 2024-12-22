@@ -437,5 +437,143 @@ public class MessageDAO {
         }
     }
 
+    public List<Message> findMessagesBySenderRecipientAndPostId(int senderId, int recipientId, int postId, String postType) throws SQLException {
+        String sql = "SELECT * FROM Message " +
+                "WHERE ((sender_id = ? AND recipient_id = ?) " +
+                "   OR (sender_id = ? AND recipient_id = ?)) " +
+                "AND (request_post_id = ? OR provide_post_id = ?)";
+        if ("request".equals(postType)) {
+            sql = "SELECT * FROM Message WHERE ((sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)) AND request_post_id = ?";
+        } else if ("provide".equals(postType)) {
+            sql = "SELECT * FROM Message WHERE ((sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)) AND provide_post_id = ?";
+        } else {
+            throw new IllegalArgumentException("Invalid type: " + postType);
+        }
+
+        Object[] params = new Object[]{senderId, recipientId, recipientId, senderId, postId};
+        jdbcUtil.setSqlAndParameters(sql, params);
+
+        ResultSet rs = jdbcUtil.executeQuery();
+        List<Message> messages = new ArrayList<>();
+
+        while (rs.next()) {
+            Message message = new Message();
+            message.setId(rs.getInt("id"));
+            message.setContent(rs.getString("content"));
+            message.setSentDate(rs.getTimestamp("sent_date"));
+            message.setStatus(rs.getInt("status"));
+
+            User sender = new User();
+            sender.setId(rs.getInt("sender_id"));
+            message.setSender(sender);
+
+            User receiver = new User();
+            receiver.setId(rs.getInt("recipient_id"));
+            message.setReceiver(receiver);
+
+            messages.add(message);
+        }
+        rs.close();
+        return messages;
+    }
+
+
+    public List<Message> findMessagesByRequestPostId(int senderId, int recipientId, int postId) throws SQLException {
+        String sql = "SELECT * FROM Message WHERE " +
+                     "((sender_id = ? AND recipient_id = ?) " +
+                     "OR (sender_id = ? AND recipient_id = ?)) " +
+                     "AND request_post_id = ?";
+        Object[] params = new Object[]{senderId, recipientId, recipientId, senderId, postId};
+
+        jdbcUtil.setSqlAndParameters(sql, params);
+
+        try (ResultSet rs = jdbcUtil.executeQuery()) {
+            List<Message> messages = new ArrayList<>();
+            while (rs.next()) {
+                Message message = new Message();
+                message.setId(rs.getInt("id"));
+                message.setContent(rs.getString("content"));
+                message.setSentDate(rs.getTimestamp("sent_date"));
+                message.setStatus(rs.getInt("status"));
+
+                User sender = new User();
+                sender.setId(rs.getInt("sender_id"));
+                message.setSender(sender);
+
+                User receiver = new User();
+                receiver.setId(rs.getInt("recipient_id"));
+                message.setReceiver(receiver);
+
+                messages.add(message);
+            }
+            return messages;
+        }
+    }
+
+    public List<Message> findMessagesByProvidePostId(int senderId, int recipientId, int postId) throws SQLException {
+        String sql = "SELECT * FROM Message WHERE " +
+                     "((sender_id = ? AND recipient_id = ?) " +
+                     "OR (sender_id = ? AND recipient_id = ?)) " +
+                     "AND provide_post_id = ?";
+        Object[] params = new Object[]{senderId, recipientId, recipientId, senderId, postId};
+
+        jdbcUtil.setSqlAndParameters(sql, params);
+
+        try (ResultSet rs = jdbcUtil.executeQuery()) {
+            List<Message> messages = new ArrayList<>();
+            while (rs.next()) {
+                Message message = new Message();
+                message.setId(rs.getInt("id"));
+                message.setContent(rs.getString("content"));
+                message.setSentDate(rs.getTimestamp("sent_date"));
+                message.setStatus(rs.getInt("status"));
+
+                User sender = new User();
+                sender.setId(rs.getInt("sender_id"));
+                message.setSender(sender);
+
+                User receiver = new User();
+                receiver.setId(rs.getInt("recipient_id"));
+                message.setReceiver(receiver);
+
+                messages.add(message);
+            }
+            return messages;
+        }
+    }
+    public boolean hasRequestPostId(int postId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Message WHERE request_post_id = ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {postId});
+
+        try (ResultSet rs = jdbcUtil.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error checking requestPostId", e);
+        } finally {
+            jdbcUtil.close();
+        }
+
+        return false;
+    }public boolean hasProvidePostId(int postId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Message WHERE provide_post_id = ?";
+        jdbcUtil.setSqlAndParameters(sql, new Object[] {postId});
+
+        try (ResultSet rs = jdbcUtil.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error checking providePostId", e);
+        } finally {
+            jdbcUtil.close();
+        }
+
+        return false;
+    }
+
 
 }

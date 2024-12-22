@@ -49,6 +49,9 @@
 						</button>
 					</form>
 				</div>
+				<c:set var="postId"
+					value="${message.requestPostId != null ? message.requestPostId : message.providePostId}" />
+
 				<!-- 
             <div class="filter-buttons">
                 <form method="GET" action="${pageContext.request.contextPath}/message">
@@ -67,20 +70,47 @@
 				<ul class="message-list" id="messageList">
 					<!-- DB에서 가져온 메시지 데이터 출력 -->
 					<c:forEach var="message" items="${messages}">
-						<li class="message-item"><a
-							href="${pageContext.request.contextPath}/message/chat?sender=${message.sender.id}&recipientId=${message.receiver.id}&postId=${message.id}">
-								<div class="avatar"></div>
-								<div class="message-info">
-									<span class="nickname">${message.sender.nickname}</span> <span
-										class="message-preview">${message.content}</span>
-								</div> 
-								
-								<fmt:formatDate value="${message.sentDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="formattedDate" />
-<span class="time" data-sent-time="${formattedDate}"></span>
-						</a></li>
+						<li class="message-item">
+							<!-- 현재 로그인한 사용자가 sender 또는 receiver인지 구분 --> <c:set
+								var="senderId" value="${sessionScope.userId}" /> <c:set
+								var="recipientId"
+								value="${sessionScope.userId == message.sender.id ? message.receiver.id : message.sender.id}" />
+							<p>URL:
+								${pageContext.request.contextPath}/message/chat?sender=${sessionScope.userId}&recipientId=${recipientId}&postId=${message.requestPostId}</p>
+							<!-- Post ID 타입에 따라 request 또는 provide로 분기 --> <c:choose>
+								<c:when
+									test="${message.requestPostId != null && message.requestPostId != ''}">
+									<a
+										href="${pageContext.request.contextPath}/message/chat?sender=${senderId}&recipientId=${recipientId}&postId=${message.requestPostId}&postType=request">
+										<div class="avatar"></div>
+										<div class="message-info">
+											<span class="nickname">${message.sender.nickname}</span> <span
+												class="message-preview">${message.content}</span>
+										</div> <fmt:formatDate value="${message.sentDate}"
+											pattern="yyyy-MM-dd HH:mm" var="formattedDate" /> <span
+										class="time">${formattedDate}</span>
+									</a>
+								</c:when>
+								<c:when
+									test="${message.providePostId != null && message.providePostId != ''}">
+									<a
+										href="${pageContext.request.contextPath}/message/chat?sender=${senderId}&recipientId=${recipientId}&postId=${message.providePostId}&postType=provide">
+										<div class="avatar"></div>
+										<div class="message-info">
+											<span class="nickname">${message.sender.nickname}</span> <span
+												class="message-preview">${message.content}</span>
+										</div> <fmt:formatDate value="${message.sentDate}"
+											pattern="yyyy-MM-dd HH:mm" var="formattedDate" /> <span
+										class="time">${formattedDate}</span>
+									</a>
+								</c:when>
+								<c:otherwise>
+									<span>잘못된 메시지입니다.</span>
+								</c:otherwise>
+							</c:choose>
+						</li>
 					</c:forEach>
 				</ul>
-
 				<!-- 빈 메시지 표시 -->
 				<c:if test="${messages == null || messages.isEmpty()}">
 					<div class="empty-message">쪽지가 없습니다.</div>

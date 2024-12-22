@@ -21,7 +21,6 @@
 				<img src="${pageContext.request.contextPath}/images/profile.png"
 					alt="Profile" class="profile-img">
 				<div class="nickname">${receiverNickName}</div>
-				<c:set var="providePostId" value="${param.providePostId}" />
 			</div>
 		</header>
 		<div class="chat-body">
@@ -42,8 +41,11 @@
 			<form action="${pageContext.request.contextPath}/message/send"
 				method="post">
 				<input type="hidden" name="recipientId" value="${recipientId}">
+				<input type="hidden" name="postId" value="${param.postId}">
+				<input type="hidden" name="postType" value="${param.postType}">
 				<input type="text" name="content" class="input-field"
 					placeholder="메시지를 입력하세요">
+					<p>DEBUG: postType = ${param.postType}</p>
 				<button type="submit" class="send-btn">
 					<img src="${pageContext.request.contextPath}/images/send.png"
 						alt="Send">
@@ -51,6 +53,8 @@
 			</form>
 		</footer>
 	</div>
+
+
 	<script src="${pageContext.request.contextPath}/js/message/chat.js"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@ document.querySelector('.chat-footer form').addEventListener('submit', (event) =
     const messageInput = form.querySelector('.input-field');
     const content = messageInput.value;
     const recipientId = form.querySelector('input[name="recipientId"]').value;
+    const postType = form.querySelector('input[name="postType"]').value; // type 값을 가져옴
 
     // AJAX 요청
     fetch(form.action, {
@@ -12,7 +13,7 @@ document.querySelector('.chat-footer form').addEventListener('submit', (event) =
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `recipientId=${recipientId}&content=${encodeURIComponent(content)}`,
+        body: `recipientId=${recipientId}&content=${encodeURIComponent(content)}&postType=${postType}`, // type 추가
     })
         .then((response) => response.text()) // 서버 응답을 텍스트로 처리
         .then((data) => {

@@ -75,7 +75,7 @@
             <div class="footer">
                 <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="24px" height="24px">
                 <span class="points">${post.points} 루미</span>
-                <button class="send-msg-btn" onclick="location.href='/message/chat?sender=${sessionScope.userId}&recipientId=${post.providerId}'">쪽지 보내기</button>
+                <button class="send-msg-btn" onclick="location.href='${pageContext.request.contextPath}/message/chat?sender=${sessionScope.userId}&recipientId=${post.providerId}&postId=${post.id}&postType=provide'">>쪽지 보내기</button>
             </div>
         </div>
     </div>
