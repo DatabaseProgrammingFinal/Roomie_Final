@@ -33,7 +33,7 @@
 			<div class="body">
 				<div class="button-container">
 					<button class="button-req">물건 필요해요</button>
-					<button class="button-prov">물건 제공해요</button>
+					 <a href="${pageContext.request.contextPath}/providepost/search?title=${param.title}" class="button-prov">물건 제공해요</a>
 				</div>
 
 				<div class="search-bar">
@@ -87,24 +87,10 @@
 			<!-- 하단 (네비게이션바) -->
 			<div class="nav">
 				<nav class="navbar">
-					<a href="${pageContext.request.contextPath}/message"
-						class="nav-item"><img
-						src="${pageContext.request.contextPath}/images/message.png"
-						alt="Mail"></a> <<<<<<< HEAD <a
-						href="${pageContext.request.contextPath}/providepost/list"
-						class="nav-item"><img
-						src="${pageContext.request.contextPath}/images/home.png"
-						alt="Home"></a> <a
-						href="${pageContext.request.contextPath}/message" class="nav-item"><img
-						src="${pageContext.request.contextPath}/images/search.png"
-						alt="Search"></a> ======= <a
-						href="${pageContext.request.contextPath}/requestpost/list"
-						class="nav-item"><img
-						src="${pageContext.request.contextPath}/images/home.png"
-						alt="Home"></a> <a href="#" class="nav-item"><img
-						src="${pageContext.request.contextPath}/images/search.png"
-						alt="Search"></a> >>>>>>> c555895 (메세지list 연결)
-				</nav>
+                    <a href="${pageContext.request.contextPath}/message" class="nav-item"><img src="${pageContext.request.contextPath}/images/message.png" alt="Mail"></a>
+                    <a href="${pageContext.request.contextPath}/requestpost/list" class="nav-item"><img src="${pageContext.request.contextPath}/images/home.png" alt="Home"></a>
+                    <a href="#" class="nav-item"><img src="${pageContext.request.contextPath}/images/search.png" alt="Search"></a>
+                </nav>
 			</div>
 		</div>
 	</div>
