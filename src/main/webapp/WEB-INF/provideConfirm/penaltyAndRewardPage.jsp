@@ -118,16 +118,15 @@
 				<!-- 하단 (네비게이션바) -->
 				<nav class="navbar">
 					<a href="${pageContext.request.contextPath}/message"
-						class="nav-item"> <img
+						class="nav-item"><img
 						src="${pageContext.request.contextPath}/images/message.png"
-						alt="Mail">
-					</a> <a href="#" class="nav-item"> <img
+						alt="Mail"></a> <a
+						href="${pageContext.request.contextPath}/providepost/list"
+						class="nav-item"><img
 						src="${pageContext.request.contextPath}/images/home.png"
-						alt="Home">
-					</a> <a href="#" class="nav-item"> <img
+						alt="Home"></a> <a href="#" class="nav-item"><img
 						src="${pageContext.request.contextPath}/images/search.png"
-						alt="Search">
-					</a>
+						alt="Search"></a>
 				</nav>
 			</div>
 		</div>
@@ -137,7 +136,8 @@
 		function redirectToUpdatePoints() {
 			const provideConfirmId = '${provideConfirmId}'; // 서버에서 전달된 provideConfirmId
 			if (provideConfirmId) {
-				window.location.href = '${pageContext.request.contextPath}/provideConfirm/updatePoints?provideConfirmId=' + provideConfirmId;
+				window.location.href = '${pageContext.request.contextPath}/provideConfirm/updatePoints?provideConfirmId='
+						+ provideConfirmId;
 			} else {
 				alert('반납 정보가 없습니다. 다시 시도해주세요.');
 			}

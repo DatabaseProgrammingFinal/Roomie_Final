@@ -26,6 +26,7 @@ public class UpdateRequestMemberPointsController implements Controller {
 
             // 서비스 호출을 통해 상벌점 업데이트
             requestConfirmService.updateMemberPoints(requestConfirmId);
+            requestConfirmService.updatePostStatus(requestConfirmId);
 
             // 성공 메시지를 설정하고 성공 페이지로 이동
             request.setAttribute("success", "상벌점 부과가 성공적으로 완료되었습니다.");

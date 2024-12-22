@@ -185,4 +185,19 @@ public class RequestConfirmService {
             throw new Exception("Error updating member points", ex);
         }
     }
+
+    /**
+     * Confirm ID를 기반으로 RentalrequestPost의 상태를 업데이트합니다.
+     * 
+     * @param requestConfirmId requestConfirm의 ID
+     * @throws SQLException 데이터베이스 오류
+     */
+    public void updatePostStatus(int requestConfirmId) throws SQLException {
+        try {
+            requestConfirmDAO.updatePostStatus(requestConfirmId);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new SQLException("Error updating post status", ex);
+        }
+    }
 }
