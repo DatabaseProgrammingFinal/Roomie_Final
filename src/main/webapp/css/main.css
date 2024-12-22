@@ -203,6 +203,8 @@ html {
    font-weight: 500;
    line-height: 26px;
    letter-spacing: -0.16px;
+   box-sizing: border-box;
+   text-decoration: none;
 }
 
 .button-prov {

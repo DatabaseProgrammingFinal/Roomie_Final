@@ -100,7 +100,7 @@ public class CreateRequestPostController implements Controller {
                     post.setRentalStartDate(java.sql.Date.valueOf(startDateStr));
                     post.setRentalEndDate(java.sql.Date.valueOf(endDateStr));
                     post.setContent(content);
-                    post.setStatus(1);
+                    post.setStatus(0);
                     post.setRequesterId(userId);
 
                     // 데이터베이스에 저장

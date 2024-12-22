@@ -101,7 +101,7 @@ public class CreateProvidePostController implements Controller {
                     post.setRentalEndDate(java.sql.Date.valueOf(endDateStr));
                     post.setContent(content);
                     post.setImageUrl("예시");
-                    post.setStatus(1);
+                    post.setStatus(0);
                     post.setProviderId(userId);
 
                     // 데이터베이스에 저장
