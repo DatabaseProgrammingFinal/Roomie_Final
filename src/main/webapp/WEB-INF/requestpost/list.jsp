@@ -62,29 +62,27 @@
 				</div>
 
 				<div class="list-container">
-					<!-- requestPosts 리스트를 하나씩 출력 -->
-					<c:forEach var="post" items="${requestPosts}">
-						<a
-							href="${pageContext.request.contextPath}/requestpost/view/${post.id}">
-							<div class="list-item">
-								<img src="${pageContext.request.contextPath}/images/no-img.png"
-									alt="item image" class="item-img">
-								<div class="item-details">
-									<p class="item-title">${post.title}</p>
-									<div class="room_numberie-info">
-										<img
-											src="${pageContext.request.contextPath}/images/roomie.png"
-											alt="Point" class="room_numberie-img" width="18px"
-											height="18px"> <span class="room_numberie-point">${post.points}
-											루미</span>
-									</div>
-								</div>
-								<span class="date">${post.rentalStartDate} ~
-									${post.rentalEndDate}</span>
-							</div>
-						</a>
-					</c:forEach>
-
+				    <!-- requestPosts 리스트를 하나씩 출력 -->
+				    <c:forEach var="post" items="${requestPosts}">
+				        <c:if test="${post.status == 0}">
+				            <a href="${pageContext.request.contextPath}/requestpost/view/${post.id}">
+				                <div class="list-item">
+				                    <img src="${pageContext.request.contextPath}/images/no-img.png"
+				                         alt="item image" class="item-img">
+				                    <div class="item-details">
+				                        <p class="item-title">${post.title}</p>
+				                        <div class="room_numberie-info">
+				                            <img src="${pageContext.request.contextPath}/images/roomie.png"
+				                                 alt="Point" class="room_numberie-img" width="18px"
+				                                 height="18px">
+				                            <span class="room_numberie-point">${post.points} 루미</span>
+				                        </div>
+				                    </div>
+				                    <span class="date">${post.rentalStartDate} ~ ${post.rentalEndDate}</span>
+				                </div>
+				            </a>
+				        </c:if>
+				    </c:forEach>
 				</div>
 			</div>
 			<div class="floating-button">
