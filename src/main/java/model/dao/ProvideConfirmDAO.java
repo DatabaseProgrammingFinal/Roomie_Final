@@ -386,6 +386,32 @@ public class ProvideConfirmDAO {
     }
 
     /**
+     * 특정 provideConfirmId를 기반으로 Rental_provide_post 테이블의 status를 1로 업데이트
+     */
+    public void updatePostStatus(int provideConfirmId) throws SQLException {
+        String sqlUpdateStatus = "UPDATE Rental_provide_post rp " + "SET rp.status = 1 "
+                + "WHERE rp.id = (SELECT rpc.provide_post_id FROM Rental_provide_confirm rpc WHERE rpc.id = ?)";
+
+        try {
+            // SQL 및 파라미터 설정
+            jdbcUtil.setSqlAndParameters(sqlUpdateStatus, new Object[] { provideConfirmId });
+
+            // 업데이트 실행
+            jdbcUtil.executeUpdate();
+
+            // 커밋
+            jdbcUtil.commit();
+        } catch (Exception ex) {
+            // 롤백 처리
+            jdbcUtil.rollback();
+            throw new SQLException("Error updating post status", ex);
+        } finally {
+            // 자원 정리
+            jdbcUtil.close();
+        }
+    }
+
+    /**
      * overdueDays, penalty_points, points 조회
      */
     public Map<String, Integer> getOverdueAndPoints(int provideConfirmId) throws SQLException {
