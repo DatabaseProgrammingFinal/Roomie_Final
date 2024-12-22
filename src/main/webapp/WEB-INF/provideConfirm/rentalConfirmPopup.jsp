@@ -7,6 +7,19 @@
 <title>Roomie</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/rentalConfirm/rentalConfirmPopup.css">
+<script>
+    function goBack() {
+        const previousPage = '<%= request.getHeader("Referer") %>';
+        if (previousPage) {
+            window.location.href = previousPage;
+        } else {
+            alert('이전 페이지가 존재하지 않습니다.');
+        }
+    }
+    function redirectToCreateConfirm(requesterId, providePostId) {
+        window.location.href = '${pageContext.request.contextPath}/provideConfirm/create?requesterId=' + requesterId + '&providePostId=' + providePostId;
+    }
+</script>
 </head>
 <body>
 	<div class="popup-container">
@@ -28,15 +41,9 @@
 			<div class="button-container">
 				<button class="yes-btn"
 					onclick="redirectToCreateConfirm(${requesterId}, ${providePostId})">예</button>
-				<button class="no-btn" onclick="history.back();">아니요</button>
+				<button class="no-btn" onclick="goBack()">아니오</button>
 			</div>
 		</div>
 	</div>
-
-	<script>
-    function redirectToCreateConfirm(requesterId, providePostId) {
-        window.location.href = '${pageContext.request.contextPath}/provideConfirm/create?requesterId=' + requesterId + '&providePostId=' + providePostId;
-    }
-</script>
 </body>
 </html>

@@ -73,10 +73,9 @@
 								<div class="message-info">
 									<span class="nickname">${message.sender.nickname}</span> <span
 										class="message-preview">${message.content}</span>
-								</div> 
-								
-								<fmt:formatDate value="${message.sentDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="formattedDate" />
-<span class="time" data-sent-time="${formattedDate}"></span>
+								</div> <fmt:formatDate value="${message.sentDate}"
+									pattern="yyyy-MM-dd'T'HH:mm:ss" var="formattedDate" /> <span
+								class="time" data-sent-time="${formattedDate}"></span>
 						</a></li>
 					</c:forEach>
 				</ul>
