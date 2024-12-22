@@ -14,17 +14,13 @@
             <div class="info">
                 <p class="label">대여 요청자</p>
                 <div class="dynamic-content" id="requester">
-                    <p>이름: ${requester.nickname}</p>
-                    <p>기숙사: ${requester.dormitory_name}</p>
-                    <p>호실: ${requester.room_number}</p>
+                    <p>${requester.nickname}/${requester.dormitory_name}/${requester.room_number}</p>
                 </div>
             </div>
             <div class="info">
                 <p class="label">대여 제공자</p>
                 <div class="dynamic-content" id="provider">
-                    <p>이름: ${provider.nickname}</p>
-                    <p>기숙사: ${provider.dormitory_name}</p>
-                    <p>호실: ${provider.room_number}</p>
+                    <p>${provider.nickname}/${provider.dormitory_name}/${provider.room_number}</p>
                 </div>
             </div>
             <p class="confirmation-text">대여를 진행하시겠습니까?</p>
