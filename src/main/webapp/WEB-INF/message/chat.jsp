@@ -38,14 +38,46 @@
 			</c:forEach>
 		</div>
 		<footer class="chat-footer">
+
 			<form action="${pageContext.request.contextPath}/message/send"
-				method="post">
-				<input type="hidden" name="recipientId" value="${recipientId}">
-				<input type="hidden" name="postId" value="${param.postId}">
-				<input type="hidden" name="postType" value="${param.postType}">
+				method="POST">
+				<!--  
+				<input type="hidden" name="postType"
+					value="${postType != null ? postType : 'provide'}">
+
+				<c:choose>
+					<c:when test="${postType == 'provide'}">
+						<input type="hidden" name="postId"
+							value="${providePost.id != null ? providePost.id : ''}">
+						<input type="hidden" name="recipientId"
+							value="${providePost.providerId != null ? providePost.providerId : ''}">
+					</c:when>
+					<c:when test="${postType == 'request'}">
+						<input type="hidden" name="postId"
+							value="${requestPost.id != null ? requestPost.id : ''}">
+						<input type="hidden" name="recipientId"
+							value="${requestPost.requesterId != null ? requestPost.requesterId : ''}">
+					</c:when>
+					<c:otherwise>
+						<p>유효하지 않은 postType 값입니다.</p>
+					</c:otherwise>
+				</c:choose>
+
 				<input type="text" name="content" class="input-field"
 					placeholder="메시지를 입력하세요">
-					<p>DEBUG: postType = ${param.postType}</p>
+				<button type="submit" class="send-btn">
+					<img src="${pageContext.request.contextPath}/images/send.png"
+						alt="Send">
+				</button>
+				-->
+				<input type="hidden" name="postType" value="provide"> <input
+					type="hidden" name="postId" value="1">
+				<!-- 하드코딩된 postId -->
+				<input type="hidden" name="recipientId" value="2">
+				<!-- 하드코딩된 recipientId -->
+				<!-- 메시지 내용 입력 -->
+				<input type="text" name="content" class="input-field"
+					placeholder="메시지를 입력하세요">
 				<button type="submit" class="send-btn">
 					<img src="${pageContext.request.contextPath}/images/send.png"
 						alt="Send">
@@ -53,8 +85,6 @@
 			</form>
 		</footer>
 	</div>
-
-
 	<script src="${pageContext.request.contextPath}/js/message/chat.js"></script>
 </body>
 </html>

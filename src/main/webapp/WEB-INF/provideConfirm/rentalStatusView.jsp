@@ -11,7 +11,6 @@
             window.history.back();
         }
 </script>
-
 </head>
 <body>
     <div class="container">

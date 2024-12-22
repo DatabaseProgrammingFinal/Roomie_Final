@@ -129,6 +129,4 @@ public class MessageService {
             throw new IllegalArgumentException("Invalid postType: " + postType);
         }
     }
-
-
 }

@@ -71,13 +71,12 @@ public class ChatController implements Controller {
         if (chatMessages == null) {
             chatMessages = new ArrayList<>(); // 메시지가 없을 경우 빈 리스트 생성
         }
-
         // JSP로 데이터 전달
         request.setAttribute("messages", chatMessages);
         request.setAttribute("recipient", recipient);
         request.setAttribute("postId", postId);
         request.setAttribute("postType", postType); // type 값을 JSP로 전달
-        System.out.println("DEBUG: postId = " + postId + ", postType = " + postType);
+        System.out.println("DEBUG: postId = " + postId + ", postType = " + postType + "reciepient" +recipient);
 
         return "/message/chat.jsp"; // 채팅 JSP 경로
     }

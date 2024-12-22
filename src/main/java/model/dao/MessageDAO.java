@@ -146,8 +146,6 @@ public class MessageDAO {
                 if (receiver != null) {
                     message.setReceiver(receiver); // Receiver 설정
                 }
-                
-                
                 messages.add(message);
             }
             return messages;
@@ -359,20 +357,6 @@ public class MessageDAO {
 
     public List<Message> findLatestMessagesByUserId(int userId) throws SQLException {
         // SQL: 각 채팅방의 최신 메시지를 가져오는 쿼리
-//        String sql = "SELECT " +
-//                "    GREATEST(sender_id, recipient_id) AS user1, " +
-//                "    LEAST(sender_id, recipient_id) AS user2, " +
-//                "    MAX(sent_date) AS latest_date, " +
-//                "    content, id, status, sender_id, recipient_id " +
-//                "FROM Message " +
-//                "WHERE sender_id = ? OR recipient_id = ? " +
-//                "GROUP BY " +
-//                "    GREATEST(sender_id, recipient_id), " +
-//                "    LEAST(sender_id, recipient_id), " +
-//                "    content, id, status, sender_id, recipient_id " +
-//                "ORDER BY latest_date DESC";
-
-    	
     	String sql = "SELECT " +
                 "    content, id, status, sender_id, recipient_id, latest_date " +
                 "FROM ( " +
