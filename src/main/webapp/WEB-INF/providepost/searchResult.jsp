@@ -29,7 +29,7 @@
             <!-- 본문 (Body) -->
             <div class="body">
                 <div class="button-container">
-                    <button class="button-req">물건 필요해요</button>
+                    <a href="${pageContext.request.contextPath}/requestpost/search?title=${param.title}" class="button-req">물건 필요해요</a>
                     <button class="button-prov">물건 제공해요</button>
                 </div>
 

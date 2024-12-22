@@ -54,29 +54,33 @@
                 </div>
 
                 <div class="list-container">
-                    <!-- providePosts 리스트를 하나씩 출력 -->
-                    <c:forEach var="post" items="${providePosts}">
-                    <a href="${pageContext.request.contextPath}/providepost/view/${post.id}">
-                        <div class="list-item">
-                            <!-- 이미지 (기본 이미지를 사용) -->
-                            <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
-                            <div class="item-details">
-                                <!-- 제목 출력 -->
-                                <p class="item-title">${post.title}</p>
+				    <!-- providePosts 리스트를 하나씩 출력 -->
+				    <c:forEach var="post" items="${providePosts}">
+				        <c:if test="${post.status == 0}">
+				            <a href="${pageContext.request.contextPath}/providepost/view/${post.id}">
+				                <div class="list-item">
+				                    <!-- 이미지 (기본 이미지를 사용) -->
+				                    <img src="${pageContext.request.contextPath}/images/no-img.png" alt="item image" class="item-img">
+				                    <div class="item-details">
+				                        <!-- 제목 출력 -->
+				                        <p class="item-title">${post.title}</p>
+				
+				                        <div class="room_numberie-info">
+				                            <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
+				                            <!-- 포인트 출력 -->
+				                            <span class="room_numberie-point">${post.points} 루미</span>
+				                        </div>
+				                    </div>
+				
+				                    <!-- 대여 기간 출력 -->
+				                    <span class="date">${post.rentalStartDate} ~ ${post.rentalEndDate}</span>
+				                </div>
+				            </a>
+				        </c:if>
+				    </c:forEach>
+				</div>
 
-                                <div class="room_numberie-info">
-                                    <img src="${pageContext.request.contextPath}/images/roomie.png" alt="Point" class="room_numberie-img" width="18px" height="18px">
-                                    <!-- 포인트 출력 -->
-                                    <span class="room_numberie-point">${post.points} 루미</span>
-                                </div>
-                            </div>
 
-                            <!-- 대여 기간 출력 -->
-                            <span class="date">${post.rentalStartDate} ~ ${post.rentalEndDate}</span>
-                        </div>
-                        </a>
-                    </c:forEach>
-                </div>
                  <div class="floating-button">
                     <a href="${pageContext.request.contextPath}/providepost/create">
                         <img src="${pageContext.request.contextPath}/images/write.png" alt="Write">
