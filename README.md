@@ -66,7 +66,7 @@
 2. **설치**
    - **Git**을 사용해 레포지토리를 클론:
      ```bash
-     git clone [https://github.com/your-repo-url](https://github.com/DatabaseProgrammingFinal/Roomie_Final.git)
+     git clone https://github.com/DatabaseProgrammingFinal/Roomie_Final.git
      ```
    - 데이터베이스 초기화: 제공된 SQL 스크립트 실행.
    - `context.properties` 파일에 DB 연결 정보 추가.
